@@ -1,41 +1,216 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Under Construction</title>
+    <title>SimoDevel - Simulation Models Hub</title>
+    <meta name="description" content="Technical resource for SPICE, LTSpice, MATLAB, Verilog-A simulation models">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sparql.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8ff;
+            --accent: #667eea;
         }
-        .construction {
-            font-size: 3em;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: pulse 2s infinite;
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --accent: #3b82f6;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        @media (max-width: 768px) {
-            .construction {
-                font-size: 2em;
-            }
+        body { 
+            background: var(--bg-primary); 
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, sans-serif;
         }
     </style>
 </head>
-<body>
-    <div class="construction">PAGE UNDER CONSTRUCTION</div>
+<body class="min-h-screen">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="fixed top-4 right-4 p-2 bg-gray-800 dark:bg-gray-200 rounded-full text-white dark:text-gray-900 z-50">
+        🌙
+    </button>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 bg-var(--bg-secondary) backdrop-blur-md z-40 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <a href="#hero" class="text-2xl font-bold text-accent">SimoDevel</a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#models" class="hover:text-accent transition">Models</a>
+                    <a href="#tutorials" class="hover:text-accent transition">Tutorials</a>
+                    <a href="#tools" class="hover:text-accent transition">Tools</a>
+                    <a href="#contribute" class="hover:text-accent transition">Contribute</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center text-center px-4 pt-20">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-accent to-purple-400 bg-clip-text text-transparent">
+                Simulation Models Hub
+            </h1>
+            <p class="text-2xl md:text-3xl mb-12 text-var(--text-secondary) max-w-2xl mx-auto leading-relaxed">
+                SPICE • LTSpice • MATLAB • Verilog-A • PySpice
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <input id="search-input" type="text" placeholder="Search models..." class="px-6 py-4 bg-var(--bg-secondary) border border-gray-700 rounded-xl text-lg w-full sm:w-96 focus:outline-none focus:border-accent">
+                <button class="px-8 py-4 bg-accent text-black font-bold rounded-xl hover:bg-blue-500 transition text-lg">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Model Library -->
+    <section id="models" class="py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-black text-center mb-20">Model Library</h2>
+            
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-700 mb-12">
+                <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-accent tab-active">Amplifiers</button>
+                <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-accent">Transistors</button>
+                <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-accent">Passives</button>
+                <button class="tab-btn px-6 py-4 font-bold border-b-2 border-transparent hover:border-accent">Digital</button>
+            </div>
+
+            <!-- Models Grid - Amplifiers (default) -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Sample Model Card -->
+                <div class="model-card group bg-var(--bg-secondary) p-8 rounded-2xl border border-gray-700 hover:border-accent hover:scale-105 transition-all duration-300">
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-accent">Ideal OpAmp</h3>
+                    <p class="text-var(--text-secondary) mb-6">High-gain voltage feedback amplifier model with slew rate limiting and thermal noise.</p>
+                    <pre class="language-spice"><code>.subckt OPAMP+ IN- V+ V- OUT
+* Ideal OpAmp model
+E1 OUT 0 IN+ IN- 1e9
+Gnoise 0 OUT noise 1n
+...</code></pre>
+                    <div class="flex gap-3 mt-6">
+                        <a href="#" class="flex-1 bg-accent text-black px-6 py-3 rounded-xl text-center font-bold hover:bg-blue-500">Download .lib</a>
+                        <a href="#" class="flex-1 border border-gray-600 px-6 py-3 rounded-xl text-center hover:bg-gray-700">LTSpice Symbol</a>
+                    </div>
+                </div>
+
+                <!-- Placeholder cards -->
+                <div class="model-card bg-var(--bg-secondary) p-8 rounded-2xl border border-gray-700 text-center py-20">
+                    <div class="text-6xl mb-4">📦</div>
+                    <h3 class="text-2xl font-bold mb-2">More models coming</h3>
+                    <p class="text-var(--text-secondary)">Transconductance, Comparator...</p>
+                </div>
+                <div class="model-card bg-var(--bg-secondary) p-8 rounded-2xl border border-gray-700 text-center py-20">
+                    <div class="text-6xl mb-4">🔧</div>
+                    <h3 class="text-2xl font-bold mb-2">Custom models</h3>
+                    <p class="text-var(--text-secondary)">Contribute yours!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Tutorials -->
+    <section id="tutorials" class="py-24 px-4 bg-var(--bg-secondary)">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-black text-center mb-20">Tutorials & Techniques</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 rounded-2xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4">Temperature Dependent Models</h3>
+                    <p class="text-var(--text-secondary) mb-6">How to implement PTAT/NTAT coefficients in SPICE...</p>
+                    <a href="#" class="text-accent font-bold hover:underline">Read →</a>
+                </div>
+                <div class="p-8 rounded-2xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4">Monte-Carlo Setup</h3>
+                    <p class="text-var(--text-secondary) mb-6">Statistical analysis for yield prediction...</p>
+                    <a href="#" class="text-accent font-bold hover:underline">Read →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Tools -->
+    <section id="tools" class="py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-black text-center mb-20">Tools & References</h2>
+            <table class="w-full border-collapse border border-gray-700 rounded-xl overflow-hidden">
+                <thead>
+                    <tr class="bg-var(--bg-secondary)">
+                        <th class="p-4 text-left font-bold">Tool</th>
+                        <th class="p-4 text-left font-bold">Link</th>
+                        <th class="p-4 text-left font-bold">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t border-gray-700 hover:bg-var(--bg-secondary)">
+                        <td class="p-4 font-mono">LTSpice XVII</td>
+                        <td class="p-4"><a href="#" class="text-accent hover:underline">Download</a></td>
+                        <td class="p-4 text-var(--text-secondary)">Free, Windows/Linux/Mac</td>
+                    </tr>
+                    <tr class="border-t border-gray-700 hover:bg-var(--bg-secondary)">
+                        <td class="p-4 font-mono">NGSpice</td>
+                        <td class="p-4"><a href="#" class="text-accent hover:underline">Download</a></td>
+                        <td class="p-4 text-var(--text-secondary)">Python scripting</td>
+                    </tr>
+                    <tr class="border-t border-gray-700 hover:bg-var(--bg-secondary)">
+                        <td class="p-4 font-mono">PySpice</td>
+                        <td class="p-4"><a href="#" class="text-accent hover:underline">Docs</a></td>
+                        <td class="p-4 text-var(--text-secondary)">Full SPICE in Python</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 5. Contribute -->
+    <section id="contribute" class="py-24 px-4 bg-var(--bg-secondary)">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-black mb-8">Contribute Your Models</h2>
+            <p class="text-xl text-var(--text-secondary) mb-12 max-w-2xl mx-auto">
+                Share your verified models with the community. Follow our validation checklist.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="#" class="px-8 py-4 bg-accent text-black font-bold rounded-xl hover:bg-blue-500 text-lg">Model Template</a>
+                <a href="#" class="px-8 py-4 border border-gray-600 rounded-xl hover:bg-gray-700 text-lg">Validation Checklist</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 SimoDevel. Open source simulation models. <a href="#" class="text-accent hover:underline">GitHub</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const toggle = document.getElementById('theme-toggle');
+        toggle.addEventListener('click', () => {
+            document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+            toggle.textContent = document.documentElement.dataset.theme === 'light' ? '🌙' : '☀️';
+        });
+
+        // Tab functionality (basic)
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active', 'border-accent', 'text-accent'));
+                btn.classList.add('tab-active', 'border-accent', 'text-accent');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
 </html>
