@@ -121,6 +121,32 @@
       margin-top: 6px;
     }
 
+    .status-focus-fixed {
+      display: inline-block;
+      width: 17ch;
+    }
+
+    .status-focus-label {
+      display: inline-block;
+      width: 9ch;
+    }
+
+    .status-jump {
+      font-family: inherit;
+      font-size: inherit;
+      color: #374151;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .status-jump:hover {
+      color: #111827;
+    }
+
     .layout {
       max-width: 1280px;
       margin: 0 auto;
@@ -699,11 +725,12 @@
         </template>
         <template x-if="!loading && !isSearchMode()">
           <span>
-            Focus: <span class="font-bold" x-text="panelFocus === 'default' ? 'OVERVIEW' : panelFocus.toUpperCase()"></span>.
-            Sections loaded: <span x-text="stats.projects"></span> projects,
-            <span x-text="stats.components"></span> parts,
-            <span x-text="stats.tutorials"></span> tutorials,
-            <span x-text="stats.tools"></span> tools.
+            <span class="status-focus-fixed">Focus: <span class="font-bold status-focus-label" x-text="panelFocus === 'default' ? 'OVERVIEW' : panelFocus.toUpperCase()"></span></span>
+            Sections loaded:
+            <button type="button" class="status-jump" @click="jumpToPanel('blog')"><span x-text="stats.projects"></span> projects</button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('parts')"><span x-text="stats.components"></span> parts</button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('tutorials')"><span x-text="stats.tutorials"></span> tutorials</button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('tools')"><span x-text="stats.tools"></span> tools</button>.
           </span>
         </template>
       </div>
@@ -1849,6 +1876,14 @@
           }
           this.panelFocus = name;
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        jumpToPanel(name) {
+          if (this.isSearchMode()) {
+            return;
+          }
+          this.panelFocus = name;
+          window.scrollTo({ top: 0, behavior: 'auto' });
         },
 
         activePanel() {
