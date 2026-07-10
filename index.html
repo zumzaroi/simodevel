@@ -1482,6 +1482,7 @@
         },
 
         async init() {
+          this.voteApiBase = this.resolveVoteApiBase();
           this.voteApiAvailable = window.location.protocol === "http:" || window.location.protocol === "https:";
           this.voteDeviceId = this.ensureVoteDeviceId();
 
@@ -1650,6 +1651,39 @@
           return Number.isFinite(n) ? n.toFixed(1) : "0.0";
         },
 
+        resolveVoteApiBase() {
+          const host = String(window.location.hostname || "").toLowerCase();
+          if (host.endsWith("github.io")) {
+            return "https://simodevel.com/api/votes";
+          }
+          return "/api/votes";
+        },
+
+        async parseVoteApiResponse(response, defaultErrorMessage) {
+          const contentType = String(response.headers.get("content-type") || "").toLowerCase();
+          const payloadText = await response.text();
+
+          if (!contentType.includes("application/json")) {
+            if (response.status === 404 || response.status === 405) {
+              throw new Error("Voting API route is not active for this host yet.");
+            }
+            throw new Error("Voting API returned a non-JSON response.");
+          }
+
+          let data;
+          try {
+            data = payloadText ? JSON.parse(payloadText) : {};
+          } catch (_) {
+            throw new Error("Voting API returned invalid JSON.");
+          }
+
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || defaultErrorMessage);
+          }
+
+          return data;
+        },
+
         ensureVoteDeviceId() {
           const storageKey = "simo_vote_device_id_v1";
           try {
@@ -1714,10 +1748,7 @@
           try {
             const query = `${this.voteApiBase}?item=${encodeURIComponent(itemKey)}&device=${encodeURIComponent(this.voteDeviceId)}`;
             const response = await fetch(query);
-            const data = await response.json();
-            if (!response.ok || !data.ok) {
-              throw new Error(data.error || "Unable to load votes.");
-            }
+            const data = await this.parseVoteApiResponse(response, "Unable to load votes.");
 
             this.upsertVoteState(itemKey, {
               likes: Number(data.stats && data.stats.likes || 0),
@@ -1770,10 +1801,7 @@
               })
             });
 
-            const data = await response.json();
-            if (!response.ok || !data.ok) {
-              throw new Error(data.error || "Vote request failed.");
-            }
+            const data = await this.parseVoteApiResponse(response, "Vote request failed.");
 
             this.upsertVoteState(target.key, {
               likes: Number(data.stats && data.stats.likes || 0),
