@@ -1,122 +1,182 @@
-[
-  {
-    "id": "tut_01_ltspice_download_install",
-    "title": "Download and Install LTspice (Free Edition)",
-    "category": "Setup",
-    "difficulty": "beginner",
-    "description": "Step-by-step LTspice installation on Windows, including default libraries, symbol paths, and first-run configuration.",
-    "tags": ["ltspice", "install", "free", "windows", "setup"],
-    "contributor": "Editorial Team",
-    "image": "https://picsum.photos/seed/tut-ltspice-install/640/360",
-    "url": "tutorials/01_ltspice_download_install/",
-    "featured": true
-  },
-  {
-    "id": "tut_02_first_spice_simulation",
-    "title": "Your First SPICE Simulation: RC Low-Pass",
-    "category": "SPICE Basics",
-    "difficulty": "beginner",
-    "description": "Create a first schematic, run transient and AC sweeps, and inspect waveforms to understand cutoff frequency behavior.",
-    "tags": ["spice", "rc", "ac", "transient", "beginner"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-first-sim/640/360",
-    "url": "tutorials/02_first_spice_simulation/",
-    "featured": true
-  },
-  {
-    "id": "tut_03_dc_bias_bjt_stage",
-    "title": "DC Bias Design for a BJT Stage",
-    "category": "Analog",
-    "difficulty": "beginner",
-    "description": "Calculate and verify a stable operating point for a common-emitter amplifier with resistor divider bias.",
-    "tags": ["bjt", "dc", "bias", "analog", "ltspice"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-bjt-bias/640/360",
-    "url": "tutorials/03_dc_bias_bjt_stage/",
-    "featured": false
-  },
-  {
-    "id": "tut_04_bode_plot_practice",
-    "title": "Bode Plots in LTspice: Gain and Phase",
-    "category": "Frequency Domain",
-    "difficulty": "intermediate",
-    "description": "Run AC analysis and read gain-phase margins on filters and amplifier stages with practical plotting tips.",
-    "tags": ["bode", "ac", "gain", "phase", "ltspice"],
-    "contributor": "Sara N.",
-    "image": "https://picsum.photos/seed/tut-bode/640/360",
-    "url": "tutorials/04_bode_plot_practice/",
-    "featured": true
-  },
-  {
-    "id": "tut_05_import_vendor_models",
-    "title": "Import Vendor SPICE Models (.lib / .subckt)",
-    "category": "Libraries",
-    "difficulty": "intermediate",
-    "description": "Add manufacturer models safely, map symbols, and validate pin order before running production-level simulations.",
-    "tags": ["spice", "models", "vendor", "library", "subckt"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-import-model/640/360",
-    "url": "tutorials/05_import_vendor_models/",
-    "featured": true
-  },
-  {
-    "id": "tut_06_first_behavioral_model",
-    "title": "Create Your First Behavioral Model",
-    "category": "Behavioral",
-    "difficulty": "intermediate",
-    "description": "Build a behavioral source model with equations, limits, and piecewise behavior to emulate real component nonlinearity.",
-    "tags": ["behavioral", "b-source", "modeling", "equations", "spice"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-behavioral-model/640/360",
-    "url": "tutorials/06_first_behavioral_model/",
-    "featured": true
-  },
-  {
-    "id": "tut_07_arduino_dc_motor_pwm",
-    "title": "DC Motor Control with Arduino and PWM",
-    "category": "Embedded",
-    "difficulty": "beginner",
-    "description": "Control motor speed with PWM, design a transistor or MOSFET driver stage, and validate current behavior in simulation first.",
-    "tags": ["arduino", "pwm", "dc motor", "mosfet", "driver"],
-    "contributor": "Mihai D.",
-    "image": "https://picsum.photos/seed/tut-arduino-pwm/640/360",
-    "url": "tutorials/07_arduino_dc_motor_pwm/",
-    "featured": true
-  },
-  {
-    "id": "tut_08_power_supply_stability",
-    "title": "Linear Regulator Stability and Compensation",
-    "category": "Power",
-    "difficulty": "advanced",
-    "description": "Understand ESR windows, output capacitor selection, and transient response for stable regulator design.",
-    "tags": ["regulator", "stability", "esr", "power", "transient"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-regulator-stability/640/360",
-    "url": "tutorials/08_power_supply_stability/",
-    "featured": false
-  },
-  {
-    "id": "tut_09_noise_and_filtering",
-    "title": "Noise, Grounding, and Practical Filtering",
-    "category": "Hardware Practice",
-    "difficulty": "intermediate",
-    "description": "Apply grounding strategy, decoupling, and analog filtering methods to reduce noise in mixed-signal systems.",
-    "tags": ["noise", "grounding", "filter", "decoupling", "hardware"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-noise-filtering/640/360",
-    "url": "tutorials/09_noise_and_filtering/",
-    "featured": false
-  },
-  {
-    "id": "tut_10_veriloga_intro",
-    "title": "Verilog-A Intro for Analog Modeling",
-    "category": "Modeling",
-    "difficulty": "advanced",
-    "description": "Write a compact Verilog-A model, simulate it in AMS-compatible flow, and compare with SPICE macro behavior.",
-    "tags": ["verilog-a", "ams", "modeling", "analog", "behavioral"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/tut-veriloga/640/360",
-    "url": "tutorials/10_veriloga_intro/",
-    "featured": false
-  }
+﻿[
+    {
+        "id":  "tut_01_ltspice_download_install",
+        "title":  "Download and Install LTspice (Free Edition)",
+        "category":  "Setup",
+        "difficulty":  "beginner",
+        "description":  "Step-by-step LTspice installation on Windows, including default libraries, symbol paths, and first-run configuration.",
+        "tags":  [
+                     "ltspice",
+                     "install",
+                     "free",
+                     "windows",
+                     "setup"
+                 ],
+        "contributor":  "Editorial Team",
+        "image":  "assets/images/tutorials/tut_01_ltspice_download_install.jpg",
+        "url":  "tutorials/01_ltspice_download_install/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_02_first_spice_simulation",
+        "title":  "Your First SPICE Simulation: RC Low-Pass",
+        "category":  "SPICE Basics",
+        "difficulty":  "beginner",
+        "description":  "Create a first schematic, run transient and AC sweeps, and inspect waveforms to understand cutoff frequency behavior.",
+        "tags":  [
+                     "spice",
+                     "rc",
+                     "ac",
+                     "transient",
+                     "beginner"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_02_first_spice_simulation.jpg",
+        "url":  "tutorials/02_first_spice_simulation/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_03_dc_bias_bjt_stage",
+        "title":  "DC Bias Design for a BJT Stage",
+        "category":  "Analog",
+        "difficulty":  "beginner",
+        "description":  "Calculate and verify a stable operating point for a common-emitter amplifier with resistor divider bias.",
+        "tags":  [
+                     "bjt",
+                     "dc",
+                     "bias",
+                     "analog",
+                     "ltspice"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_03_dc_bias_bjt_stage.jpg",
+        "url":  "tutorials/03_dc_bias_bjt_stage/",
+        "featured":  false
+    },
+    {
+        "id":  "tut_04_bode_plot_practice",
+        "title":  "Bode Plots in LTspice: Gain and Phase",
+        "category":  "Frequency Domain",
+        "difficulty":  "intermediate",
+        "description":  "Run AC analysis and read gain-phase margins on filters and amplifier stages with practical plotting tips.",
+        "tags":  [
+                     "bode",
+                     "ac",
+                     "gain",
+                     "phase",
+                     "ltspice"
+                 ],
+        "contributor":  "Sara N.",
+        "image":  "assets/images/tutorials/tut_04_bode_plot_practice.jpg",
+        "url":  "tutorials/04_bode_plot_practice/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_05_import_vendor_models",
+        "title":  "Import Vendor SPICE Models (.lib / .subckt)",
+        "category":  "Libraries",
+        "difficulty":  "intermediate",
+        "description":  "Add manufacturer models safely, map symbols, and validate pin order before running production-level simulations.",
+        "tags":  [
+                     "spice",
+                     "models",
+                     "vendor",
+                     "library",
+                     "subckt"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_05_import_vendor_models.jpg",
+        "url":  "tutorials/05_import_vendor_models/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_06_first_behavioral_model",
+        "title":  "Create Your First Behavioral Model",
+        "category":  "Behavioral",
+        "difficulty":  "intermediate",
+        "description":  "Build a behavioral source model with equations, limits, and piecewise behavior to emulate real component nonlinearity.",
+        "tags":  [
+                     "behavioral",
+                     "b-source",
+                     "modeling",
+                     "equations",
+                     "spice"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_06_first_behavioral_model.jpg",
+        "url":  "tutorials/06_first_behavioral_model/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_07_arduino_dc_motor_pwm",
+        "title":  "DC Motor Control with Arduino and PWM",
+        "category":  "Embedded",
+        "difficulty":  "beginner",
+        "description":  "Control motor speed with PWM, design a transistor or MOSFET driver stage, and validate current behavior in simulation first.",
+        "tags":  [
+                     "arduino",
+                     "pwm",
+                     "dc motor",
+                     "mosfet",
+                     "driver"
+                 ],
+        "contributor":  "Mihai D.",
+        "image":  "assets/images/tutorials/tut_07_arduino_dc_motor_pwm.jpg",
+        "url":  "tutorials/07_arduino_dc_motor_pwm/",
+        "featured":  true
+    },
+    {
+        "id":  "tut_08_power_supply_stability",
+        "title":  "Linear Regulator Stability and Compensation",
+        "category":  "Power",
+        "difficulty":  "advanced",
+        "description":  "Understand ESR windows, output capacitor selection, and transient response for stable regulator design.",
+        "tags":  [
+                     "regulator",
+                     "stability",
+                     "esr",
+                     "power",
+                     "transient"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_08_power_supply_stability.jpg",
+        "url":  "tutorials/08_power_supply_stability/",
+        "featured":  false
+    },
+    {
+        "id":  "tut_09_noise_and_filtering",
+        "title":  "Noise, Grounding, and Practical Filtering",
+        "category":  "Hardware Practice",
+        "difficulty":  "intermediate",
+        "description":  "Apply grounding strategy, decoupling, and analog filtering methods to reduce noise in mixed-signal systems.",
+        "tags":  [
+                     "noise",
+                     "grounding",
+                     "filter",
+                     "decoupling",
+                     "hardware"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_09_noise_and_filtering.jpg",
+        "url":  "tutorials/09_noise_and_filtering/",
+        "featured":  false
+    },
+    {
+        "id":  "tut_10_veriloga_intro",
+        "title":  "Verilog-A Intro for Analog Modeling",
+        "category":  "Modeling",
+        "difficulty":  "advanced",
+        "description":  "Write a compact Verilog-A model, simulate it in AMS-compatible flow, and compare with SPICE macro behavior.",
+        "tags":  [
+                     "verilog-a",
+                     "ams",
+                     "modeling",
+                     "analog",
+                     "behavioral"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/tutorials/tut_10_veriloga_intro.jpg",
+        "url":  "tutorials/10_veriloga_intro/",
+        "featured":  false
+    }
 ]

@@ -1,132 +1,192 @@
-[
-  {
-    "id": "01_fm_transmitter_bc547",
-    "title": "FM Transmitter 88-108 MHz (BC547)",
-    "category": "RF",
-    "difficulty": "beginner",
-    "description": "A one-transistor FM transmitter using a Colpitts tank, designed for short-range lab demonstrations and frequency tuning practice.",
-    "tags": ["bc547", "rf", "colpitts", "fm", "ltspice"],
-    "contributor": "Alex M.",
-    "image": "https://picsum.photos/seed/fm-transmitter/720/420",
-    "readme": "blog/01_emitator_fm/README.md",
-    "parts": "blog/01_emitator_fm/parts.json",
-    "featured": true
-  },
-  {
-    "id": "02_soil_moisture_alarm",
-    "title": "Soil Moisture Alarm with LM393",
-    "category": "Sensors",
-    "difficulty": "beginner",
-    "description": "A threshold-based soil moisture monitor with buzzer and LED, ideal for understanding comparator hysteresis and calibration.",
-    "tags": ["lm393", "sensor", "comparator", "plants", "analog"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/soil-alarm/720/420",
-    "readme": "blog/02_senzor_umiditate_sol/README.md",
-    "parts": "blog/02_senzor_umiditate_sol/parts.json",
-    "featured": true
-  },
-  {
-    "id": "03_lm317_bench_supply",
-    "title": "Adjustable Bench Supply 1.25V-30V (LM317)",
-    "category": "Power",
-    "difficulty": "beginner",
-    "description": "A practical linear bench supply with adjustable output and thermal notes, focused on regulator stability and dropout behavior.",
-    "tags": ["lm317", "power", "regulator", "bench", "analog"],
-    "contributor": "Mira K.",
-    "image": "https://picsum.photos/seed/lm317-supply/720/420",
-    "readme": "blog/03_sursa_lm317/README.md",
-    "parts": "blog/03_sursa_lm317/parts.json",
-    "featured": true
-  },
-  {
-    "id": "04_lm386_audio_amp",
-    "title": "LM386 Mono Audio Amplifier",
-    "category": "Audio",
-    "difficulty": "beginner",
-    "description": "Compact low-power audio amplifier project with gain tuning and output network damping for stable operation.",
-    "tags": ["lm386", "audio", "amplifier", "speaker", "gain"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/lm386-audio/720/420",
-    "readme": "blog/04_amplificator_lm386/README.md",
-    "parts": "blog/04_amplificator_lm386/parts.json",
-    "featured": true
-  },
-  {
-    "id": "05_cd4026_clock",
-    "title": "CD4026 Digital Clock",
-    "category": "Digital",
-    "difficulty": "intermediate",
-    "description": "Discrete logic digital clock using CD4026 counters and 7-segment displays, without firmware dependencies.",
-    "tags": ["cd4026", "555", "digital", "7segment", "clock"],
-    "contributor": "Radu P.",
-    "image": "https://picsum.photos/seed/cd4026-clock/720/420",
-    "readme": "blog/05_ceas_cd4026/README.md",
-    "parts": "blog/05_ceas_cd4026/parts.json",
-    "featured": false
-  },
-  {
-    "id": "06_bfo_metal_detector",
-    "title": "BFO Metal Detector",
-    "category": "RF",
-    "difficulty": "intermediate",
-    "description": "Beat-frequency metal detector using dual oscillators, useful for studying inductance shift and frequency mixing.",
-    "tags": ["bfo", "detector", "coil", "rf", "bc547"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/bfo-detector/720/420",
-    "readme": "blog/06_detector_metale/README.md",
-    "parts": "blog/06_detector_metale/parts.json",
-    "featured": true
-  },
-  {
-    "id": "07_ntc_thermometer",
-    "title": "Analog NTC Thermometer",
-    "category": "Sensors",
-    "difficulty": "beginner",
-    "description": "NTC-based analog temperature monitor with op-amp conditioning and bargraph indication for quick thermal readout.",
-    "tags": ["ntc", "lm358", "temperature", "analog", "sensor"],
-    "contributor": "Iulia T.",
-    "image": "https://picsum.photos/seed/ntc-thermometer/720/420",
-    "readme": "blog/07_termometru_ntc/README.md",
-    "parts": "blog/07_termometru_ntc/parts.json",
-    "featured": false
-  },
-  {
-    "id": "08_solar_liion_charger",
-    "title": "Solar Li-Ion Charger (LTC4054)",
-    "category": "Power",
-    "difficulty": "intermediate",
-    "description": "A compact Li-Ion charging stage powered by a solar panel, with status LEDs and current programming resistor.",
-    "tags": ["ltc4054", "solar", "li-ion", "charger", "battery"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/solar-charger/720/420",
-    "readme": "blog/08_incarcator_solar/README.md",
-    "parts": "blog/08_incarcator_solar/parts.json",
-    "featured": false
-  },
-  {
-    "id": "09_12v_220v_inverter",
-    "title": "12V to 220V Inverter (Low Power)",
-    "category": "Power",
-    "difficulty": "advanced",
-    "description": "Push-pull inverter using MOSFETs and transformer drive, with practical notes on safety, switching losses, and thermal design.",
-    "tags": ["irf540n", "inverter", "power", "555", "transformer"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/inverter-12-220/720/420",
-    "readme": "blog/09_invertor_12v/README.md",
-    "parts": "blog/09_invertor_12v/parts.json",
-    "featured": false
-  },
-  {
-    "id": "10_ir_receiver_universal",
-    "title": "Universal IR Receiver with Arduino",
-    "category": "Embedded",
-    "difficulty": "beginner",
-    "description": "TSOP4838 based IR receiver with Arduino decoding, including PWM and control mapping examples for remote input handling.",
-    "tags": ["tsop4838", "arduino", "ir", "remote", "pwm"],
-    "contributor": "Anonymous",
-    "image": "https://picsum.photos/seed/ir-receiver/720/420",
-    "readme": "blog/10_receptor_ir/README.md",
-    "parts": "blog/10_receptor_ir/parts.json",
-    "featured": true
-  }
+﻿[
+    {
+        "id":  "01_fm_transmitter_bc547",
+        "title":  "FM Transmitter 88-108 MHz (BC547)",
+        "category":  "RF",
+        "difficulty":  "beginner",
+        "description":  "A one-transistor FM transmitter using a Colpitts tank, designed for short-range lab demonstrations and frequency tuning practice.",
+        "tags":  [
+                     "bc547",
+                     "rf",
+                     "colpitts",
+                     "fm",
+                     "ltspice"
+                 ],
+        "contributor":  "Alex M.",
+        "image":  "assets/images/projects/01_fm_transmitter_bc547.jpg",
+        "readme":  "blog/01_emitator_fm/README.md",
+        "parts":  "blog/01_emitator_fm/parts.json",
+        "featured":  true
+    },
+    {
+        "id":  "02_soil_moisture_alarm",
+        "title":  "Soil Moisture Alarm with LM393",
+        "category":  "Sensors",
+        "difficulty":  "beginner",
+        "description":  "A threshold-based soil moisture monitor with buzzer and LED, ideal for understanding comparator hysteresis and calibration.",
+        "tags":  [
+                     "lm393",
+                     "sensor",
+                     "comparator",
+                     "plants",
+                     "analog"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/02_soil_moisture_alarm.jpg",
+        "readme":  "blog/02_senzor_umiditate_sol/README.md",
+        "parts":  "blog/02_senzor_umiditate_sol/parts.json",
+        "featured":  true
+    },
+    {
+        "id":  "03_lm317_bench_supply",
+        "title":  "Adjustable Bench Supply 1.25V-30V (LM317)",
+        "category":  "Power",
+        "difficulty":  "beginner",
+        "description":  "A practical linear bench supply with adjustable output and thermal notes, focused on regulator stability and dropout behavior.",
+        "tags":  [
+                     "lm317",
+                     "power",
+                     "regulator",
+                     "bench",
+                     "analog"
+                 ],
+        "contributor":  "Mira K.",
+        "image":  "assets/images/projects/03_lm317_bench_supply.jpg",
+        "readme":  "blog/03_sursa_lm317/README.md",
+        "parts":  "blog/03_sursa_lm317/parts.json",
+        "featured":  true
+    },
+    {
+        "id":  "04_lm386_audio_amp",
+        "title":  "LM386 Mono Audio Amplifier",
+        "category":  "Audio",
+        "difficulty":  "beginner",
+        "description":  "Compact low-power audio amplifier project with gain tuning and output network damping for stable operation.",
+        "tags":  [
+                     "lm386",
+                     "audio",
+                     "amplifier",
+                     "speaker",
+                     "gain"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/04_lm386_audio_amp.jpg",
+        "readme":  "blog/04_amplificator_lm386/README.md",
+        "parts":  "blog/04_amplificator_lm386/parts.json",
+        "featured":  true
+    },
+    {
+        "id":  "05_cd4026_clock",
+        "title":  "CD4026 Digital Clock",
+        "category":  "Digital",
+        "difficulty":  "intermediate",
+        "description":  "Discrete logic digital clock using CD4026 counters and 7-segment displays, without firmware dependencies.",
+        "tags":  [
+                     "cd4026",
+                     "555",
+                     "digital",
+                     "7segment",
+                     "clock"
+                 ],
+        "contributor":  "Radu P.",
+        "image":  "assets/images/projects/05_cd4026_clock.jpg",
+        "readme":  "blog/05_ceas_cd4026/README.md",
+        "parts":  "blog/05_ceas_cd4026/parts.json",
+        "featured":  false
+    },
+    {
+        "id":  "06_bfo_metal_detector",
+        "title":  "BFO Metal Detector",
+        "category":  "RF",
+        "difficulty":  "intermediate",
+        "description":  "Beat-frequency metal detector using dual oscillators, useful for studying inductance shift and frequency mixing.",
+        "tags":  [
+                     "bfo",
+                     "detector",
+                     "coil",
+                     "rf",
+                     "bc547"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/06_bfo_metal_detector.jpg",
+        "readme":  "blog/06_detector_metale/README.md",
+        "parts":  "blog/06_detector_metale/parts.json",
+        "featured":  true
+    },
+    {
+        "id":  "07_ntc_thermometer",
+        "title":  "Analog NTC Thermometer",
+        "category":  "Sensors",
+        "difficulty":  "beginner",
+        "description":  "NTC-based analog temperature monitor with op-amp conditioning and bargraph indication for quick thermal readout.",
+        "tags":  [
+                     "ntc",
+                     "lm358",
+                     "temperature",
+                     "analog",
+                     "sensor"
+                 ],
+        "contributor":  "Iulia T.",
+        "image":  "assets/images/projects/07_ntc_thermometer.jpg",
+        "readme":  "blog/07_termometru_ntc/README.md",
+        "parts":  "blog/07_termometru_ntc/parts.json",
+        "featured":  false
+    },
+    {
+        "id":  "08_solar_liion_charger",
+        "title":  "Solar Li-Ion Charger (LTC4054)",
+        "category":  "Power",
+        "difficulty":  "intermediate",
+        "description":  "A compact Li-Ion charging stage powered by a solar panel, with status LEDs and current programming resistor.",
+        "tags":  [
+                     "ltc4054",
+                     "solar",
+                     "li-ion",
+                     "charger",
+                     "battery"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/08_solar_liion_charger.jpg",
+        "readme":  "blog/08_incarcator_solar/README.md",
+        "parts":  "blog/08_incarcator_solar/parts.json",
+        "featured":  false
+    },
+    {
+        "id":  "09_12v_220v_inverter",
+        "title":  "12V to 220V Inverter (Low Power)",
+        "category":  "Power",
+        "difficulty":  "advanced",
+        "description":  "Push-pull inverter using MOSFETs and transformer drive, with practical notes on safety, switching losses, and thermal design.",
+        "tags":  [
+                     "irf540n",
+                     "inverter",
+                     "power",
+                     "555",
+                     "transformer"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/09_12v_220v_inverter.jpg",
+        "readme":  "blog/09_invertor_12v/README.md",
+        "parts":  "blog/09_invertor_12v/parts.json",
+        "featured":  false
+    },
+    {
+        "id":  "10_ir_receiver_universal",
+        "title":  "Universal IR Receiver with Arduino",
+        "category":  "Embedded",
+        "difficulty":  "beginner",
+        "description":  "TSOP4838 based IR receiver with Arduino decoding, including PWM and control mapping examples for remote input handling.",
+        "tags":  [
+                     "tsop4838",
+                     "arduino",
+                     "ir",
+                     "remote",
+                     "pwm"
+                 ],
+        "contributor":  "Anonymous",
+        "image":  "assets/images/projects/10_ir_receiver_universal.jpg",
+        "readme":  "blog/10_receptor_ir/README.md",
+        "parts":  "blog/10_receptor_ir/parts.json",
+        "featured":  true
+    }
 ]

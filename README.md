@@ -4,7 +4,7 @@
 > Oricine poate contribui: proiecte, modele, tutoriale, piese — prin Pull Request pe GitHub.
 
 > **Principiu**: 100% static (GitHub Pages). Niciun backend. Date în JSON, UI în HTML/JS vanilla.  
-> Navigare globală: bară fixă cu search care filtrează între secțiuni (models / tutorials / tools / blog / parts).
+> **Pagina principală = un search.** Utilizatorul tastează și vede instant rezultate grupate pe secțiuni.
 
 ---
 
@@ -60,10 +60,63 @@ simodevel/
 
 ---
 
-## 1. Search global
+## 1. Search global — pagina principală
 
-Bara de navigare conține un `<input>` care filtrează simultan în toate secțiunile vizibile.  
-Implementare: JS vanilla, fără librării. Caută în titlu + tag-uri din fiecare card.
+### Concept UX
+
+Pagina principală NU mai e un hero cu text lung. Este **direct un search box** centrat, mare, cu search-as-you-type.
+
+```
+┌─────────────────────────────────────────────────────┐
+│  🔍  caută componente, proiecte, tutoriale...       │
+└─────────────────────────────────────────────────────┘
+         ↓ (apare imediat la tastat, fără buton)
+
+┌── 📝 Blog Proiecte (max-height: 300px, scroll intern) ──┐
+│  [card]  [card]  [card]  [card]                          │
+└──────────────────────────────────────────────────────────┘
+┌── 🛒 Componente (max-height: 300px, scroll intern) ──────┐
+│  BC547 — BJT NPN — DigiKey ↗  Mouser ↗  TME ↗           │
+│  LM317 — Regulator — DigiKey ↗  Mouser ↗                │
+└──────────────────────────────────────────────────────────┘
+┌── 🎓 Tutoriale (max-height: 200px, scroll intern) ───────┐
+│  [card]  [card]                                          │
+└──────────────────────────────────────────────────────────┘
+┌── 📚 Modele (max-height: 200px, scroll intern) ──────────┐
+│  [card]                                                  │
+└──────────────────────────────────────────────────────────┘
+```
+
+- Dacă search-ul e gol → afișează câte 4 carduri din fiecare secțiune ("featured")
+- O secțiune fără rezultate dispare complet din pagină
+- View mode: toggle **mozaic** (grid) / **listă** (compact rows)
+
+### Implementare JS
+
+```js
+// La load: fetch toate JSON-urile, cache în sessionStorage
+// La input: filtrează în toate sursele, randează imediat (debounce 150ms)
+// Structura rezultate:
+{
+  blog:       [ { title, tags, difficulty, url } ],
+  parts:      [ { ref, type, manufacturer, buy } ],
+  tutorials:  [ { title, tags, url } ],
+  models:     [ { title, simulator, url } ]
+}
+```
+
+[AI: scrie funcția JS `searchAll(query, index)` care primește un string și un obiect index cu cheile `{blog, parts, tutorials, models}`, filtrează case-insensitive pe câmpurile title+tags+ref+type, returnează obiectul cu rezultatele filtrate, max 20 per secțiune]
+
+[AI: scrie funcția JS `renderResults(results, viewMode)` care primește rezultatele de mai sus și viewMode (`'grid'`/`'list'`), randează HTML cu secțiuni colapsabile, fiecare cu `max-height: 300px; overflow-y: auto`, carduri stilizate Tailwind]
+
+### Sursele de date căutate
+
+| Fișier JSON | Secțiune afișată | Câmpuri căutate |
+|---|---|---|
+| `data/projects_index.json` | Blog Proiecte | title, tags, category |
+| `data/components.json` | Componente | ref (part#), type, manufacturer |
+| `data/tutorials_index.json` | Tutoriale | title, tags |
+| `data/models_index.json` | Modele | title, simulator, tags |
 
 ---
 
@@ -169,27 +222,23 @@ Fișierul `CONTRIBUTING.md` va explica exact pașii de mai sus, cu exemple și r
 
 ---
 
-## 5. Navbar + Search global
+## 5. Navbar
 
 ```
-[SimoDevel]  Models  Tutorials  Tools  Blog  Parts  [ 🔍 search... ]  Contribute
+[SimoDevel]  Blog  Parts  Models  Tutorials  Tools  Contribute
 ```
 
-Search caută simultan în:
-- `data/projects_index.json` — titlu + tags
-- `data/components.json` — part number + tip
-- `data/tutorials_index.json` — titlu + tags
-
-[AI: scrie functia JS `globalSearch(query)` care: fetch-uieste cele 3 JSON-uri (cu cache in sessionStorage), filtreaza dupa query (case-insensitive, partial match pe titlu+tags), returneaza rezultate grupate pe categorii, randează un dropdown cu max 5 rezultate per categorie]
+Navbar-ul NU mai are search — search-ul e pe pagina principală.  
+Linkurile din navbar duc la ancore din `index.html` sau la pagini dedicate (viitor).
 
 ---
 
 ## TODO imediat
 
-- [ ] Scrie `CONTRIBUTING.md`
+- [ ] Rescrie `index.html`: pagina principală = search-as-you-type cu rezultate secționate
 - [ ] Creează `data/projects_index.json` cu cele 10 proiecte
+- [ ] Creează `data/components.json` cu componentele de bază (via script sau manual)
+- [ ] Creează `data/tutorials_index.json` și `data/models_index.json` (placeholder)
 - [ ] Scrie `blog/01_emitator_fm/README.md` ca proiect demo
 - [ ] Scrie `parts/scan_components.py` cu suport DigiKey + Mouser
-- [ ] Adaugă secțiunea Blog în `index.html` (citește JSON, randează carduri)
-- [ ] Adaugă secțiunea Parts în `index.html`
-- [ ] Implementează search global în navbar
+- [ ] Scrie `CONTRIBUTING.md`

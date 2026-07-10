@@ -1,0 +1,90 @@
+[
+  {
+    "id": "tool_ltspice",
+    "name": "LTspice",
+    "category": "Analog Circuit Simulator",
+    "license": "Freeware",
+    "free_version": "LTspice 24 (free)",
+    "platforms": ["Windows", "macOS", "Linux via Wine"],
+    "install": "Download from Analog Devices. Run installer and launch LTspice.exe. No account required.",
+    "best_for": "SPICE transient, AC, DC sweep, Bode plots, switching supplies",
+    "link": "https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html"
+  },
+  {
+    "id": "tool_ngspice",
+    "name": "ngspice",
+    "category": "SPICE Engine",
+    "license": "Open Source",
+    "free_version": "ngspice 42+",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Install from package manager or prebuilt binaries. Run from terminal.",
+    "best_for": "Batch simulations, scripted sweeps, integration with Python",
+    "link": "https://ngspice.sourceforge.io/"
+  },
+  {
+    "id": "tool_kicad",
+    "name": "KiCad",
+    "category": "EDA Suite",
+    "license": "Open Source",
+    "free_version": "KiCad 8 (free)",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Download installer from kicad.org and install with default options.",
+    "best_for": "Schematic capture, PCB routing, spice co-simulation",
+    "link": "https://www.kicad.org/"
+  },
+  {
+    "id": "tool_qucs_s",
+    "name": "Qucs-S",
+    "category": "Circuit Simulator GUI",
+    "license": "Open Source",
+    "free_version": "Qucs-S latest (free)",
+    "platforms": ["Windows", "Linux"],
+    "install": "Install Qucs-S package, then configure ngspice or Xyce backend in settings.",
+    "best_for": "Schematic-first simulation with multiple solver backends",
+    "link": "https://ra3xdh.github.io/"
+  },
+  {
+    "id": "tool_octave",
+    "name": "GNU Octave",
+    "category": "Numerical Simulation",
+    "license": "Open Source",
+    "free_version": "Octave 9 (free)",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Install from official installer. Optional packages can be installed from Forge.",
+    "best_for": "Control systems, signal analysis, MATLAB-compatible scripts",
+    "link": "https://www.gnu.org/software/octave/"
+  },
+  {
+    "id": "tool_arduino_ide",
+    "name": "Arduino IDE",
+    "category": "Embedded IDE",
+    "license": "Open Source",
+    "free_version": "Arduino IDE 2.x (free)",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Install from arduino.cc. Select board package and COM port from Tools menu.",
+    "best_for": "PWM control, sensor prototypes, quick microcontroller projects",
+    "link": "https://www.arduino.cc/en/software"
+  },
+  {
+    "id": "tool_fritzing",
+    "name": "Fritzing",
+    "category": "Circuit Documentation",
+    "license": "Open Source",
+    "free_version": "Source build / donation download",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Download package and run installer. Use parts library for visual wiring docs.",
+    "best_for": "Breadboard diagrams and beginner-friendly documentation",
+    "link": "https://fritzing.org/"
+  },
+  {
+    "id": "tool_platformio",
+    "name": "PlatformIO",
+    "category": "Embedded Build System",
+    "license": "Open Core",
+    "free_version": "PlatformIO Core + VS Code extension",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "install": "Install VS Code extension or pip install platformio for CLI usage.",
+    "best_for": "Professional embedded builds, libraries, CI for firmware",
+    "link": "https://platformio.org/"
+  }
+]
