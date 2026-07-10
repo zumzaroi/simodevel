@@ -1,12 +1,1987 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/madm_gantt_share/madm_gantt_share/mamici_goethe.html">
-  <link rel="canonical" href="/madm_gantt_share/madm_gantt_share/mamici_goethe.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MADM Top Place Gantt</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #d1d5db;
+      --accent: #0f766e;
+      --accent-soft: #99f6e4;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 10%, #eefdf7, transparent 40%),
+                  radial-gradient(circle at 80% 20%, #e8f5ff, transparent 35%),
+                  var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+    }
+
+    .wrap {
+      width: 100vw;
+      height: 100dvh;
+      padding: 10px;
+    }
+
+    .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 220px 220px auto;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #eef2f7;
+      background: #fcfdfd;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-field {
+      justify-content: end;
+    }
+
+    .toggle-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 2px;
+    }
+
+    .toggle-control input {
+      width: auto;
+      margin: 0;
+    }
+
+    .toggle-control span {
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 120ms ease;
+    }
+
+    input:focus, select:focus { border-color: var(--accent); }
+
+    button {
+      align-self: end;
+      height: 40px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      background: linear-gradient(120deg, #0f766e, #0ea5a0);
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(1.03); }
+
+    .ghost-btn {
+      align-self: auto;
+      background: #ffffff;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+    }
+
+    .ghost-btn:hover {
+      filter: none;
+      background: #f0fdfa;
+    }
+
+    .meta {
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid #eef2f7;
+      min-height: 40px;
+    }
+
+    .meta:empty {
+      display: none;
+      padding: 0;
+      min-height: 0;
+      border-bottom: 0;
+    }
+
+    .chart-wrap {
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 14px 14px 20px;
+      overflow: auto;
+    }
+
+    .chart-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+      transform-origin: top left;
+    }
+
+    .chart-stack svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    svg text {
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+      fill: var(--ink);
+    }
+
+    .error {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    @media (max-width: 860px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting... <a href="/madm_gantt_share/madm_gantt_share/mamici_goethe.html">Click here if not redirected.</a></p>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <h1>MADM Top Place Gantt</h1>
+        <div class="subtitle">x axis: madm_top_place (smaller left, larger right), y axis: specialization</div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <label for="hInput">h filter (partial list or all)</label>
+          <input id="hInput" value="Cosbuc" placeholder="examples: all or Cosbuc, Neculce">
+        </div>
+
+        <div class="field">
+          <label for="spInput">sp filter (partial, optional, comma-separated)</label>
+          <input id="spInput" placeholder="example: Mate, Stiintele naturii">
+        </div>
+
+        <div class="field">
+          <label for="rankModeInput">ranking mode (2025 reference)</label>
+          <select id="rankModeInput">
+            <option value="max" selected>max MADM</option>
+            <option value="min">min MADM</option>
+          </select>
+        </div>
+
+        <div class="field toggle-field">
+          <label for="showProvenanceInput">provenience schools</label>
+          <label class="toggle-control">
+            <input id="showProvenanceInput" type="checkbox">
+            <span>Show provenience schools</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label for="studentLookupInput">2026 student lookup</label>
+          <input id="studentLookupInput" placeholder="example: B12573796 or 21">
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:center; padding: 12px 20px; border-bottom: 1px solid #eef2f7; background: #f9fcfb;">
+        <label class="toggle-control"><input id="show2024Input" type="checkbox" checked><span>2024</span></label>
+        <label class="toggle-control"><input id="show2025Input" type="checkbox" checked><span>2025</span></label>
+        <label class="toggle-control"><input id="show2026Input" type="checkbox" checked><span>2026 (grade chart)</span></label>
+        <span style="margin-left: 10px; color: #64748b; font-size: 12px;">Zoom histograma:</span>
+        <button id="gradePanLeftBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">&#8592;</button>
+        <button id="gradePanRightBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">&#8594;</button>
+        <button id="gradeZoomOutBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">-</button>
+        <button id="gradeZoomInBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">+</button>
+        <button id="gradeZoomResetBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">Reset</button>
+      </div>
+
+      <div id="meta" class="meta">Loading data...</div>
+      <div class="chart-wrap">
+        <div class="chart-stack">
+          <svg id="gradeChart"></svg>
+          <svg id="chart"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./madm_gantt_share/madm_gantt_share/madm_year_data.js"></script>
+
+  <script>
+    const YEAR_CONFIG = {
+      "2024": { color: "#f59e0b" },
+      "2025": { color: "#0f766e" }
+    };
+    const GRADE_ONLY_YEAR_CONFIG = {
+      "2026": { color: "#8b5cf6" }
+    };
+    const H_META_JSON_PATH = "./madm_gantt_share/madm_gantt_share/data/h_custom_fields.json";
+    const map = {
+      "Ă": "a", "Â": "a", "ă": "a", "â": "a",
+      "Î": "i", "î": "i",
+      "Ș": "s", "Ş": "s", "ș": "s", "ş": "s",
+      "Ț": "t", "Ţ": "t", "ț": "t", "ţ": "t"
+    };
+
+    function norm(value) {
+      const s = String(value ?? "");
+      return s
+        .replace(/[ĂÂăâÎîȘŞșşȚŢțţ]/g, ch => map[ch] || ch)
+        .replace(/[„”"'«»]/g, "")
+        .toLowerCase();
+    }
+
+    function getYearColor(year) {
+      return (YEAR_CONFIG[String(year)] && YEAR_CONFIG[String(year)].color) || "#64748b";
+    }
+
+    function detectYearFromFileName(name) {
+      const match = String(name || "").match(/(2024|2025|2026)/);
+      return match ? match[1] : null;
+    }
+
+    function tagRowsWithYear(rows, year) {
+      const yearText = String(year);
+      return (rows || []).map(row => ({ ...row, __year: yearText }));
+    }
+
+    function combineYearRows(rowsByYear, enabledYears = null) {
+      const allRows = [];
+      for (const year of Object.keys(YEAR_CONFIG)) {
+        if (enabledYears && !enabledYears.has(year)) continue;
+        const rows = rowsByYear.get(year) || [];
+        allRows.push(...rows);
+      }
+      return allRows;
+    }
+
+    function combineGradeRows(rowsByYear, gradeOnlyRowsByYear, enabledGanttYears = null, enabledGradeOnlyYears = null) {
+      const allRows = [];
+      for (const year of Object.keys(YEAR_CONFIG)) {
+        if (enabledGanttYears && !enabledGanttYears.has(year)) continue;
+        const rows = rowsByYear.get(year) || [];
+        allRows.push(...rows);
+      }
+      for (const year of Object.keys(GRADE_ONLY_YEAR_CONFIG)) {
+        if (enabledGradeOnlyYears && !enabledGradeOnlyYears.has(year)) continue;
+        const rows = gradeOnlyRowsByYear.get(year) || [];
+        allRows.push(...rows);
+      }
+      return allRows;
+    }
+
+    function getBundledYearRows(year) {
+      const bundled = window.__MADM_YEAR_DATA__ || {};
+      const rows = bundled[String(year)];
+      return Array.isArray(rows) ? rows : [];
+    }
+
+    function parseHMetaData(raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+      if (parsed && Array.isArray(parsed.h_data)) return parsed.h_data;
+      return [];
+    }
+
+    function normalizeCollegeName(value) {
+      return String(value ?? "")
+        .replace(/<br\s*\/?\s*>/gi, "\n")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .split("\n")[0]
+        .split("/")[0]
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function buildHMetaMap(rows) {
+      const mapByH = new Map();
+      for (const row of rows || []) {
+        if (!row || typeof row !== "object") continue;
+        const hName = normalizeCollegeName(row.h);
+        if (!hName) continue;
+        const details = {};
+        for (const [k, v] of Object.entries(row)) {
+          if (k === "h") continue;
+          details[k] = v;
+        }
+        mapByH.set(norm(hName), details);
+      }
+      return mapByH;
+    }
+
+    function parseCommuteMinutes(value) {
+      const text = String(value ?? "").trim().toLowerCase();
+      if (!text) return null;
+
+      const hhmm = text.match(/^(\d{1,2}):(\d{1,2})$/);
+      if (hhmm) {
+        const h = Number(hhmm[1]);
+        const m = Number(hhmm[2]);
+        if (Number.isFinite(h) && Number.isFinite(m)) return h * 60 + m;
+      }
+
+      let minutes = 0;
+      let found = false;
+
+      const hMatch = text.match(/(\d+(?:[.,]\d+)?)\s*h/);
+      if (hMatch) {
+        const hVal = Number(hMatch[1].replace(",", "."));
+        if (Number.isFinite(hVal)) {
+          minutes += hVal * 60;
+          found = true;
+        }
+      }
+
+      const mMatch = text.match(/(\d+(?:[.,]\d+)?)\s*m/);
+      if (mMatch) {
+        const mVal = Number(mMatch[1].replace(",", "."));
+        if (Number.isFinite(mVal)) {
+          minutes += mVal;
+          found = true;
+        }
+      }
+
+      if (!found) {
+        const n = Number(text.replace(",", "."));
+        if (Number.isFinite(n)) return n;
+        return null;
+      }
+
+      return Math.round(minutes);
+    }
+
+    function isCommuteTimeKey(key) {
+      return norm(String(key || "")).replace(/[^a-z0-9]/g, "") === "commutetime";
+    }
+
+    function parseSpecialty(spValue) {
+      const raw = String(spValue || "").trim();
+      if (!raw) return { code: "", name: "UNKNOWN" };
+      const m = raw.match(/^\(([^)]+)\)\s*(.*)$/);
+      if (!m) return { code: "", name: raw };
+      return {
+        code: String(m[1] || "").trim(),
+        name: String(m[2] || raw).trim() || raw
+      };
+    }
+
+    function getThirdMajorSubject(row) {
+      const subject = String((row && row.lm) || "").trim();
+      const grade = Number(row && row.nlm);
+      if (!subject || subject === "-" || !Number.isFinite(grade)) return "";
+      return subject;
+    }
+
+    function getThirdMajorGrade(row) {
+      const grade = Number(row && row.nlm);
+      return Number.isFinite(grade) ? grade : null;
+    }
+
+    function formatGradeSummary(grades) {
+      const values = [...new Set((grades || []).filter(v => Number.isFinite(v)).map(v => Number(v.toFixed(2))))].sort((a, b) => a - b);
+      if (!values.length) return "-";
+      if (values.length === 1) return values[0].toFixed(2);
+      return `${values[values.length - 1].toFixed(2)}-${values[0].toFixed(2)}`;
+    }
+
+    function normalizeStudentLookup(value) {
+      return norm(value).replace(/\s+/g, "");
+    }
+
+    function buildLookupMarker(query, rows2026, rows2025) {
+      const raw = String(query ?? "").trim();
+      if (!raw) return null;
+
+      const rankQuery = /^\d+$/.test(raw) ? Number(raw) : null;
+      const codeQuery = normalizeStudentLookup(raw);
+      let student = null;
+
+      if (Number.isFinite(rankQuery)) {
+        student = (rows2026 || []).find(r => Number(r.madm_top_place) === rankQuery) || null;
+      }
+      if (!student && codeQuery) {
+        student = (rows2026 || []).find(r => normalizeStudentLookup(r.n) === codeQuery) || null;
+      }
+
+      if (!student) {
+        return {
+          query: raw,
+          error: `2026 student not found for ${raw}.`
+        };
+      }
+
+      const grade2026 = Number(student.madm);
+      const rank2026 = Number(student.madm_top_place);
+      const ranked2025 = (rows2025 || [])
+        .map(r => Number(r.madm_top_place))
+        .filter(v => Number.isFinite(v))
+        .sort((a, b) => a - b);
+      const ranked2026 = (rows2026 || [])
+        .map(r => Number(r.madm_top_place))
+        .filter(v => Number.isFinite(v))
+        .sort((a, b) => a - b);
+
+      const marker = {
+        query: raw,
+        studentCode: String(student.n || "").trim(),
+        school: String(student.s || "").trim(),
+        grade2026,
+        rank2026,
+        relativeFraction: null,
+        row2026: student,
+        equivalent2025: null,
+        error: null
+      };
+
+      if (!Number.isFinite(rank2026) || !ranked2025.length || !ranked2026.length) {
+        return marker;
+      }
+
+      const maxRank2026 = ranked2026[ranked2026.length - 1];
+      const maxRank2025 = ranked2025[ranked2025.length - 1];
+      const rankFraction = maxRank2026 > 1 ? (rank2026 - 1) / (maxRank2026 - 1) : 0;
+      marker.relativeFraction = Math.max(0, Math.min(1, rankFraction));
+      const mappedPlace = 1 + (marker.relativeFraction * Math.max(0, maxRank2025 - 1));
+      const placeMin = Math.max(1, Math.floor(mappedPlace));
+      const placeMax = Math.min(maxRank2025, Math.ceil(mappedPlace));
+      marker.equivalent2025 = {
+        exactGradeMatch: false,
+        relativeRankMatch: true,
+        grade: grade2026,
+        placeMin,
+        placeMax,
+        placeCenter: mappedPlace
+      };
+      return marker;
+    }
+
+    function formatLookupMarkerSummary(marker) {
+      if (!marker) return "";
+      if (marker.error) return marker.error;
+
+      const studentCode = marker.studentCode || "UNKNOWN";
+      const rankText = Number.isFinite(marker.rank2026) ? String(marker.rank2026) : "-";
+      const gradeText = Number.isFinite(marker.grade2026) ? marker.grade2026.toFixed(2) : "-";
+      if (!marker.equivalent2025 || !Number.isFinite(marker.equivalent2025.placeCenter)) {
+        return `2026 student ${studentCode}: rank ${rankText}, MADM ${gradeText}. No 2025 equivalent rank could be derived.`;
+      }
+
+      const eq = marker.equivalent2025;
+      const placeText = eq.placeMin !== eq.placeMax
+        ? `${Math.round(eq.placeMin)}-${Math.round(eq.placeMax)}`
+        : `${Math.round(eq.placeCenter)}`;
+      const matchText = eq.relativeRankMatch ? "mapped from relative rank position" : (eq.exactGradeMatch ? "same MADM in 2025" : "estimated 2025 position from MADM");
+      return `2026 student ${studentCode}: rank ${rankText}, MADM ${gradeText}. 2025 equivalent rank: ${placeText} (${matchText}).`;
+    }
+
+    function setResponsiveSvgSize(target, innerW, innerH) {
+      const host = target.closest(".chart-stack") || target.parentElement;
+      const availableW = host ? host.clientWidth - 2 : innerW;
+      const renderW = Math.max(320, Math.min(innerW, availableW > 0 ? availableW : innerW));
+      const renderH = Math.max(80, Math.round((renderW * innerH) / Math.max(1, innerW)));
+      target.setAttribute("width", String(renderW));
+      target.setAttribute("height", String(renderH));
+      target.setAttribute("viewBox", `0 0 ${innerW} ${innerH}`);
+    }
+
+    function renderGradeChart(target, filteredRows, titleText, options = {}) {
+      target.innerHTML = "";
+
+      const rows = filteredRows || [];
+      if (!rows.length) {
+        setResponsiveSvgSize(target, 980, 80);
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", "20");
+        text.setAttribute("y", "42");
+        text.setAttribute("fill", "#b91c1c");
+        text.setAttribute("font-size", "14");
+        text.textContent = "No grade/position rows to display.";
+        target.appendChild(text);
+        return;
+      }
+
+      const yearToGrades = new Map();
+      for (const row of rows) {
+        const grade = Number(row.madm);
+        if (!Number.isFinite(grade)) continue;
+        const year = String(row.__year || "unknown");
+        if (!yearToGrades.has(year)) yearToGrades.set(year, []);
+        yearToGrades.get(year).push(Number(grade.toFixed(2)));
+      }
+
+      if (!yearToGrades.size) {
+        setResponsiveSvgSize(target, 980, 80);
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", "20");
+        text.setAttribute("y", "42");
+        text.setAttribute("fill", "#b91c1c");
+        text.setAttribute("font-size", "14");
+        text.textContent = "No numeric grade fields available for the selected filters.";
+        target.appendChild(text);
+        return;
+      }
+
+      const years = [...yearToGrades.keys()].sort((a, b) => {
+        const na = Number(a);
+        const nb = Number(b);
+        if (Number.isFinite(na) && Number.isFinite(nb)) return nb - na;
+        return String(b).localeCompare(String(a));
+      });
+
+      const allGrades = [...yearToGrades.values()].flat();
+      const xMinRaw = Math.min(...allGrades);
+      const xMaxRaw = Math.max(...allGrades);
+      const xPad = Math.max(0.05, (xMaxRaw - xMinRaw) * 0.08);
+      const baseXMin = Math.max(0, xMinRaw - xPad);
+      const baseXMax = Math.min(10, xMaxRaw + xPad);
+      const baseXSpan = Math.max(0.05, baseXMax - baseXMin);
+      const zoom = Math.min(40, Math.max(1, Number(options.zoom) || 1));
+      const zoomSpan = Math.max(0.05, baseXSpan / zoom);
+      const defaultCenter = (baseXMin + baseXMax) / 2;
+      const centerMin = baseXMin + (zoomSpan / 2);
+      const centerMax = baseXMax - (zoomSpan / 2);
+      let center = Number(options.center);
+      if (!Number.isFinite(center)) center = defaultCenter;
+      center = Math.max(centerMin, Math.min(centerMax, center));
+      let xMin = center - (zoomSpan / 2);
+      let xMax = center + (zoomSpan / 2);
+      const xSpan = Math.max(0.0001, xMax - xMin);
+
+      const left = 80;
+      const right = 190;
+      const top = 64;
+      const bottom = 44;
+      const plotW = 1320;
+      const plotH = 270;
+      const width = left + plotW + right;
+      const height = top + plotH + bottom;
+
+      setResponsiveSvgSize(target, width, height);
+
+      const NS = "http://www.w3.org/2000/svg";
+      const mk = (tag, attrs = {}) => {
+        const el = document.createElementNS(NS, tag);
+        for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+        return el;
+      };
+
+      const xToPx = x => left + ((x - xMin) * plotW) / xSpan;
+
+      target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
+
+      const ttl = mk("text", { x: 16, y: 32, "font-size": 15, "font-weight": 700, fill: "#111827" });
+      ttl.textContent = `${titleText} | x axis: note, y axis: numar de elevi`;
+      target.appendChild(ttl);
+
+      const yearColors = {
+        "2025": "#0f766e",
+        "2024": "#d97706",
+        "2026": "#8b5cf6"
+      };
+      const highlight2026 = years.includes("2026");
+      const barOpacityForYear = year => {
+        if (!highlight2026) return 0.82;
+        return String(year) === "2026" ? 0.95 : 0.38;
+      };
+      const textOpacityForYear = year => {
+        if (!highlight2026) return 1;
+        return String(year) === "2026" ? 1 : 0.72;
+      };
+
+      const yearToBins = new Map();
+      const yearTotals = new Map();
+      let globalMaxCount = 1;
+      let minGradeGap = 0.1;
+
+      for (const year of years) {
+        const grades = yearToGrades.get(year) || [];
+        yearTotals.set(year, grades.length);
+
+        const counts = new Map();
+        for (const grade of grades) {
+          const key = grade.toFixed(2);
+          counts.set(key, (counts.get(key) || 0) + 1);
+        }
+
+        const bins = [...counts.entries()]
+          .map(([grade, count]) => ({ grade: Number(grade), count }))
+          .sort((a, b) => a.grade - b.grade);
+        const visibleBins = bins.filter(b => b.grade >= xMin && b.grade <= xMax);
+        yearToBins.set(year, visibleBins);
+
+        if (visibleBins.length > 1) {
+          const gap = Math.min(...visibleBins.slice(1).map((b, idx) => b.grade - visibleBins[idx].grade).filter(g => g > 0));
+          if (Number.isFinite(gap) && gap > 0) minGradeGap = Math.min(minGradeGap, gap);
+        }
+
+        globalMaxCount = Math.max(globalMaxCount, ...visibleBins.map(b => b.count));
+      }
+
+      const plotTop = top;
+      const plotBottom = top + plotH;
+      const yMin = 0;
+      const yMax = globalMaxCount;
+      const ySpan = Math.max(1, yMax - yMin);
+      const yToPx = y => plotTop + ((yMax - y) * plotH) / ySpan;
+
+      const yTicks = 6;
+      for (let i = 0; i <= yTicks; i++) {
+        const v = yMin + (ySpan * i) / yTicks;
+        const y = yToPx(v);
+        target.appendChild(mk("line", {
+          x1: left,
+          y1: y,
+          x2: left + plotW,
+          y2: y,
+          stroke: "#e5e7eb",
+          "stroke-width": 1
+        }));
+        const t = mk("text", { x: left - 10, y: y + 4, "font-size": 10, "text-anchor": "end", fill: "#6b7280" });
+        t.textContent = String(Math.round(v));
+        target.appendChild(t);
+      }
+
+      const niceStep = raw => {
+        if (!Number.isFinite(raw) || raw <= 0) return 0.1;
+        const exp = Math.floor(Math.log10(raw));
+        const base = raw / (10 ** exp);
+        let niceBase = 1;
+        if (base <= 1) niceBase = 1;
+        else if (base <= 2) niceBase = 2;
+        else if (base <= 2.5) niceBase = 2.5;
+        else if (base <= 5) niceBase = 5;
+        else niceBase = 10;
+        return niceBase * (10 ** exp);
+      };
+      const minPxPerTick = 56;
+      const desiredTickCount = Math.max(2, Math.floor(plotW / minPxPerTick));
+      let xStep = niceStep(xSpan / desiredTickCount);
+      let pxPerStep = (plotW * xStep) / Math.max(0.0001, xSpan);
+      // If there is lots of room, add intermediate grades (half-step) without crowding.
+      while (xStep > 0.01 && pxPerStep >= 112) {
+        xStep /= 2;
+        pxPerStep = (plotW * xStep) / Math.max(0.0001, xSpan);
+      }
+      // If too dense, coarsen until labels are readable.
+      while (pxPerStep < minPxPerTick) {
+        xStep *= 2;
+        pxPerStep = (plotW * xStep) / Math.max(0.0001, xSpan);
+      }
+      const xTickStart = Math.ceil(xMin / xStep) * xStep;
+      const xDecimals = xStep >= 1 ? 0 : Math.min(4, Math.ceil(-Math.log10(xStep)));
+
+      let xTickCount = 0;
+      for (let v = xTickStart; v <= xMax + 1e-9 && xTickCount < 200; v += xStep) {
+        const vv = Number(v.toFixed(6));
+        const x = xToPx(vv);
+        target.appendChild(mk("line", {
+          x1: x,
+          y1: plotTop,
+          x2: x,
+          y2: plotBottom,
+          stroke: "#eef2f7",
+          "stroke-width": 1
+        }));
+        const t = mk("text", {
+          x,
+          y: plotBottom + 16,
+          "font-size": 10,
+          "text-anchor": "middle",
+          fill: "#6b7280"
+        });
+        t.textContent = vv.toFixed(xDecimals);
+        target.appendChild(t);
+        xTickCount += 1;
+      }
+
+      target.appendChild(mk("rect", {
+        x: left,
+        y: plotTop,
+        width: plotW,
+        height: plotH,
+        fill: "none",
+        stroke: "#cbd5e1",
+        "stroke-width": 1
+      }));
+
+      const clusterW = Math.max(3, Math.min(20, (plotW * minGradeGap / xSpan) * 0.82));
+      const yearCount = Math.max(1, years.length);
+      const desiredBarGap = 0.8;
+      const maxBarGap = Math.max(0, (clusterW - (yearCount * 1.2)) / Math.max(1, yearCount - 1));
+      const barGap = Math.min(desiredBarGap, maxBarGap);
+      const singleBarW = Math.max(1.2, (clusterW - (barGap * Math.max(0, yearCount - 1))) / yearCount);
+
+      for (let yearIndex = 0; yearIndex < years.length; yearIndex++) {
+        const year = years[yearIndex];
+        const bins = yearToBins.get(year) || [];
+        const color = yearColors[year] || "#2563eb";
+
+        for (const b of bins) {
+          const clusterLeft = xToPx(b.grade) - clusterW / 2;
+          const x = clusterLeft + (yearIndex * (singleBarW + barGap));
+          const y = yToPx(b.count);
+          const h = Math.max(1, plotBottom - y);
+          target.appendChild(mk("rect", {
+            x,
+            y,
+            width: singleBarW,
+            height: h,
+            fill: color,
+            opacity: barOpacityForYear(year),
+            rx: 1,
+            ry: 1
+          }));
+        }
+
+        const grade10 = bins.find(b => b.grade === 10);
+        if (grade10) {
+          const tag = mk("text", {
+            x: left + plotW + 12,
+            y: plotTop + 16 + (yearIndex * 13),
+            "font-size": 10,
+            "text-anchor": "start",
+            fill: color,
+            "font-weight": 700,
+            opacity: textOpacityForYear(year)
+          });
+          tag.textContent = `${year} @10: ${grade10.count}`;
+          target.appendChild(tag);
+        }
+      }
+
+      let legendX = left;
+      const legendY = plotBottom + 32;
+      for (const year of years) {
+        const color = yearColors[year] || "#2563eb";
+        target.appendChild(mk("rect", {
+          x: legendX,
+          y: legendY - 9,
+          width: 12,
+          height: 12,
+          fill: color,
+          opacity: barOpacityForYear(year),
+          rx: 1,
+          ry: 1
+        }));
+        const label = mk("text", { x: legendX + 16, y: legendY + 1, "font-size": 10, fill: "#374151", opacity: textOpacityForYear(year) });
+        label.textContent = `${year} total: ${yearTotals.get(year) || 0}`;
+        target.appendChild(label);
+        legendX += 130;
+      }
+
+      const lookupMarker = options.lookupMarker || null;
+      if (lookupMarker && !lookupMarker.error && Number.isFinite(lookupMarker.grade2026)) {
+        const markerGrade = lookupMarker.grade2026;
+        if (markerGrade >= xMin && markerGrade <= xMax) {
+          const markerX = xToPx(markerGrade);
+          target.appendChild(mk("line", {
+            x1: markerX,
+            y1: plotTop,
+            x2: markerX,
+            y2: plotBottom,
+            stroke: "#dc2626",
+            "stroke-width": 2,
+            "stroke-dasharray": "6,4"
+          }));
+
+          const markerLabel = mk("text", {
+            x: markerX + 6,
+            y: plotTop + 14,
+            "font-size": 10,
+            "font-weight": 700,
+            fill: "#dc2626",
+            "text-anchor": markerX > left + (plotW * 0.7) ? "end" : "start"
+          });
+          markerLabel.textContent = `${lookupMarker.studentCode || "2026"} | loc ${lookupMarker.rank2026} | ${markerGrade.toFixed(2)}`;
+          if (markerX > left + (plotW * 0.7)) markerLabel.setAttribute("x", String(markerX - 6));
+          target.appendChild(markerLabel);
+        }
+      }
+
+      return {
+        baseXMin,
+        baseXMax,
+        xMin,
+        xMax,
+        xSpan,
+        center,
+        plotW
+      };
+    }
+
+    function buildIntervals(rows, hFilter, spFilter, rankMode = "max") {
+      const rawH = String(hFilter ?? "").trim();
+      const hTerms = rawH
+        .split(",")
+        .map(t => norm(t).trim())
+        .filter(Boolean);
+      const hAll = hTerms.length === 0 || hTerms.includes("all");
+      const spTerms = String(spFilter ?? "")
+        .split(",")
+        .map(t => norm(t).trim())
+        .filter(Boolean);
+
+      const filtered = rows.filter(r => {
+        const h = norm(r.h || "");
+        const sp = norm(r.sp || "");
+        if (!hAll && !hTerms.some(term => h.includes(term))) return false;
+        if (spTerms.length && !spTerms.some(term => sp.includes(term))) return false;
+        return true;
+      });
+
+      const ranked = filtered.filter(r => Number.isFinite(Number(r.madm_top_place)));
+      if (!ranked.length) {
+        return {
+          filtered,
+          groupedRows: [],
+          hFilterText: hAll ? "ALL" : rawH
+        };
+      }
+
+      const groupedByH = new Map();
+      for (const r of ranked) {
+        const hName = (r.h || "UNKNOWN").trim() || "UNKNOWN";
+        const hKey = norm(hName) || "unknown";
+        const sp = (r.sp || "UNKNOWN").trim() || "UNKNOWN";
+        const parsedSp = parseSpecialty(sp);
+        const spName = parsedSp.name;
+        const spNameKey = norm(spName) || "unknown";
+        const spCode = parsedSp.code;
+        const spProfile = (r.sp_profile || "UNKNOWN").trim() || "UNKNOWN";
+        const spProfileKey = norm(spProfile) || "unknown";
+        const sourceSchool = (r.s || "UNKNOWN").trim() || "UNKNOWN";
+        const year = String(r.__year || "2025");
+        const spKey = `${spNameKey}|||${spProfileKey}`;
+        // Group variants by name+profile only — codes can differ across years for the same specialization.
+        const variantKey = spKey;
+        const tp = Number(r.madm_top_place);
+        const madm = Number(r.madm);
+        const thirdMajorSubject = getThirdMajorSubject(r);
+        const thirdMajorGrade = getThirdMajorGrade(r);
+        if (!groupedByH.has(hKey)) {
+          groupedByH.set(hKey, new Map());
+        }
+        const spMap = groupedByH.get(hKey);
+        if (!spMap.has(spKey)) {
+          spMap.set(spKey, {
+            hName,
+            spName,
+            spProfile,
+            variants: new Map()
+          });
+        }
+
+        const g = spMap.get(spKey);
+        if (!g.variants.has(variantKey)) {
+          g.variants.set(variantKey, {
+            codeKey: variantKey,
+            spCode,
+            spCodes: new Set(spCode ? [spCode] : []),
+            spName,
+            spProfile,
+            thirdMajorCount: 0,
+            thirdMajorSubjects: new Set(),
+            thirdMajorGrades: [],
+            years: new Map()
+          });
+        } else if (spCode) {
+          g.variants.get(variantKey).spCodes.add(spCode);
+        }
+
+        const variant = g.variants.get(variantKey);
+        if (thirdMajorSubject) {
+          variant.thirdMajorCount += 1;
+          variant.thirdMajorSubjects.add(thirdMajorSubject);
+          if (thirdMajorGrade != null) variant.thirdMajorGrades.push(thirdMajorGrade);
+        }
+        if (!variant.years.has(year)) {
+          const gradeCounts = new Map();
+          if (Number.isFinite(madm)) {
+            const gKey = madm.toFixed(2);
+            gradeCounts.set(gKey, 1);
+          }
+
+          variant.years.set(year, {
+            year,
+            hName,
+            spName,
+            spCode,
+            spProfile,
+            min: tp,
+            max: tp,
+            madmMin: Number.isFinite(madm) ? madm : null,
+            madmMax: Number.isFinite(madm) ? madm : null,
+            count: 1,
+            thirdMajorCount: thirdMajorSubject ? 1 : 0,
+            thirdMajorSubjects: new Set(thirdMajorSubject ? [thirdMajorSubject] : []),
+            thirdMajorGrades: thirdMajorGrade == null ? [] : [thirdMajorGrade],
+            provenanceCounts: new Map([[sourceSchool, 1]]),
+            gradeCounts
+          });
+          continue;
+        }
+
+        const yearEntry = variant.years.get(year);
+        yearEntry.min = Math.min(yearEntry.min, tp);
+        yearEntry.max = Math.max(yearEntry.max, tp);
+        if (Number.isFinite(madm)) {
+          yearEntry.madmMin = yearEntry.madmMin == null ? madm : Math.min(yearEntry.madmMin, madm);
+          yearEntry.madmMax = yearEntry.madmMax == null ? madm : Math.max(yearEntry.madmMax, madm);
+          const gKey = madm.toFixed(2);
+          yearEntry.gradeCounts.set(gKey, (yearEntry.gradeCounts.get(gKey) || 0) + 1);
+        }
+        if (thirdMajorSubject) {
+          yearEntry.thirdMajorCount += 1;
+          yearEntry.thirdMajorSubjects.add(thirdMajorSubject);
+          if (thirdMajorGrade != null) yearEntry.thirdMajorGrades.push(thirdMajorGrade);
+        }
+        yearEntry.provenanceCounts.set(sourceSchool, (yearEntry.provenanceCounts.get(sourceSchool) || 0) + 1);
+        yearEntry.count += 1;
+      }
+
+      const rankValueOf = entry => {
+        const v = rankMode === "min" ? Number(entry.madmMin) : Number(entry.madmMax);
+        if (Number.isFinite(v)) return v;
+        return Number.NEGATIVE_INFINITY;
+      };
+
+      const compareYearEntries = (a, b) => {
+        const aRankValue = a ? rankValueOf(a) : Number.NEGATIVE_INFINITY;
+        const bRankValue = b ? rankValueOf(b) : Number.NEGATIVE_INFINITY;
+        if (aRankValue !== bRankValue) return bRankValue - aRankValue;
+
+        const aPlace = a ? a.min : Number.POSITIVE_INFINITY;
+        const bPlace = b ? b.min : Number.POSITIVE_INFINITY;
+        if (aPlace !== bPlace) return aPlace - bPlace;
+        return 0;
+      };
+
+      const groupedRows = [];
+      const hGroups = [...groupedByH.entries()]
+        .map(([, spMap]) => {
+          const specialtyGroups = [...spMap.values()].sort((a, b) => {
+            const aBest2025 = [...a.variants.values()].map(v => v.years.get("2025")).sort(compareYearEntries)[0];
+            const bBest2025 = [...b.variants.values()].map(v => v.years.get("2025")).sort(compareYearEntries)[0];
+            const by2025 = compareYearEntries(aBest2025, bBest2025);
+            if (by2025 !== 0) return by2025;
+
+            const aBest2024 = [...a.variants.values()].map(v => v.years.get("2024")).sort(compareYearEntries)[0];
+            const bBest2024 = [...b.variants.values()].map(v => v.years.get("2024")).sort(compareYearEntries)[0];
+            const by2024 = compareYearEntries(aBest2024, bBest2024);
+            if (by2024 !== 0) return by2024;
+
+            const aKey = `${norm(a.spName)}|${norm(a.spProfile)}`;
+            const bKey = `${norm(b.spName)}|${norm(b.spProfile)}`;
+            return aKey.localeCompare(bKey);
+          });
+
+          const entries = [];
+          for (const specialty of specialtyGroups) {
+            const variants = [...specialty.variants.values()].sort((a, b) => {
+              const by2025 = compareYearEntries(a.years.get("2025"), b.years.get("2025"));
+              if (by2025 !== 0) return by2025;
+
+              const by2024 = compareYearEntries(a.years.get("2024"), b.years.get("2024"));
+              if (by2024 !== 0) return by2024;
+
+              const aCode = String(a.spCode || "");
+              const bCode = String(b.spCode || "");
+              return aCode.localeCompare(bCode);
+            });
+
+            for (const variant of variants) {
+              const histByYear = {};
+              const provenanceByYear = {};
+              for (const yk of ["2025", "2024"]) {
+                const e = variant.years.get(yk);
+                if (!e || !e.gradeCounts) continue;
+                histByYear[yk] = [...e.gradeCounts.entries()].map(([grade, count]) => ({
+                  grade: Number(grade),
+                  count: Number(count) || 0
+                })).filter(v => Number.isFinite(v.grade) && v.count > 0);
+                provenanceByYear[yk] = [...(e.provenanceCounts || new Map()).entries()]
+                  .map(([school, count]) => ({ school: String(school || "").trim() || "UNKNOWN", count: Number(count) || 0 }))
+                  .filter(v => v.count > 0)
+                  .sort((a, b) => (b.count - a.count) || a.school.localeCompare(b.school));
+              }
+
+              const orderedYears = ["2025", "2024"].filter(year => variant.years.has(year));
+              const allCodes = variant.spCodes ? [...variant.spCodes].sort().join("/") : (variant.spCode || "");
+              const thirdMajorSubjects = variant.thirdMajorSubjects ? [...variant.thirdMajorSubjects].sort() : [];
+              const thirdMajorGrades = variant.thirdMajorGrades ? [...variant.thirdMajorGrades] : [];
+              orderedYears.forEach((year, index) => {
+                const yearEntry = variant.years.get(year);
+                entries.push({
+                  ...yearEntry,
+                  histByYear,
+                  provenanceByYear,
+                  allCodes,
+                  thirdMajorCountTotal: variant.thirdMajorCount || 0,
+                  thirdMajorSubjects,
+                  thirdMajorGrades,
+                  showSpecialtyLabel: index === 0
+                });
+              });
+            }
+          }
+
+          const rankedEntries2025 = specialtyGroups
+            .map(specialty => [...specialty.variants.values()].map(v => v.years.get("2025")).sort(compareYearEntries)[0])
+            .filter(Boolean);
+
+          const firstSpecialty = specialtyGroups[0];
+          const displayHName = firstSpecialty && firstSpecialty.hName ? firstSpecialty.hName : "UNKNOWN";
+
+          return {
+            hName: displayHName,
+            entries,
+            rankedEntries2025,
+            rankedEntries2024: specialtyGroups
+              .map(specialty => [...specialty.variants.values()].map(v => v.years.get("2024")).sort(compareYearEntries)[0])
+              .filter(Boolean)
+          };
+        })
+        .sort((a, b) => {
+          const maxDepth = Math.max(a.rankedEntries2025.length, b.rankedEntries2025.length);
+          for (let i = 0; i < maxDepth; i++) {
+            const by2025 = compareYearEntries(a.rankedEntries2025[i], b.rankedEntries2025[i]);
+            if (by2025 !== 0) return by2025;
+          }
+
+          const fallbackDepth = Math.max(a.rankedEntries2024.length, b.rankedEntries2024.length);
+          for (let i = 0; i < fallbackDepth; i++) {
+            const by2024 = compareYearEntries(a.rankedEntries2024[i], b.rankedEntries2024[i]);
+            if (by2024 !== 0) return by2024;
+          }
+
+          return norm(a.hName).localeCompare(norm(b.hName));
+        });
+
+      for (let index = 0; index < hGroups.length; index++) {
+        const group = hGroups[index];
+        groupedRows.push({ type: "h-header", hName: group.hName, hRank: index + 1 });
+        for (const entry of group.entries) {
+          groupedRows.push({ type: "sp-row", ...entry });
+        }
+      }
+
+      const uniqueSpGroups = new Set(filtered.map(r => `${(r.h || "").trim()}|||${(r.sp || "").trim()}|||${(r.sp_profile || "").trim()}`)).size;
+
+      return {
+        filtered,
+        groupedRows,
+        hFilterText: hAll ? "ALL" : rawH,
+        uniqueSpGroups,
+        rankMode
+      };
+    }
+
+    function renderChart(target, groupedRows, titleText, hMetaByH = new Map(), options = {}) {
+      target.innerHTML = "";
+
+      const showProvenance = !!options.showProvenance;
+
+      if (!groupedRows.length) {
+        setResponsiveSvgSize(target, 800, 80);
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", "20");
+        text.setAttribute("y", "42");
+        text.setAttribute("fill", "#b91c1c");
+        text.setAttribute("font-size", "14");
+        text.textContent = "No intervals to display.";
+        target.appendChild(text);
+        return;
+      }
+
+      const left = 500;
+      const right = 70;
+      const histGap = 22;
+      const histW = 280;
+      const noteGap = 10;
+      const noteW = 120;
+      const provGap = 10;
+      const provColGap = 10;
+      const provColW = 230;
+      const top = 80;
+      const bottom = 42;
+      const baseRowH = showProvenance ? 40 : 34;
+      const spGap = showProvenance ? 12 : 8;
+      const headerH = 42;
+      const barH = 14;
+      const axisW = 860;
+
+      const dataRows = groupedRows.filter(r => r.type === "sp-row");
+      const selectedYears = showProvenance
+        ? [...new Set(dataRows.map(r => String(r.year || "")).filter(Boolean))].sort((a, b) => Number(b) - Number(a))
+        : [];
+      const xMin = Math.min(...dataRows.map(v => v.min));
+      const xMax = Math.max(...dataRows.map(v => v.max));
+      const span = Math.max(1, xMax - xMin);
+
+      const provTotalW = selectedYears.length ? (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0;
+      const width = left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + provTotalW : 0) + right;
+      const groupLayout = new Map();
+
+      const groupKeyOf = item => `${item.hName}|||${item.spName}|||${item.spProfile}`;
+
+      for (let i = 0; i < groupedRows.length; i++) {
+        const item = groupedRows[i];
+        if (item.type !== "sp-row") continue;
+
+        const prev = groupedRows[i - 1];
+        const groupKey = groupKeyOf(item);
+        if (prev && prev.type === "sp-row" && groupKeyOf(prev) === groupKey) continue;
+
+        let spanRows = 1;
+        for (let j = i + 1; j < groupedRows.length; j++) {
+          const next = groupedRows[j];
+          if (!next || next.type !== "sp-row" || groupKeyOf(next) !== groupKey) break;
+          spanRows += 1;
+        }
+
+        let rowH = baseRowH;
+        if (showProvenance) {
+          const maxProvEntries = selectedYears.reduce((maxCount, year) => {
+            const entries = (item.provenanceByYear && item.provenanceByYear[year]) ? item.provenanceByYear[year].length : 0;
+            return Math.max(maxCount, entries);
+          }, 0);
+          const requiredBoxHeight = Math.max(spanRows * baseRowH, 28 + (maxProvEntries * 8));
+          rowH = Math.max(baseRowH, Math.ceil(requiredBoxHeight / spanRows));
+        }
+
+        groupLayout.set(groupKey, { rowH, spanRows });
+      }
+
+      let rowsHeight = 0;
+      for (let i = 0; i < groupedRows.length; i++) {
+        const r = groupedRows[i];
+        if (r.type === "h-header") {
+          rowsHeight += headerH;
+          continue;
+        }
+
+        const groupLayoutEntry = groupLayout.get(groupKeyOf(r));
+        const rowH = groupLayoutEntry ? groupLayoutEntry.rowH : baseRowH;
+        rowsHeight += rowH;
+        const next = groupedRows[i + 1];
+        const groupEnds = !next || next.type !== "sp-row" || next.hName !== r.hName || next.spName !== r.spName || next.spProfile !== r.spProfile;
+        if (groupEnds) rowsHeight += spGap;
+      }
+      const height = top + rowsHeight + bottom;
+
+      setResponsiveSvgSize(target, width, height);
+
+      const NS = "http://www.w3.org/2000/svg";
+      const mk = (tag, attrs = {}) => {
+        const el = document.createElementNS(NS, tag);
+        for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+        return el;
+      };
+
+      target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
+
+      const ttl = mk("text", { x: 16, y: 26, "font-size": 15, "font-weight": 700 });
+      ttl.textContent = titleText;
+      target.appendChild(ttl);
+
+      let legendX = width - 180;
+      for (const year of ["2024", "2025"]) {
+        target.appendChild(mk("rect", {
+          x: legendX,
+          y: 14,
+          width: 12,
+          height: 12,
+          fill: getYearColor(year),
+          rx: 2,
+          ry: 2
+        }));
+        const legendLabel = mk("text", { x: legendX + 18, y: 24, "font-size": 11, fill: "#475569" });
+        legendLabel.textContent = year;
+        target.appendChild(legendLabel);
+        legendX += 66;
+      }
+
+      const axisY = top - 24;
+      target.appendChild(mk("line", { x1: left, y1: axisY, x2: left + axisW, y2: axisY, stroke: "#9ca3af", "stroke-width": 1 }));
+
+
+      const ticks = 6;
+      for (let i = 0; i <= ticks; i++) {
+        const value = Math.round(xMin + (span * i) / ticks);
+        const x = left + ((value - xMin) * axisW) / span;
+
+        // Vertical grid line from axis to bottom
+        target.appendChild(mk("line", {
+          x1: x,
+          y1: axisY,
+          x2: x,
+          y2: top + rowsHeight,
+          stroke: "#d1d5db",
+          "stroke-width": 1,
+          "stroke-dasharray": "3,3"
+        }));
+
+        target.appendChild(mk("line", { x1: x, y1: axisY, x2: x, y2: axisY + 6, stroke: "#9ca3af", "stroke-width": 1 }));
+        const t = mk("text", { x, y: axisY - 8, "font-size": 11, "text-anchor": "middle", fill: "#6b7280" });
+        t.textContent = String(value);
+        target.appendChild(t);
+      }
+
+      const lookupMarker = options.lookupMarker || null;
+      if (lookupMarker && !lookupMarker.error && lookupMarker.equivalent2025 && Number.isFinite(lookupMarker.equivalent2025.placeCenter)) {
+        const eq = lookupMarker.equivalent2025;
+        const bandMin = Number(eq.placeMin);
+        const bandMax = Number(eq.placeMax);
+        const bandCenter = Number(eq.placeCenter);
+        const visibleBandMin = Math.max(xMin, Math.min(xMax, bandMin));
+        const visibleBandMax = Math.max(xMin, Math.min(xMax, bandMax));
+
+        if (visibleBandMin <= xMax && visibleBandMax >= xMin) {
+          const xBand1 = left + ((visibleBandMin - xMin) * axisW) / span;
+          const xBand2 = left + ((visibleBandMax - xMin) * axisW) / span;
+          if (bandMax > bandMin) {
+            target.appendChild(mk("rect", {
+              x: Math.min(xBand1, xBand2),
+              y: axisY,
+              width: Math.max(1, Math.abs(xBand2 - xBand1)),
+              height: rowsHeight + (top - axisY),
+              fill: "#fecaca",
+              opacity: 0.45
+            }));
+          }
+
+          if (bandCenter >= xMin && bandCenter <= xMax) {
+            const markerX = left + ((bandCenter - xMin) * axisW) / span;
+            target.appendChild(mk("line", {
+              x1: markerX,
+              y1: axisY,
+              x2: markerX,
+              y2: top + rowsHeight,
+              stroke: "#dc2626",
+              "stroke-width": 2,
+              "stroke-dasharray": "6,4"
+            }));
+
+            const label = mk("text", {
+              x: markerX + 6,
+              y: axisY - 20,
+              "font-size": 10,
+              "font-weight": 700,
+              fill: "#dc2626",
+              "text-anchor": markerX > left + (axisW * 0.7) ? "end" : "start"
+            });
+            label.textContent = eq.placeMin !== eq.placeMax
+              ? `2025 loc ${Math.round(eq.placeMin)}-${Math.round(eq.placeMax)}`
+              : `2025 loc ${Math.round(eq.placeCenter)}`;
+            if (markerX > left + (axisW * 0.7)) label.setAttribute("x", String(markerX - 6));
+            target.appendChild(label);
+          }
+        }
+      }
+
+      let cursorY = top;
+      for (let i = 0; i < groupedRows.length; i++) {
+        const item = groupedRows[i];
+
+        if (item.type === "h-header") {
+          const bg = mk("rect", {
+            x: 8,
+            y: cursorY - 16,
+            width: width - 16,
+            height: headerH,
+            fill: "#eef2f7",
+            rx: 5,
+            ry: 5
+          });
+          target.appendChild(bg);
+
+          const hLabel = mk("text", { x: 16, y: cursorY + 1, "font-size": 12, "font-weight": 700, fill: "#334155" });
+          const extra = hMetaByH.get(norm(item.hName));
+          const extraText = extra
+            ? Object.entries(extra)
+                .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "")
+                .map(([k, v]) => `${k}: ${v}`)
+                .join(" | ")
+            : "";
+          hLabel.textContent = `${item.hRank}. ${item.hName}`;
+          target.appendChild(hLabel);
+
+          if (extraText) {
+            const hMetaLabel = mk("text", { x: 28, y: cursorY + 17, "font-size": 11, "font-weight": 500, fill: "#64748b" });
+            const entries = Object.entries(extra)
+              .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "");
+
+            entries.forEach(([k, v], idx) => {
+              if (idx > 0) {
+                const sep = mk("tspan", { fill: "#64748b" });
+                sep.textContent = " | ";
+                hMetaLabel.appendChild(sep);
+              }
+
+              const kSpan = mk("tspan", { fill: "#64748b" });
+              kSpan.textContent = `${k}: `;
+              hMetaLabel.appendChild(kSpan);
+
+              const vStr = String(v);
+              const vColor = isCommuteTimeKey(k)
+                ? (() => {
+                    const mins = parseCommuteMinutes(vStr);
+                    if (mins == null) return "#64748b";
+                    return mins < 60 ? "#15803d" : "#b91c1c";
+                  })()
+                : "#64748b";
+
+              const vSpan = mk("tspan", { fill: vColor, "font-weight": isCommuteTimeKey(k) ? 700 : 500 });
+              vSpan.textContent = vStr;
+              hMetaLabel.appendChild(vSpan);
+            });
+
+            target.appendChild(hMetaLabel);
+          }
+
+          cursorY += headerH;
+          continue;
+        }
+
+        const groupLayoutEntry = groupLayout.get(groupKeyOf(item));
+        const rowH = groupLayoutEntry ? groupLayoutEntry.rowH : baseRowH;
+        const y = cursorY;
+        const yBar = y - barH / 2;
+        const x1 = left + ((item.min - xMin) * axisW) / span;
+        const x2 = left + ((item.max - xMin) * axisW) / span;
+        const w = Math.max(2, x2 - x1);
+        const plotLeft = left + 2;
+        const plotRight = left + axisW - 2;
+
+        const madmMinTxtVal = item.madmMin == null ? "-" : item.madmMin.toFixed(2);
+        const madmMaxTxtVal = item.madmMax == null ? "-" : item.madmMax.toFixed(2);
+        const yearColor = getYearColor(item.year);
+        const yearTag = mk("text", { x: 28, y: y + 4, "font-size": 11, "font-weight": 700, fill: yearColor });
+        yearTag.textContent = item.year;
+        target.appendChild(yearTag);
+
+        if (item.showSpecialtyLabel) {
+          const label = mk("text", { x: 70, y: y + 4, "font-size": 12, "font-weight": 600, fill: "#0f172a" });
+          const codeText = item.allCodes ? ` (${item.allCodes})` : (item.spCode ? ` (${item.spCode})` : "");
+          label.textContent = `${item.spName}${codeText} | ${item.spProfile} (${item.count})`;
+          target.appendChild(label);
+        }
+
+        target.appendChild(mk("rect", {
+          x: x1,
+          y: yBar,
+          width: w,
+          height: barH,
+          fill: yearColor,
+          rx: 3,
+          ry: 3
+        }));
+
+        const valueY = yBar + barH - 3;
+        const innerPad = 4;
+        const approxTextWidth = value => String(value).length * 6;
+        const minRankTxtVal = String(item.min);
+        const maxRankTxtVal = String(item.max);
+        const maxLabelW = approxTextWidth(madmMaxTxtVal);
+        const minLabelW = approxTextWidth(madmMinTxtVal);
+        const minRankLabelW = approxTextWidth(minRankTxtVal);
+        const maxRankLabelW = approxTextWidth(maxRankTxtVal);
+        const valueGap = 16;
+        const rankGap = 12;
+        const fitsInside = w >= maxLabelW + minLabelW + innerPad * 3;
+        const maxValueX = Math.max(plotLeft, Math.min(x1 + innerPad, plotRight - (maxLabelW + minLabelW + valueGap)));
+        const minValueX = fitsInside
+          ? Math.min(plotRight, x2 - innerPad)
+          : Math.min(plotRight, Math.max(x2 - innerPad, maxValueX + maxLabelW + minLabelW + valueGap));
+        const minRankX = Math.max(plotLeft, Math.min(x1, plotRight - (minRankLabelW + maxRankLabelW + rankGap)));
+        const maxRankX = Math.min(plotRight, Math.max(x2, minRankX + minRankLabelW + maxRankLabelW + rankGap));
+
+        const maxValueTxt = mk("text", {
+          x: maxValueX,
+          y: valueY,
+          "font-size": 10,
+          "text-anchor": "start",
+          fill: fitsInside ? "#ffffff" : "#0f172a",
+          "font-weight": 700
+        });
+        maxValueTxt.textContent = madmMaxTxtVal;
+        target.appendChild(maxValueTxt);
+
+        const minValueTxt = mk("text", {
+          x: minValueX,
+          y: valueY,
+          "font-size": 10,
+          "text-anchor": "end",
+          fill: fitsInside ? "#ffffff" : "#0f172a",
+          "font-weight": 700
+        });
+        minValueTxt.textContent = madmMinTxtVal;
+        target.appendChild(minValueTxt);
+
+        const minTxt = mk("text", { x: minRankX, y: yBar - 4, "font-size": 10, "text-anchor": "start", fill: "#6b7280" });
+        minTxt.textContent = minRankTxtVal;
+        target.appendChild(minTxt);
+
+        const maxTxt = mk("text", { x: maxRankX, y: yBar - 4, "font-size": 10, "text-anchor": "end", fill: "#6b7280" });
+        maxTxt.textContent = maxRankTxtVal;
+        target.appendChild(maxTxt);
+
+        if (item.showSpecialtyLabel) {
+          const spanRows = groupLayoutEntry ? groupLayoutEntry.spanRows : 1;
+
+          const histLeft = left + axisW + histGap;
+          const histRight = histLeft + histW;
+          const noteLeft = histRight + noteGap;
+          const provStartLeft = noteLeft + noteW + provGap;
+          const yearKeys = item.histByYear ? Object.keys(item.histByYear).sort() : [];
+          const perYear = new Map();
+          const allGradeSet = new Set();
+
+          for (const year of yearKeys) {
+            const arr = item.histByYear[year] || [];
+            const grouped = new Map();
+            for (const v of arr) {
+              const key = (Math.round(Number(v.grade) * 10) / 10).toFixed(1);
+              grouped.set(key, (grouped.get(key) || 0) + (Number(v.count) || 0));
+            }
+            perYear.set(year, grouped);
+            for (const gradeKey of grouped.keys()) allGradeSet.add(gradeKey);
+          }
+
+          const gradeKeys = [...allGradeSet].sort((a, b) => Number(b) - Number(a));
+          if (gradeKeys.length) {
+            const gradeVals = gradeKeys.map(Number);
+            const minG = Math.min(...gradeVals);
+            const maxG = Math.max(...gradeVals);
+
+            const bars = [];
+            for (const gk of gradeKeys) {
+              const grade = Number(gk);
+              for (const year of yearKeys) {
+                const count = perYear.get(year).get(gk) || 0;
+                bars.push({ grade, year, count });
+              }
+            }
+
+            const maxC = Math.max(1, ...bars.map(b => b.count));
+            const boxTop = y - (rowH / 2) + 4;
+            const boxBottom = boxTop + (spanRows * rowH) - 8;
+            const boxHeight = Math.max(20, boxBottom - boxTop);
+            const axisLeftPad = 24;
+            const axisRightPad = 6;
+            const axisTopPad = 14;
+            const axisBottomPad = 12;
+            const plotLeftH = histLeft + axisLeftPad;
+            const plotRightH = histRight - axisRightPad;
+            const plotTopH = boxTop + axisTopPad;
+            const plotBottomH = boxBottom - axisBottomPad;
+            const plotWH = Math.max(20, plotRightH - plotLeftH);
+            const plotHH = Math.max(8, plotBottomH - plotTopH);
+
+            target.appendChild(mk("rect", {
+              x: histLeft,
+              y: boxTop,
+              width: histW,
+              height: boxHeight,
+              fill: "#f8fafc",
+              stroke: "#e2e8f0",
+              "stroke-width": 1,
+              rx: 2,
+              ry: 2
+            }));
+
+            target.appendChild(mk("line", {
+              x1: plotLeftH,
+              y1: plotBottomH,
+              x2: plotRightH,
+              y2: plotBottomH,
+              stroke: "#94a3b8",
+              "stroke-width": 1
+            }));
+
+            const yTicks = [0, Math.max(1, Math.round(maxC / 2)), maxC];
+            for (const tv of yTicks) {
+              const ty = plotBottomH - ((tv / maxC) * plotHH);
+              target.appendChild(mk("line", {
+                x1: plotLeftH,
+                y1: ty,
+                x2: plotRightH,
+                y2: ty,
+                stroke: "#e2e8f0",
+                "stroke-width": 1
+              }));
+            }
+
+            const groupsN = gradeKeys.length;
+            const yearN = Math.max(1, yearKeys.length);
+            const step = plotWH / Math.max(1, groupsN);
+            const groupW = Math.max(8, step * 0.84);
+            const barW = Math.max(2, Math.min(14, (groupW / yearN) - 1));
+
+            gradeKeys.forEach((gk, idx) => {
+              const gx = plotLeftH + (idx * step) + ((step - groupW) / 2);
+              const gradeCenterX = gx + (groupW / 2);
+
+              const gTick = mk("text", {
+                x: gradeCenterX,
+                y: plotBottomH + 10,
+                "font-size": 7,
+                "text-anchor": "middle",
+                fill: "#64748b"
+              });
+              gTick.textContent = Number(gk).toFixed(1);
+              target.appendChild(gTick);
+
+              yearKeys.forEach((year, yi) => {
+                const count = perYear.get(year).get(gk) || 0;
+                const bh = count > 0 ? Math.max(1, (count / maxC) * plotHH) : 0;
+                const bx = gx + yi * (barW + 1);
+                const by = plotBottomH - bh;
+
+                if (bh > 0) {
+                  target.appendChild(mk("rect", {
+                    x: bx,
+                    y: by,
+                    width: barW,
+                    height: bh,
+                    fill: getYearColor(year),
+                    opacity: 0.78,
+                    rx: 1,
+                    ry: 1
+                  }));
+
+                  const countTxt = mk("text", {
+                    x: bx + (barW / 2),
+                    y: Math.max(plotTopH + 7, by - 2),
+                    "font-size": 7,
+                    "text-anchor": "middle",
+                    fill: "#1f2937",
+                    "font-weight": 700
+                  });
+                  countTxt.textContent = String(count);
+                  target.appendChild(countTxt);
+                }
+              });
+            });
+
+            const info = mk("text", {
+              x: histLeft + 4,
+              y: boxTop + 10,
+              "font-size": 8,
+              fill: "#475569"
+            });
+            info.textContent = `students by grade (${yearKeys.join("+")})`;
+            target.appendChild(info);
+
+            if (item.thirdMajorCountTotal > 0) {
+              const thirdMajorName = (item.thirdMajorSubjects && item.thirdMajorSubjects.length)
+                ? item.thirdMajorSubjects.join("/")
+                : "unknown";
+              const thirdMajorGradeText = formatGradeSummary(item.thirdMajorGrades);
+
+              const noteMajor = mk("text", {
+                x: noteLeft,
+                y: boxTop + 10,
+                "font-size": 8,
+                "text-anchor": "start",
+                fill: "#334155",
+                "font-weight": 700
+              });
+              noteMajor.textContent = `3rd major: ${thirdMajorName}`;
+              target.appendChild(noteMajor);
+
+              const noteCount = mk("text", {
+                x: noteLeft,
+                y: boxTop + 20,
+                "font-size": 8,
+                "text-anchor": "start",
+                fill: "#334155"
+              });
+              noteCount.textContent = `students: ${item.thirdMajorCountTotal} | grade: ${thirdMajorGradeText}`;
+              target.appendChild(noteCount);
+            }
+
+            for (let yi = 0; yi < selectedYears.length; yi++) {
+              const yk = selectedYears[yi];
+              const colLeft = provStartLeft + yi * (provColW + provColGap);
+              const provRows = (item.provenanceByYear && item.provenanceByYear[yk]) ? item.provenanceByYear[yk] : [];
+
+              target.appendChild(mk("rect", {
+                x: colLeft,
+                y: boxTop,
+                width: provColW,
+                height: boxHeight,
+                fill: "#f8fafc",
+                stroke: "#e2e8f0",
+                "stroke-width": 1,
+                rx: 2,
+                ry: 2
+              }));
+
+              const colTitle = mk("text", {
+                x: colLeft + 5,
+                y: boxTop + 10,
+                "font-size": 8,
+                fill: "#334155",
+                "font-weight": 700
+              });
+              colTitle.textContent = `Provenience ${yk}`;
+              target.appendChild(colTitle);
+
+              const entries = provRows.length
+                ? provRows.map(v => `${v.school} (${v.count})`)
+                : ["-"];
+              const maxCharsPerLine = Math.max(20, Math.floor((provColW - 10) / 4.2));
+              const lineHeight = 8;
+              const maxLines = Math.max(1, Math.floor((boxHeight - 22) / lineHeight));
+              const clippedEntries = entries.map(line => (
+                line.length > maxCharsPerLine
+                  ? `${line.slice(0, Math.max(0, maxCharsPerLine - 3))}...`
+                  : line
+              ));
+              const shownLines = clippedEntries.slice(0, maxLines);
+              const truncated = clippedEntries.length > maxLines;
+              if (truncated && shownLines.length) {
+                const last = shownLines[shownLines.length - 1];
+                shownLines[shownLines.length - 1] = `${last.slice(0, Math.max(0, maxCharsPerLine - 3))}...`;
+              }
+
+              const provText = mk("text", {
+                x: colLeft + 5,
+                y: boxTop + 20,
+                "font-size": 7,
+                fill: "#475569"
+              });
+              shownLines.forEach((line, idx) => {
+                const span = mk("tspan", {
+                  x: colLeft + 5,
+                  dy: idx === 0 ? 0 : lineHeight
+                });
+                span.textContent = line;
+                provText.appendChild(span);
+              });
+              target.appendChild(provText);
+            }
+          }
+        }
+
+        const next = groupedRows[i + 1];
+        const groupEnds = !next || next.type !== "sp-row" || next.hName !== item.hName || next.spName !== item.spName || next.spProfile !== item.spProfile;
+        cursorY += rowH + (groupEnds ? spGap : 0);
+      }
+    }
+
+    async function boot() {
+      const hInput = document.getElementById("hInput");
+      const spInput = document.getElementById("spInput");
+      const rankModeInput = document.getElementById("rankModeInput");
+      const showProvenanceInput = document.getElementById("showProvenanceInput");
+      const studentLookupInput = document.getElementById("studentLookupInput");
+      const show2024Input = document.getElementById("show2024Input");
+      const show2025Input = document.getElementById("show2025Input");
+      const show2026Input = document.getElementById("show2026Input");
+      const gradePanLeftBtn = document.getElementById("gradePanLeftBtn");
+      const gradePanRightBtn = document.getElementById("gradePanRightBtn");
+      const gradeZoomOutBtn = document.getElementById("gradeZoomOutBtn");
+      const gradeZoomInBtn = document.getElementById("gradeZoomInBtn");
+      const gradeZoomResetBtn = document.getElementById("gradeZoomResetBtn");
+      const meta = document.getElementById("meta");
+      const gradeChart = document.getElementById("gradeChart");
+      const chart = document.getElementById("chart");
+
+      // Force intuitive defaults on fresh load.
+      show2024Input.checked = true;
+      show2025Input.checked = true;
+      show2026Input.checked = true;
+
+      let rowsByYear = new Map();
+      let gradeOnlyRowsByYear = new Map();
+      let hMetaByH = new Map();
+      let gradeZoom = 1;
+      let gradeCenter = null;
+      let lastGradeView = null;
+      let isGradeDragging = false;
+      let gradeDragLastX = 0;
+      let pageZoom = 1;
+
+      const applyPageZoom = () => {
+        const scale = Math.min(3, Math.max(0.5, pageZoom));
+        const stack = gradeChart.closest(".chart-stack");
+        if (!stack) return;
+        stack.style.transform = `scale(${scale})`;
+        stack.style.width = `${100 / scale}%`;
+        stack.style.minWidth = `${Math.round(980 * scale)}px`;
+      };
+
+      const render = () => {
+        try {
+          const enabledGanttYears = new Set();
+          if (show2024Input.checked) enabledGanttYears.add("2024");
+          if (show2025Input.checked) enabledGanttYears.add("2025");
+          const enabledGradeOnlyYears = new Set();
+          if (show2026Input.checked) enabledGradeOnlyYears.add("2026");
+          const anyVisibleYear = enabledGanttYears.size > 0 || enabledGradeOnlyYears.size > 0;
+
+          const rows = combineYearRows(rowsByYear, enabledGanttYears);
+          const gradeRows = combineGradeRows(rowsByYear, gradeOnlyRowsByYear, enabledGanttYears, enabledGradeOnlyYears);
+          const lookupMarker = buildLookupMarker(
+            studentLookupInput.value,
+            gradeOnlyRowsByYear.get("2026") || [],
+            rowsByYear.get("2025") || []
+          );
+          if (!rows.length && !gradeRows.length) {
+            if (!anyVisibleYear) {
+              meta.innerHTML = '<span class="error">No visible data. Enable at least one year checkbox.</span>';
+            } else {
+              meta.innerHTML = '<span class="error">Year checkboxes are enabled, but no bundled year data is loaded. Ensure madm_year_data.js is present next to this HTML file.</span>';
+            }
+            renderGradeChart(gradeChart, [], "No grade chart data", { lookupMarker });
+            renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
+            return;
+          }
+
+          if (!rows.length) {
+            const allCount2024 = gradeRows.filter(r => r.__year === "2024").length;
+            const allCount2025 = gradeRows.filter(r => r.__year === "2025").length;
+            const allCount2026 = gradeRows.filter(r => r.__year === "2026").length;
+            const lookupSummary = formatLookupMarkerSummary(lookupMarker);
+            meta.textContent = `No visible 2024/2025 data for Gantt. Visible grade rows: 2024=${allCount2024}, 2025=${allCount2025}, 2026=${allCount2026}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
+            const gradeTitle = "Note vs numar de elevi";
+            lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
+            if (lastGradeView) gradeCenter = lastGradeView.center;
+            renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
+            return;
+          }
+
+          const h = hInput.value;
+          const sp = spInput.value;
+          const rankMode = rankModeInput.value === "min" ? "min" : "max";
+          const { filtered, groupedRows, hFilterText, uniqueSpGroups } = buildIntervals(rows, h, sp, rankMode);
+          const allHNames = [...new Set(rows.map(r => (r.h || "").trim()).filter(Boolean))];
+          const allCount2024 = gradeRows.filter(r => r.__year === "2024").length;
+          const allCount2025 = gradeRows.filter(r => r.__year === "2025").length;
+          const allCount2026 = gradeRows.filter(r => r.__year === "2026").length;
+
+          if (!filtered.length) {
+            const lookupSummary = formatLookupMarkerSummary(lookupMarker);
+            meta.textContent = `No matches found for h=${h}${sp ? ` and sp=${sp}` : ""}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
+            const gradeTitle = "Note vs numar de elevi";
+            lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
+            if (lastGradeView) gradeCenter = lastGradeView.center;
+            renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
+            return;
+          }
+
+          const hNames = [...new Set(filtered.map(r => (r.h || "").trim()).filter(Boolean))];
+          const spFilterText = sp.trim() ? sp.trim() : "ALL";
+          const count2024 = filtered.filter(r => r.__year === "2024").length;
+          const count2025 = filtered.filter(r => r.__year === "2025").length;
+          const lookupSummary = formatLookupMarkerSummary(lookupMarker);
+          meta.textContent = `Visible rows: 2024=${count2024}, 2025=${count2025}, grade-chart 2026=${allCount2026}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
+
+          const gradeTitle = "Note vs numar de elevi";
+          lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
+          if (lastGradeView) gradeCenter = lastGradeView.center;
+
+          const title = `TOP_PLACE intervals by specialization for ${hFilterText}, specialization:${spFilterText}, sortare dupa medie ${rankMode.toLowerCase()}. 2025`;
+          renderChart(chart, groupedRows, title, hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
+        } catch (err) {
+          lastGradeView = null;
+          meta.innerHTML = `<span class="error">${String(err.message || err)}</span>`;
+          renderGradeChart(gradeChart, [], "Error");
+          renderChart(chart, [], "Error", hMetaByH, { showProvenance: showProvenanceInput.checked });
+        }
+      };
+
+      try {
+        for (const year of Object.keys(YEAR_CONFIG)) {
+          const rows = getBundledYearRows(year);
+          if (rows.length) {
+            rowsByYear.set(year, tagRowsWithYear(rows, year));
+          }
+        }
+
+        for (const year of Object.keys(GRADE_ONLY_YEAR_CONFIG)) {
+          const rows = getBundledYearRows(year);
+          if (rows.length) {
+            gradeOnlyRowsByYear.set(year, tagRowsWithYear(rows, year));
+          }
+        }
+
+        meta.textContent = "";
+      } catch (err) {
+        meta.innerHTML = `<span class="error">${String(err.message || err)}.</span>`;
+      }
+
+      try {
+        const res = await fetch(H_META_JSON_PATH, { cache: "no-cache" });
+        if (res.ok) {
+          const raw = await res.text();
+          const hMetaRows = parseHMetaData(raw);
+          hMetaByH = buildHMetaMap(hMetaRows);
+        }
+      } catch (_err) {
+        // Optional companion file; ignore if missing/unavailable.
+      }
+
+      applyPageZoom();
+
+      const panHistogram = (direction) => {
+        if (!lastGradeView) return;
+        const step = Math.max(0.01, lastGradeView.xSpan * 0.25);
+        const currentCenter = Number.isFinite(gradeCenter) ? gradeCenter : lastGradeView.center;
+        gradeCenter = currentCenter + (direction * step);
+        render();
+      };
+
+      const panHistogramByPixels = (deltaX) => {
+        if (!lastGradeView) return;
+        const unitsPerPixel = lastGradeView.xSpan / Math.max(1, lastGradeView.plotW);
+        const currentCenter = Number.isFinite(gradeCenter) ? gradeCenter : lastGradeView.center;
+        gradeCenter = currentCenter - (deltaX * unitsPerPixel);
+        render();
+      };
+
+      hInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
+      spInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
+      studentLookupInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
+      rankModeInput.addEventListener("change", render);
+      showProvenanceInput.addEventListener("change", render);
+      show2024Input.addEventListener("change", render);
+      show2025Input.addEventListener("change", render);
+      show2026Input.addEventListener("change", render);
+      gradePanLeftBtn.addEventListener("click", () => panHistogram(-1));
+      gradePanRightBtn.addEventListener("click", () => panHistogram(1));
+      gradeZoomOutBtn.addEventListener("click", () => {
+        if (lastGradeView) gradeCenter = lastGradeView.center;
+        gradeZoom = Math.max(1, gradeZoom / 1.25);
+        render();
+      });
+      gradeZoomInBtn.addEventListener("click", () => {
+        if (lastGradeView) gradeCenter = lastGradeView.center;
+        gradeZoom = Math.min(40, gradeZoom * 1.25);
+        render();
+      });
+      gradeZoomResetBtn.addEventListener("click", () => {
+        gradeZoom = 1;
+        gradeCenter = null;
+        render();
+      });
+      gradeChart.style.cursor = "grab";
+      gradeChart.addEventListener("mousedown", (e) => {
+        if (e.button !== 0) return;
+        if (!lastGradeView) return;
+        isGradeDragging = true;
+        gradeDragLastX = e.clientX;
+        gradeChart.style.cursor = "grabbing";
+        e.preventDefault();
+      });
+      window.addEventListener("mousemove", (e) => {
+        if (!isGradeDragging) return;
+        const dx = e.clientX - gradeDragLastX;
+        gradeDragLastX = e.clientX;
+        if (Math.abs(dx) < 0.5) return;
+        panHistogramByPixels(dx);
+      });
+      window.addEventListener("mouseup", () => {
+        if (!isGradeDragging) return;
+        isGradeDragging = false;
+        gradeChart.style.cursor = "grab";
+      });
+      gradeChart.addEventListener("wheel", (e) => {
+        if (e.ctrlKey) return;
+        e.preventDefault();
+        if (e.shiftKey) {
+          panHistogram(e.deltaY > 0 ? 1 : -1);
+          return;
+        }
+        if (lastGradeView) gradeCenter = lastGradeView.center;
+        const factor = e.deltaY < 0 ? 1.2 : (1 / 1.2);
+        gradeZoom = Math.min(40, Math.max(1, gradeZoom * factor));
+        render();
+      }, { passive: false });
+      const chartWrap = gradeChart.closest(".chart-wrap");
+      if (chartWrap) {
+        chartWrap.addEventListener("wheel", (e) => {
+          if (!e.ctrlKey) return;
+          e.preventDefault();
+          const factor = e.deltaY < 0 ? 1.12 : (1 / 1.12);
+          pageZoom = Math.min(3, Math.max(0.5, pageZoom * factor));
+          applyPageZoom();
+        }, { passive: false });
+      }
+      window.addEventListener("resize", render);
+      render();
+    }
+
+    boot();
+  </script>
 </body>
 </html>
