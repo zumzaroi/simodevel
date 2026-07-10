@@ -270,13 +270,18 @@
           </div>
         </section>
 
-        <!-- CONTRIBUTE -->
-        <section x-show="query.length === 0 || ['contribute','github','fork','pr','pull'].some(k => query.toLowerCase().includes(k))">
+        <!-- REGISTER PROJECT -->
+        <section x-show="query.length === 0 || ['contribute','submit','project','register','add'].some(k => query.toLowerCase().includes(k))">
           <div class="sec-header">⚡ Contribute</div>
-          <div class="text-xs text-gray-500 leading-relaxed space-y-2">
-            <p><strong class="text-gray-800">Non-profit · Open source.</strong><br>Free content, no ads, no tracking.</p>
-            <p>Fork the repo → add your project to <code class="bg-gray-100 px-1 font-mono text-xs rounded">blog/</code> → open a Pull Request.</p>
-            <a href="https://github.com/zumzaroi/simodevel" target="_blank" rel="noopener" class="buy-link mt-2">github.com/zumzaroi/simodevel ↗</a>
+          <div>
+
+            <p class="text-xs text-gray-500 leading-relaxed space-y-1">
+              <strong class="text-gray-800">Non-profit · Open source.</strong><br>
+              Free content, no ads, no tracking.
+            </p>
+            <p class="text-xs text-gray-500 mt-2">Built something? Fill in the project template and submit — it will be reviewed and published.</p>
+            <a href="contribute.html" class="buy-link mt-3" style="display:inline-block">Register Your Project →</a>
+
           </div>
         </section>
 

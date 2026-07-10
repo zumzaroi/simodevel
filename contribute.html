@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Your Project — SimoDevel</title>
+  <meta name="description" content="Submit your electronics project to SimoDevel. Share your schematic, component list and build notes with the community.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #ffffff; color: #111827; font-size: 14px; }
+
+    .navbar { background: #111827; border-bottom: 3px solid #dc2626; }
+    .navbar a { color: #d1d5db; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .navbar a:hover { color: #ffffff; }
+    .navbar .logo { color: #ffffff; font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
+    .navbar .logo span { color: #dc2626; }
+
+    .field-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #374151; display: block; margin-bottom: 4px; }
+    .field-hint  { font-size: 11px; color: #9ca3af; font-family: monospace; margin-top: 3px; }
+
+    .inp {
+      width: 100%; border: 1px solid #d1d5db; border-radius: 3px;
+      padding: 8px 10px; font-size: 13px; color: #111827;
+      background: #fff; transition: border-color 0.15s;
+    }
+    .inp:focus { outline: none; border-color: #111827; }
+    .inp::placeholder { color: #9ca3af; }
+
+    select.inp { cursor: pointer; }
+
+    .sec-header { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #6b7280; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 18px; }
+
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: #111827; color: #fff; font-size: 11px; font-weight: 800; border-radius: 2px; flex-shrink: 0; }
+    .step-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #111827; }
+
+    .submit-btn {
+      background: #111827; color: #ffffff; border: none; cursor: pointer;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 11px 28px; border-radius: 3px;
+      transition: background 0.15s;
+    }
+    .submit-btn:hover:not(:disabled) { background: #dc2626; }
+    .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .tag { display: inline-block; font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; background: #f3f4f6; border: 1px solid #e5e7eb; color: #4b5563; padding: 1px 5px; border-radius: 2px; }
+
+    .alert-ok  { background: #d1fae5; border: 1px solid #6ee7b7; color: #065f46; border-radius: 3px; padding: 12px 16px; font-size: 13px; }
+    .alert-err { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 3px; padding: 12px 16px; font-size: 13px; }
+
+    .file-drop {
+      border: 2px dashed #d1d5db; border-radius: 3px; padding: 20px;
+      text-align: center; cursor: pointer; transition: border-color 0.15s;
+    }
+    .file-drop:hover, .file-drop.drag-over { border-color: #111827; background: #f9fafb; }
+
+    .required { color: #dc2626; }
+
+    footer { background: #111827; color: #6b7280; font-size: 11px; }
+    footer a { color: #9ca3af; text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body x-data="contribute()" x-init="init()">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-6 flex-wrap">
+      <a href="/" class="logo">Simo<span>Devel</span></a>
+      <div class="flex items-center gap-5 flex-wrap">
+        <a href="/#blog">Blog</a>
+        <a href="/#models">Models</a>
+        <a href="/#parts">Parts</a>
+        <a href="/#tutorials">Tutorials</a>
+        <a href="/#tools">Tools</a>
+        <a href="contribute.html" style="color:#f87171">Contribute ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="border-b border-gray-200 bg-gray-50 px-4 py-6">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-2xl font-black uppercase tracking-tight">Register Your Project</h1>
+      <p class="text-sm text-gray-500 mt-1">
+        Share your electronics project with the SimoDevel community. Fill in the template below and submit — your project will be reviewed and published.
+      </p>
+      <p class="font-mono text-xs text-gray-400 mt-2">
+        Non-profit · Open source · No account required · Submissions sent to
+        <a href="mailto:contribute@simodevel.com" class="text-gray-600 hover:underline">contribute@simodevel.com</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <main class="max-w-3xl mx-auto px-4 py-8">
+
+    <!-- SUCCESS / ERROR -->
+    <div x-show="status === 'ok'" x-cloak class="alert-ok mb-6">
+      <strong>Submission received!</strong> We'll review your project and get back to you at <span x-text="form.email" class="font-mono"></span>.
+      Thank you for contributing to SimoDevel.
+    </div>
+    <div x-show="status === 'err'" x-cloak class="alert-err mb-6">
+      <strong>Submission failed.</strong> Please try again or email directly to
+      <a href="mailto:contribute@simodevel.com" class="underline">contribute@simodevel.com</a>.
+    </div>
+
+    <form
+      x-show="status !== 'ok'"
+      @submit.prevent="submit()"
+      enctype="multipart/form-data"
+      class="space-y-8"
+      x-cloak
+    >
+      <!-- Web3Forms access key — replace with your key from web3forms.com -->
+      <input type="hidden" name="access_key" value="REPLACE_WITH_WEB3FORMS_KEY">
+      <input type="hidden" name="subject"    value="[SimoDevel] New Project Submission">
+      <input type="hidden" name="to"         value="contribute@simodevel.com">
+      <input type="hidden" name="from_name"  x-model="form.name">
+
+      <!-- ── STEP 1: WHO ARE YOU ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">1</span>&nbsp; About You
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="field-label">Name <span class="required">*</span></label>
+            <input type="text" name="contributor_name" x-model="form.name" class="inp" placeholder="Your name or handle" required>
+          </div>
+          <div>
+            <label class="field-label">Email <span class="required">*</span></label>
+            <input type="email" name="contributor_email" x-model="form.email" class="inp" placeholder="you@example.com" required>
+            <p class="field-hint">Used only for project follow-up. Not published.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: PROJECT BASICS ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">2</span>&nbsp; Project Basics
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="field-label">Project Title <span class="required">*</span></label>
+            <input type="text" name="title" x-model="form.title" class="inp" placeholder="e.g. FM Transmitter 88–108 MHz with BC547" required maxlength="120">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label">Category <span class="required">*</span></label>
+              <select name="category" x-model="form.category" class="inp" required>
+                <option value="">— select —</option>
+                <option>RF &amp; Communications</option>
+                <option>Power Supply</option>
+                <option>Audio</option>
+                <option>Sensors</option>
+                <option>Digital / Logic</option>
+                <option>Microcontrollers</option>
+                <option>Simulation Model</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Difficulty</label>
+              <select name="difficulty" x-model="form.difficulty" class="inp">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Short Description <span class="required">*</span></label>
+            <textarea name="description" x-model="form.description" class="inp" rows="3"
+              placeholder="2–3 sentences describing what the project does and why it's interesting." required maxlength="500"></textarea>
+            <p class="field-hint">Max 500 chars. Shown as card excerpt on the site.</p>
+          </div>
+          <div>
+            <label class="field-label">Tags</label>
+            <input type="text" name="tags" x-model="form.tags" class="inp" placeholder="BC547, oscillator, RF, FM — comma separated">
+            <p class="field-hint">Part numbers, keywords, simulator names.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: COMPONENTS ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">3</span>&nbsp; Component List
+        </div>
+        <textarea name="components" x-model="form.components" class="inp font-mono" rows="8"
+          placeholder="One component per line:&#10;BC547B   x1   Oscillator transistor&#10;10nF/50V x2   Tank circuit capacitors&#10;10kΩ     x1   Base resistor&#10;9V bat   x1   Power supply"></textarea>
+        <p class="field-hint mt-1">Format: part-name · quantity · role. Values and packages appreciated.</p>
+      </div>
+
+      <!-- ── STEP 4: SCHEMATIC & SIMULATION ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">4</span>&nbsp; Schematic &amp; Simulation
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="field-label">Circuit Description / How It Works</label>
+            <textarea name="schematic_notes" x-model="form.schematicNotes" class="inp" rows="5"
+              placeholder="Explain the circuit topology, key design decisions, operating principle..."></textarea>
+          </div>
+          <div>
+            <label class="field-label">Simulation Notes</label>
+            <textarea name="simulation_notes" x-model="form.simulationNotes" class="inp" rows="3"
+              placeholder="LTspice analysis used (TRAN / AC / DC), key waveforms observed, parameter sweeps..."></textarea>
+          </div>
+          <div>
+            <label class="field-label">LTspice / Schematic File (.asc, .sch, .kicad_sch)</label>
+            <input type="file" name="schematic_file" accept=".asc,.sch,.kicad_sch,.cir,.net"
+              class="inp" style="padding:6px">
+            <p class="field-hint">Optional. Max 5 MB.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 5: IMAGES ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">5</span>&nbsp; Images
+        </div>
+        <div
+          class="file-drop"
+          :class="dragging && 'drag-over'"
+          @dragover.prevent="dragging=true"
+          @dragleave="dragging=false"
+          @drop.prevent="onDrop($event)"
+          @click="$refs.imgInput.click()"
+        >
+          <input type="file" name="images" x-ref="imgInput" multiple accept="image/*"
+            class="hidden" @change="onFiles($event)">
+          <svg class="w-8 h-8 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3 8.25h18M5.25 3h13.5A2.25 2.25 0 0 1 21 5.25v13.5A2.25 2.25 0 0 1 18.75 21H5.25A2.25 2.25 0 0 1 3 18.75V5.25A2.25 2.25 0 0 1 5.25 3Z"/>
+          </svg>
+          <p class="text-sm text-gray-500 font-medium">Drop images here or click to browse</p>
+          <p class="text-xs text-gray-400 mt-1">JPG · PNG · WebP · Max 5 MB per file</p>
+        </div>
+        <!-- Preview -->
+        <div x-show="imageFiles.length > 0" class="flex flex-wrap gap-2 mt-3">
+          <template x-for="(f, i) in imageFiles" :key="i">
+            <div class="relative border border-gray-200 rounded p-1 flex items-center gap-2 pr-3">
+              <span class="font-mono text-xs text-gray-600" x-text="f.name"></span>
+              <span class="font-mono text-xs text-gray-400" x-text="(f.size/1024).toFixed(0)+'KB'"></span>
+              <button type="button" @click="removeImage(i)" class="text-gray-400 hover:text-red-600 font-bold text-xs">✕</button>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- ── STEP 6: EXTRA NOTES ── -->
+      <div>
+        <div class="sec-header">
+          <span class="step-num">6</span>&nbsp; Additional Notes
+        </div>
+        <textarea name="notes" x-model="form.notes" class="inp" rows="3"
+          placeholder="References, datasheet links, known issues, tested results, safety warnings..."></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="border-t border-gray-200 pt-6 flex items-center justify-between gap-4 flex-wrap">
+        <p class="text-xs text-gray-400 font-mono max-w-sm">
+          By submitting you agree your project may be published on simodevel.com under a free, non-commercial license.
+        </p>
+        <button type="submit" class="submit-btn" :disabled="submitting">
+          <span x-show="!submitting">Submit Project →</span>
+          <span x-show="submitting" x-cloak>Sending…</span>
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-16 px-4 py-5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <span class="font-mono"><span class="text-white font-bold">SimoDevel</span> — Electronics Simulation Hub · Non-profit · Open Source</span>
+      <span class="font-mono">SPICE · LTspice · MATLAB · Verilog-A · PySpice</span>
+    </div>
+  </footer>
+
+  <script>
+    const COOKIE_NAME = 'simo_contributor';
+    const COOKIE_DAYS = 365;
+
+    function setCookie(name, value, days) {
+      const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+    }
+
+    function getCookie(name) {
+      const m = document.cookie.match('(?:^|;)\\s*' + name + '=([^;]*)');
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function contribute() {
+      return {
+        dragging: false,
+        submitting: false,
+        status: null,   // null | 'ok' | 'err'
+        imageFiles: [],
+
+        form: {
+          name: '', email: '',
+          title: '', category: '', difficulty: 'beginner',
+          description: '', tags: '', components: '',
+          schematicNotes: '', simulationNotes: '', notes: ''
+        },
+
+        init() {
+          // restore from cookie
+          const saved = getCookie(COOKIE_NAME);
+          if (saved) {
+            try {
+              const c = JSON.parse(saved);
+              this.form.name  = c.name  || '';
+              this.form.email = c.email || '';
+            } catch(_) {}
+          }
+        },
+
+        onFiles(e) {
+          for (const f of e.target.files) {
+            if (!this.imageFiles.find(x => x.name === f.name)) {
+              this.imageFiles.push(f);
+            }
+          }
+        },
+
+        onDrop(e) {
+          this.dragging = false;
+          for (const f of e.dataTransfer.files) {
+            if (f.type.startsWith('image/') && !this.imageFiles.find(x => x.name === f.name)) {
+              this.imageFiles.push(f);
+            }
+          }
+        },
+
+        removeImage(i) {
+          this.imageFiles.splice(i, 1);
+        },
+
+        async submit() {
+          this.submitting = true;
+          this.status = null;
+
+          // save contributor to cookie
+          setCookie(COOKIE_NAME, JSON.stringify({
+            name:  this.form.name,
+            email: this.form.email,
+          }), COOKIE_DAYS);
+
+          // build FormData for Web3Forms
+          const fd = new FormData();
+          fd.append('access_key',       document.querySelector('[name="access_key"]').value);
+          fd.append('subject',          `[SimoDevel] New Project: ${this.form.title}`);
+          fd.append('from_name',        this.form.name);
+          fd.append('email',            this.form.email);
+          fd.append('contributor_name', this.form.name);
+          fd.append('title',            this.form.title);
+          fd.append('category',         this.form.category);
+          fd.append('difficulty',       this.form.difficulty);
+          fd.append('description',      this.form.description);
+          fd.append('tags',             this.form.tags);
+          fd.append('components',       this.form.components);
+          fd.append('schematic_notes',  this.form.schematicNotes);
+          fd.append('simulation_notes', this.form.simulationNotes);
+          fd.append('notes',            this.form.notes);
+
+          // attach schematic file
+          const scmFile = document.querySelector('[name="schematic_file"]').files[0];
+          if (scmFile) fd.append('schematic_file', scmFile, scmFile.name);
+
+          // attach images
+          for (const img of this.imageFiles) {
+            fd.append('images', img, img.name);
+          }
+
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              body: fd
+            });
+            const data = await res.json();
+            this.status = data.success ? 'ok' : 'err';
+          } catch(_) {
+            this.status = 'err';
+          }
+
+          this.submitting = false;
+        }
+      };
+    }
+  </script>
+</body>
+</html>
