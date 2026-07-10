@@ -7,6 +7,7 @@
   <meta name="description" content="Submit your electronics project to SimoDevel. Share your schematic, component list and build notes with the community.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script src="https://web3forms.com/client/script.js" async defer></script>
   <style>
     [x-cloak] { display: none !important; }
     * { box-sizing: border-box; }
@@ -129,6 +130,7 @@
       <input type="hidden" name="subject"    value="[SimoDevel] New Project Submission">
       <input type="hidden" name="to"         value="simodevel@protonmail.com">
       <input type="hidden" name="from_name"  x-model="form.name">
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
 
       <!-- ── STEP 1: WHO ARE YOU ── -->
       <div>
@@ -275,6 +277,9 @@
 
       <!-- SUBMIT -->
       <div class="border-t border-gray-200 pt-6 flex items-center justify-between gap-4 flex-wrap">
+        <div class="w-full sm:w-auto">
+          <div class="h-captcha" data-captcha="true"></div>
+        </div>
         <p class="text-xs text-gray-400 font-mono max-w-sm">
           By submitting you agree your project may be published on simodevel.com under a free, non-commercial license.
         </p>
@@ -369,6 +374,14 @@
             return;
           }
 
+          const captchaToken = document.querySelector('[name="h-captcha-response"]')?.value || '';
+          if (!captchaToken) {
+            this.status = 'err';
+            this.errorMessage = 'Please complete the hCaptcha challenge before submitting.';
+            this.submitting = false;
+            return;
+          }
+
           // save contributor to cookie
           setCookie(COOKIE_NAME, JSON.stringify({
             name:  this.form.name,
@@ -391,6 +404,7 @@
           fd.append('schematic_notes',  this.form.schematicNotes);
           fd.append('simulation_notes', this.form.simulationNotes);
           fd.append('notes',            this.form.notes);
+          fd.append('h-captcha-response', captchaToken);
 
           // attach schematic file
           const scmFile = document.querySelector('[name="schematic_file"]').files[0];
