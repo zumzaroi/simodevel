@@ -309,7 +309,11 @@
       gap: 4px;
       color: #4b5563;
       font-family: "Courier New", monospace;
-      font-size: 11px;
+      font-size: 14px;
+      position: relative;
+      top: 0;
+      transform: translateY(10%);
+      line-height: 1;
     }
 
     .vote-avg {
@@ -337,24 +341,30 @@
       color: #d1d5db;
       font-size: 20px;
       line-height: 1;
-      position: relative;
-      top: -1px;
     }
 
     .list-vote-star.active {
       color: #f59e0b;
     }
 
-    .list-vote-avg {
+    .list-vote-summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
       margin-left: 6px;
+      position: relative;
+      top: 0;
+      transform: translateY(25%);
+      line-height: 1;
+    }
+
+    .list-vote-avg {
       color: #4b5563;
       font-family: "Courier New", monospace;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.03em;
       line-height: 1;
-      position: relative;
-      top: 1.84px;
     }
 
     .list-vote-count {
@@ -364,8 +374,6 @@
       font-weight: 700;
       letter-spacing: 0.03em;
       line-height: 1;
-      position: relative;
-      top: 1.84px;
     }
 
     .panel {
@@ -956,8 +964,10 @@
                   <template x-for="star in [1,2,3,4,5]" :key="'blog-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, blogVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
-                  <span class="list-vote-avg" x-text="formatVoteAverage(blogVoteSummary(item.id).avgStars)"></span>
-                  <span class="list-vote-count" x-text="'(' + Number(blogVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                  <span class="list-vote-summary">
+                    <span class="list-vote-avg" x-text="formatVoteAverage(blogVoteSummary(item.id).avgStars)"></span>
+                    <span class="list-vote-count" x-text="'(' + Number(blogVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                  </span>
                 </div>
                 <p class="card-desc" x-text="item.description"></p>
                 <div class="meta" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
@@ -1166,8 +1176,10 @@
                   <template x-for="star in [1,2,3,4,5]" :key="'tutorial-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, tutorialVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
-                  <span class="list-vote-avg" x-text="formatVoteAverage(tutorialVoteSummary(item.id).avgStars)"></span>
-                  <span class="list-vote-count" x-text="'(' + Number(tutorialVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                  <span class="list-vote-summary">
+                    <span class="list-vote-avg" x-text="formatVoteAverage(tutorialVoteSummary(item.id).avgStars)"></span>
+                    <span class="list-vote-count" x-text="'(' + Number(tutorialVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                  </span>
                 </div>
                 <p class="card-desc" x-text="item.description"></p>
                 <div class="meta">
