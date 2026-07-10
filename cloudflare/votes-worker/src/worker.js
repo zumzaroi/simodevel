@@ -72,16 +72,18 @@ async function handlePost(request, env) {
     return json({ ok: false, error: "Stars must be an integer between 0 and 5." }, 400);
   }
 
-  // Minimal anti-abuse: same device cannot update the same item too fast.
+  // Allow quick rating corrections (e.g. 5 -> 3) but throttle rapid identical repeats.
   const previous = await env.DB.prepare(
-    "SELECT updated_at FROM votes WHERE item_key = ?1 AND device_id = ?2"
+    "SELECT updated_at, stars FROM votes WHERE item_key = ?1 AND device_id = ?2"
   ).bind(item, deviceId).first();
 
   if (previous && previous.updated_at) {
     const last = Date.parse(previous.updated_at);
     const now = Date.now();
-    if (!Number.isNaN(last) && now - last < 10000) {
-      return json({ ok: false, error: "Too many updates. Try again in a few seconds." }, 429);
+    const previousStars = Number(previous.stars || 0);
+    const isSameValueRepeat = previousStars === stars;
+    if (!Number.isNaN(last) && now - last < 1000 && isSameValueRepeat) {
+      return json({ ok: false, error: "Too many repeated updates. Try again in a second." }, 429);
     }
   }
 
