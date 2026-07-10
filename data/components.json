@@ -12,7 +12,7 @@
     "used_in_projects": ["01_emitator_fm", "06_detector_metale"]
   },
   "LM393": {
-    "type": "Comparator dual",
+    "type": "Dual comparator",
     "package": "DIP-8 / SO-8",
     "manufacturer": "Texas Instruments / ST",
     "datasheet": "https://www.ti.com/lit/ds/symlink/lm393.pdf",
@@ -24,7 +24,7 @@
     "used_in_projects": ["02_senzor_umiditate_sol"]
   },
   "LM317": {
-    "type": "Regulator tensiune ajustabil",
+    "type": "Adjustable voltage regulator",
     "package": "TO-220 / TO-92",
     "manufacturer": "Texas Instruments / ST / ON Semi",
     "datasheet": "https://www.ti.com/lit/ds/symlink/lm317.pdf",
@@ -36,7 +36,7 @@
     "used_in_projects": ["03_sursa_lm317"]
   },
   "LM386": {
-    "type": "Amplificator audio",
+    "type": "Audio amplifier",
     "package": "DIP-8",
     "manufacturer": "Texas Instruments / ST",
     "datasheet": "https://www.ti.com/lit/ds/symlink/lm386.pdf",
@@ -48,7 +48,7 @@
     "used_in_projects": ["04_amplificator_lm386"]
   },
   "CD4026": {
-    "type": "Numărător BCD / driver 7 segmente",
+    "type": "BCD counter / 7-segment driver",
     "package": "DIP-16",
     "manufacturer": "Texas Instruments / ST",
     "datasheet": "https://www.ti.com/lit/ds/symlink/cd4026b.pdf",
@@ -84,7 +84,7 @@
     "used_in_projects": ["07_termometru_ntc"]
   },
   "LTC4054": {
-    "type": "Încărcător Li-Ion",
+    "type": "Li-Ion charger",
     "package": "SOT-23-5",
     "manufacturer": "Analog Devices (Linear Technology)",
     "datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/405442fc.pdf",
@@ -108,7 +108,7 @@
     "used_in_projects": ["09_invertor_12v"]
   },
   "TSOP4838": {
-    "type": "Receptor IR 38kHz",
+    "type": "38kHz IR receiver",
     "package": "TO-92 (3-pin)",
     "manufacturer": "Vishay",
     "datasheet": "https://www.vishay.com/docs/82459/tsop48.pdf",
@@ -120,7 +120,7 @@
     "used_in_projects": ["10_receptor_ir"]
   },
   "1N4148": {
-    "type": "Diodă comutare rapidă",
+    "type": "Fast switching diode",
     "package": "DO-35",
     "manufacturer": "Vishay / Fairchild / ON Semi",
     "datasheet": "https://www.vishay.com/docs/85681/1n4148.pdf",

@@ -345,6 +345,55 @@
       background: #fff;
     }
 
+    .detail-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .readme-content {
+      margin-top: 4px;
+      white-space: pre-wrap;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      border-radius: 3px;
+      background: #f9fafb;
+      padding: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .parts-table-wrap {
+      margin-top: 4px;
+      overflow-x: auto;
+    }
+
+    .parts-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .parts-table th,
+    .parts-table td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .parts-table th {
+      background: #f3f4f6;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      color: #4b5563;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
     .part-ref {
       font-family: "Courier New", monospace;
       font-size: 12px;
@@ -514,24 +563,48 @@
               </template>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+            <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">Overview</div>
-                <p class="card-desc">This technical project is part of the <strong x-text="selectedBlog().category"></strong> track and follows a <strong x-text="selectedBlog().difficulty"></strong> level path.</p>
+                <p class="card-desc">This technical project is part of the <strong x-text="selectedBlog().category"></strong> track and follows a <strong x-text="selectedBlog().difficulty"></strong> learning path.</p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Simulation Focus</div>
-                <p class="card-desc">Use the tags above as simulation anchors. Start with DC operating point, then validate transient and frequency response where applicable.</p>
+                <div class="detail-section-title">Project README</div>
+                <div class="readme-content" x-text="selectedBlogReadme()"></div>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Build References</div>
-                <p class="card-desc" style="margin-bottom:6px;">Project metadata is loaded directly from local JSON indexes.</p>
-                <a class="buy-link" :href="selectedBlog().readme || '#'">Project README</a>
-                <a class="buy-link" :href="selectedBlog().parts || '#'">Parts List</a>
+                <div class="detail-section-title">Part List</div>
+                <template x-if="selectedBlogParts().length > 0">
+                  <div class="parts-table-wrap">
+                    <table class="parts-table">
+                      <thead>
+                        <tr>
+                          <th>Ref</th>
+                          <th>Qty</th>
+                          <th>Value</th>
+                          <th>Role</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <template x-for="(row, idx) in selectedBlogParts()" :key="(row.ref || 'part') + '-' + idx">
+                          <tr>
+                            <td x-text="row.ref || '-'" style="font-family:'Courier New',monospace;"></td>
+                            <td x-text="row.qty || '-'" style="font-family:'Courier New',monospace;"></td>
+                            <td x-text="row.value || '-'" style="font-family:'Courier New',monospace;"></td>
+                            <td x-text="row.role || '-'" ></td>
+                          </tr>
+                        </template>
+                      </tbody>
+                    </table>
+                  </div>
+                </template>
+                <template x-if="selectedBlogParts().length === 0">
+                  <p class="card-desc">Parts list unavailable for this project.</p>
+                </template>
               </div>
               <div class="part-card">
                 <div class="detail-section-title">Contributor</div>
-                <p class="card-desc">Submitted by <strong x-text="selectedBlog().contributor"></strong>. This contributor name is rendered directly from the project JSON record.</p>
+                <p class="card-desc">Submitted by <strong x-text="selectedBlog().contributor"></strong>.</p>
               </div>
             </div>
           </article>
@@ -576,7 +649,7 @@
               Package: <span x-text="selectedPart().package || 'N/A'"></span> ·
               Manufacturer: <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+            <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">Component Details</div>
                 <p class="card-desc">
@@ -591,15 +664,15 @@
                 <template x-if="(selectedPart().used_in_projects || []).length > 0">
                   <div class="flex flex-wrap gap-1" style="margin-top:4px;">
                     <template x-for="proj in (selectedPart().used_in_projects || [])" :key="proj">
-                      <span class="tag" x-text="proj"></span>
+                      <button class="buy-link" @click="openProjectBySlug(proj)" x-text="projectLabelFromSlug(proj)"></button>
                     </template>
                   </div>
                 </template>
                 <template x-if="!(selectedPart().used_in_projects || []).length">
-                  <p class="card-desc">No project associations recorded.</p>
+                  <p class="card-desc">No linked projects available.</p>
                 </template>
               </div>
-              <div class="part-card" style="grid-column: 1 / -1;">
+              <div class="part-card">
                 <div class="detail-section-title">Purchase Links</div>
                 <div style="margin-top:4px;">
                   <template x-if="selectedPart().datasheet">
@@ -667,7 +740,7 @@
                 <span class="tag" x-text="tag"></span>
               </template>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+            <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">Overview</div>
                 <p class="card-desc">This tutorial is part of the <strong x-text="selectedTutorial().category"></strong> track and follows a <strong x-text="selectedTutorial().difficulty"></strong> level path.</p>
@@ -678,12 +751,11 @@
               </div>
               <div class="part-card">
                 <div class="detail-section-title">Tutorial Link</div>
-                <p class="card-desc" style="margin-bottom:6px;">Tutorial content is loaded directly from the local index.</p>
-                <a class="buy-link" :href="selectedTutorial().url || '#'" target="_blank" rel="noopener">Open Tutorial</a>
+                <a class="buy-link" :href="selectedTutorial().url || '#'" target="_blank" rel="noopener">Open Tutorial Page</a>
               </div>
               <div class="part-card">
                 <div class="detail-section-title">Contributor</div>
-                <p class="card-desc">Submitted by <strong x-text="selectedTutorial().contributor"></strong>. This tutorial is part of the SimoDevel community collection.</p>
+                <p class="card-desc">Submitted by <strong x-text="selectedTutorial().contributor"></strong>.</p>
               </div>
             </div>
           </article>
@@ -727,7 +799,7 @@
               License: <span x-text="selectedTool().license || 'Free'"></span> ·
               Version: <span x-text="selectedTool().free_version || selectedTool().version || 'Free tier'"></span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+            <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">About</div>
                 <p class="card-desc" x-text="selectedTool().description || selectedTool().best_for || 'No description available.'"></p>
@@ -879,6 +951,7 @@
         selectedPartRef: null,
         selectedToolId: null,
         stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
+        blogAssets: {},
 
         raw: {
           projects: [],
@@ -1013,7 +1086,59 @@
         openBlog(id) {
           this.panelFocus = "blog";
           this.selectedBlogId = id;
+          const project = this.raw.projects.find(item => item.id === id) || null;
+          if (project) {
+            this.ensureBlogAssets(project);
+          }
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        async ensureBlogAssets(project) {
+          if (!project || !project.id) {
+            return;
+          }
+
+          const cached = this.blogAssets[project.id];
+          if (cached && cached.loaded) {
+            return;
+          }
+
+          let readmeText = "Project README";
+          let partsList = [];
+
+          if (project.readme) {
+            try {
+              const readmeRes = await fetch(project.readme);
+              if (readmeRes.ok) {
+                const txt = (await readmeRes.text()).trim();
+                if (txt) {
+                  readmeText = txt;
+                }
+              }
+            } catch (_) {
+              readmeText = "Project README";
+            }
+          }
+
+          if (project.parts) {
+            try {
+              const partsRes = await fetch(project.parts);
+              if (partsRes.ok) {
+                const parsed = await partsRes.json();
+                if (Array.isArray(parsed)) {
+                  partsList = parsed;
+                }
+              }
+            } catch (_) {
+              partsList = [];
+            }
+          }
+
+          this.blogAssets[project.id] = {
+            loaded: true,
+            readmeText,
+            partsList
+          };
         },
 
         selectedBlog() {
@@ -1021,6 +1146,27 @@
             return null;
           }
           return this.visible.projects.find(item => item.id === this.selectedBlogId) || null;
+        },
+
+        selectedBlogReadme() {
+          const blog = this.selectedBlog();
+          if (!blog) {
+            return "Project README";
+          }
+          const asset = this.blogAssets[blog.id];
+          if (!asset || !asset.readmeText) {
+            return "Project README";
+          }
+          return asset.readmeText;
+        },
+
+        selectedBlogParts() {
+          const blog = this.selectedBlog();
+          if (!blog) {
+            return [];
+          }
+          const asset = this.blogAssets[blog.id];
+          return Array.isArray(asset && asset.partsList) ? asset.partsList : [];
         },
 
         openTutorial(id) {
@@ -1043,6 +1189,34 @@
         selectedPart() {
           if (!this.selectedPartRef) return null;
           return this.visible.components.find(c => c._ref === this.selectedPartRef) || null;
+        },
+
+        projectSlugFromPath(path) {
+          const match = String(path || "").match(/blog\/([^/]+)\//);
+          return match ? match[1] : "";
+        },
+
+        projectBySlug(slug) {
+          if (!slug) {
+            return null;
+          }
+          return this.raw.projects.find(item => {
+            const readmeSlug = this.projectSlugFromPath(item.readme);
+            const partsSlug = this.projectSlugFromPath(item.parts);
+            return readmeSlug === slug || partsSlug === slug;
+          }) || null;
+        },
+
+        projectLabelFromSlug(slug) {
+          const project = this.projectBySlug(slug);
+          return project ? project.title : slug;
+        },
+
+        openProjectBySlug(slug) {
+          const project = this.projectBySlug(slug);
+          if (project) {
+            this.openBlog(project.id);
+          }
         },
 
         openTool(id) {
