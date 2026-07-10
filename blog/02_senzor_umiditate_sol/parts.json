@@ -1,11 +1,11 @@
 [
-  { "ref": "LM393", "qty": 1, "value": "LM393N DIP-8", "role": "Comparator tensiune" },
-  { "ref": "R 10kΩ", "qty": 2, "value": "10kΩ 1/4W", "role": "Divizor referință și pull-up" },
-  { "ref": "R 1kΩ", "qty": 1, "value": "1kΩ 1/4W", "role": "Limitare curent LED" },
-  { "ref": "Potentiometru 10kΩ", "qty": 1, "value": "10kΩ", "role": "Ajustare prag umiditate" },
-  { "ref": "LED roșu", "qty": 1, "value": "5mm roșu", "role": "Indicator sol uscat" },
-  { "ref": "Buzzer", "qty": 1, "value": "Buzzer activ 5V", "role": "Alarmă sonică" },
-  { "ref": "Electrozi Cu", "qty": 2, "value": "Sârmă Cu 1mm / 5cm", "role": "Sonde umiditate sol" },
-  { "ref": "C 100nF", "qty": 1, "value": "100nF ceramic", "role": "Decuplare alimentare" },
-  { "ref": "Alimentare", "qty": 1, "value": "5V sau 9V", "role": "Alimentare circuit" }
+  { "ref": "LM393", "qty": 1, "value": "LM393N DIP-8", "role": "Voltage comparator" },
+  { "ref": "R 10kΩ", "qty": 2, "value": "10kΩ 1/4W", "role": "Reference divider and pull-up" },
+  { "ref": "R 1kΩ", "qty": 1, "value": "1kΩ 1/4W", "role": "LED current limiting" },
+  { "ref": "Potentiometer 10kΩ", "qty": 1, "value": "10kΩ", "role": "Moisture threshold adjustment" },
+  { "ref": "Red LED", "qty": 1, "value": "5mm red", "role": "Dry soil indicator" },
+  { "ref": "Buzzer", "qty": 1, "value": "5V active buzzer", "role": "Audible alarm" },
+  { "ref": "Cu electrodes", "qty": 2, "value": "1mm copper wire / 5cm", "role": "Soil moisture probes" },
+  { "ref": "C 100nF", "qty": 1, "value": "100nF ceramic", "role": "Power decoupling" },
+  { "ref": "Power", "qty": 1, "value": "5V or 9V", "role": "Circuit power input" }
 ]

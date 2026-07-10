@@ -265,6 +265,101 @@
       border-color: #9ca3af;
     }
 
+    .vote-widget {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #f9fafb;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .vote-widget-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .vote-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vote-like-btn {
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #374151;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .vote-like-btn:hover {
+      border-color: #9ca3af;
+      color: #111827;
+    }
+
+    .vote-like-btn.active {
+      background: #eef2ff;
+      border-color: #a5b4fc;
+      color: #3730a3;
+    }
+
+    .vote-like-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .vote-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .vote-star {
+      border: 0;
+      background: transparent;
+      color: #d1d5db;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 1px;
+    }
+
+    .vote-star.active {
+      color: #f59e0b;
+    }
+
+    .vote-star:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .vote-summary {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #4b5563;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+
+    .vote-hint {
+      margin: 6px 0 0;
+      color: #6b7280;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+    }
+
     .panel {
       border: 1px solid #e5e7eb;
       border-radius: 4px;
@@ -776,6 +871,45 @@
               </template>
             </div>
 
+            <div class="vote-widget">
+              <div class="vote-widget-title">Community Votes</div>
+              <div class="vote-actions">
+                <button
+                  type="button"
+                  class="vote-like-btn"
+                  :class="currentVoteState().userLiked ? 'active' : ''"
+                  @click="toggleLikeVote()"
+                  :disabled="voteBusy || !voteApiAvailable"
+                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
+                ></button>
+                <div class="vote-stars">
+                  <template x-for="star in [1,2,3,4,5]" :key="'blog-star-' + star">
+                    <button
+                      type="button"
+                      class="vote-star"
+                      :class="currentVoteState().userStars >= star ? 'active' : ''"
+                      :title="star + ' stars'"
+                      @click="setStarVote(star)"
+                      :disabled="voteBusy || !voteApiAvailable"
+                    >&#9733;</button>
+                  </template>
+                </div>
+              </div>
+              <div class="vote-summary">
+                <span x-text="currentVoteState().likes + ' likes'"></span>
+                <span>·</span>
+                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
+                <span>·</span>
+                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
+              </div>
+              <template x-if="!voteApiAvailable">
+                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
+              </template>
+              <template x-if="voteApiAvailable && currentVoteState().error">
+                <p class="vote-hint" x-text="currentVoteState().error"></p>
+              </template>
+            </div>
+
             <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">Overview</div>
@@ -875,6 +1009,44 @@
               Type: <strong x-text="selectedPart().type || 'Component'"></strong> ·
               Package: <span x-text="selectedPart().package || 'N/A'"></span> ·
               Manufacturer: <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
+            </div>
+            <div class="vote-widget">
+              <div class="vote-widget-title">Community Votes</div>
+              <div class="vote-actions">
+                <button
+                  type="button"
+                  class="vote-like-btn"
+                  :class="currentVoteState().userLiked ? 'active' : ''"
+                  @click="toggleLikeVote()"
+                  :disabled="voteBusy || !voteApiAvailable"
+                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
+                ></button>
+                <div class="vote-stars">
+                  <template x-for="star in [1,2,3,4,5]" :key="'part-star-' + star">
+                    <button
+                      type="button"
+                      class="vote-star"
+                      :class="currentVoteState().userStars >= star ? 'active' : ''"
+                      :title="star + ' stars'"
+                      @click="setStarVote(star)"
+                      :disabled="voteBusy || !voteApiAvailable"
+                    >&#9733;</button>
+                  </template>
+                </div>
+              </div>
+              <div class="vote-summary">
+                <span x-text="currentVoteState().likes + ' likes'"></span>
+                <span>·</span>
+                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
+                <span>·</span>
+                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
+              </div>
+              <template x-if="!voteApiAvailable">
+                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
+              </template>
+              <template x-if="voteApiAvailable && currentVoteState().error">
+                <p class="vote-hint" x-text="currentVoteState().error"></p>
+              </template>
             </div>
             <div class="detail-stack">
               <div class="part-card">
@@ -981,6 +1153,44 @@
                 <span class="tag" x-text="tag"></span>
               </template>
             </div>
+            <div class="vote-widget">
+              <div class="vote-widget-title">Community Votes</div>
+              <div class="vote-actions">
+                <button
+                  type="button"
+                  class="vote-like-btn"
+                  :class="currentVoteState().userLiked ? 'active' : ''"
+                  @click="toggleLikeVote()"
+                  :disabled="voteBusy || !voteApiAvailable"
+                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
+                ></button>
+                <div class="vote-stars">
+                  <template x-for="star in [1,2,3,4,5]" :key="'tutorial-star-' + star">
+                    <button
+                      type="button"
+                      class="vote-star"
+                      :class="currentVoteState().userStars >= star ? 'active' : ''"
+                      :title="star + ' stars'"
+                      @click="setStarVote(star)"
+                      :disabled="voteBusy || !voteApiAvailable"
+                    >&#9733;</button>
+                  </template>
+                </div>
+              </div>
+              <div class="vote-summary">
+                <span x-text="currentVoteState().likes + ' likes'"></span>
+                <span>·</span>
+                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
+                <span>·</span>
+                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
+              </div>
+              <template x-if="!voteApiAvailable">
+                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
+              </template>
+              <template x-if="voteApiAvailable && currentVoteState().error">
+                <p class="vote-hint" x-text="currentVoteState().error"></p>
+              </template>
+            </div>
             <div class="detail-stack">
               <div class="part-card">
                 <div class="detail-section-title">Overview</div>
@@ -1057,6 +1267,44 @@
               Category: <strong x-text="selectedTool().category"></strong> ·
               License: <span x-text="selectedTool().license || 'Free'"></span> ·
               Version: <span x-text="selectedTool().free_version || selectedTool().version || 'Free tier'"></span>
+            </div>
+            <div class="vote-widget">
+              <div class="vote-widget-title">Community Votes</div>
+              <div class="vote-actions">
+                <button
+                  type="button"
+                  class="vote-like-btn"
+                  :class="currentVoteState().userLiked ? 'active' : ''"
+                  @click="toggleLikeVote()"
+                  :disabled="voteBusy || !voteApiAvailable"
+                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
+                ></button>
+                <div class="vote-stars">
+                  <template x-for="star in [1,2,3,4,5]" :key="'tool-star-' + star">
+                    <button
+                      type="button"
+                      class="vote-star"
+                      :class="currentVoteState().userStars >= star ? 'active' : ''"
+                      :title="star + ' stars'"
+                      @click="setStarVote(star)"
+                      :disabled="voteBusy || !voteApiAvailable"
+                    >&#9733;</button>
+                  </template>
+                </div>
+              </div>
+              <div class="vote-summary">
+                <span x-text="currentVoteState().likes + ' likes'"></span>
+                <span>·</span>
+                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
+                <span>·</span>
+                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
+              </div>
+              <template x-if="!voteApiAvailable">
+                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
+              </template>
+              <template x-if="voteApiAvailable && currentVoteState().error">
+                <p class="vote-hint" x-text="currentVoteState().error"></p>
+              </template>
             </div>
             <div class="detail-stack">
               <div class="part-card">
@@ -1213,6 +1461,11 @@
         stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
         blogAssets: {},
         tutorialAssets: {},
+        voteApiBase: "/api/votes",
+        voteApiAvailable: false,
+        voteDeviceId: "",
+        votesByKey: {},
+        voteBusy: false,
 
         raw: {
           projects: [],
@@ -1229,6 +1482,9 @@
         },
 
         async init() {
+          this.voteApiAvailable = window.location.protocol === "http:" || window.location.protocol === "https:";
+          this.voteDeviceId = this.ensureVoteDeviceId();
+
           try {
             const [projects, componentsObj, tutorials, tools] = await Promise.all([
               fetch("data/projects_index.json").then(r => r.json()),
@@ -1377,6 +1633,178 @@
           this.isExpandedView = false;
         },
 
+        defaultVoteState() {
+          return {
+            likes: 0,
+            totalVotes: 0,
+            avgStars: 0,
+            userLiked: false,
+            userStars: 0,
+            loaded: false,
+            error: ""
+          };
+        },
+
+        formatVoteAverage(value) {
+          const n = Number(value || 0);
+          return Number.isFinite(n) ? n.toFixed(1) : "0.0";
+        },
+
+        ensureVoteDeviceId() {
+          const storageKey = "simo_vote_device_id_v1";
+          try {
+            const existing = localStorage.getItem(storageKey);
+            if (existing) {
+              return existing;
+            }
+
+            const generated = (typeof crypto !== "undefined" && crypto.randomUUID)
+              ? crypto.randomUUID()
+              : `anon-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+            localStorage.setItem(storageKey, generated);
+            return generated;
+          } catch (_) {
+            return `anon-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+          }
+        },
+
+        selectedVoteTarget() {
+          if (this.selectedBlogId) {
+            return { key: `blog:${this.selectedBlogId}` };
+          }
+          if (this.selectedTutorialId) {
+            return { key: `tutorial:${this.selectedTutorialId}` };
+          }
+          if (this.selectedPartRef) {
+            return { key: `part:${this.selectedPartRef}` };
+          }
+          if (this.selectedToolId) {
+            return { key: `tool:${this.selectedToolId}` };
+          }
+          return null;
+        },
+
+        upsertVoteState(key, payload = {}) {
+          const previous = this.votesByKey[key] || this.defaultVoteState();
+          this.votesByKey = {
+            ...this.votesByKey,
+            [key]: {
+              ...previous,
+              ...payload
+            }
+          };
+          return this.votesByKey[key];
+        },
+
+        currentVoteState() {
+          const target = this.selectedVoteTarget();
+          if (!target) {
+            return this.defaultVoteState();
+          }
+          return this.votesByKey[target.key] || this.defaultVoteState();
+        },
+
+        async loadVotesForKey(itemKey) {
+          if (!itemKey || !this.voteApiAvailable) {
+            return;
+          }
+
+          this.upsertVoteState(itemKey, { error: "" });
+
+          try {
+            const query = `${this.voteApiBase}?item=${encodeURIComponent(itemKey)}&device=${encodeURIComponent(this.voteDeviceId)}`;
+            const response = await fetch(query);
+            const data = await response.json();
+            if (!response.ok || !data.ok) {
+              throw new Error(data.error || "Unable to load votes.");
+            }
+
+            this.upsertVoteState(itemKey, {
+              likes: Number(data.stats && data.stats.likes || 0),
+              totalVotes: Number(data.stats && data.stats.totalVotes || 0),
+              avgStars: Number(data.stats && data.stats.avgStars || 0),
+              userLiked: !!(data.viewer && data.viewer.liked),
+              userStars: Number(data.viewer && data.viewer.stars || 0),
+              loaded: true,
+              error: ""
+            });
+          } catch (err) {
+            const message = err && err.message ? err.message : "Unable to load votes.";
+            this.upsertVoteState(itemKey, {
+              error: message
+            });
+          }
+        },
+
+        async voteForCurrent(liked, stars) {
+          const target = this.selectedVoteTarget();
+          if (!target) {
+            return;
+          }
+
+          if (!this.voteApiAvailable) {
+            this.upsertVoteState(target.key, {
+              error: "Voting is available on deployed domain only."
+            });
+            return;
+          }
+
+          if (this.voteBusy) {
+            return;
+          }
+
+          this.voteBusy = true;
+          this.upsertVoteState(target.key, { error: "" });
+
+          try {
+            const response = await fetch(this.voteApiBase, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                item: target.key,
+                deviceId: this.voteDeviceId,
+                liked: !!liked,
+                stars: Number(stars || 0)
+              })
+            });
+
+            const data = await response.json();
+            if (!response.ok || !data.ok) {
+              throw new Error(data.error || "Vote request failed.");
+            }
+
+            this.upsertVoteState(target.key, {
+              likes: Number(data.stats && data.stats.likes || 0),
+              totalVotes: Number(data.stats && data.stats.totalVotes || 0),
+              avgStars: Number(data.stats && data.stats.avgStars || 0),
+              userLiked: !!(data.viewer && data.viewer.liked),
+              userStars: Number(data.viewer && data.viewer.stars || 0),
+              loaded: true,
+              error: ""
+            });
+          } catch (err) {
+            const message = err && err.message ? err.message : "Vote request failed.";
+            this.upsertVoteState(target.key, {
+              error: message
+            });
+          } finally {
+            this.voteBusy = false;
+          }
+        },
+
+        async toggleLikeVote() {
+          const state = this.currentVoteState();
+          await this.voteForCurrent(!state.userLiked, state.userStars || 0);
+        },
+
+        async setStarVote(stars) {
+          const safeStars = Math.max(1, Math.min(5, Number(stars || 0)));
+          const state = this.currentVoteState();
+          await this.voteForCurrent(state.userLiked, safeStars);
+        },
+
         openBlog(id) {
           this.panelFocus = "blog";
           this.isExpandedView = false;
@@ -1385,6 +1813,7 @@
           if (project) {
             this.ensureBlogAssets(project);
           }
+          this.loadVotesForKey(`blog:${id}`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
@@ -1652,6 +2081,7 @@
           if (tutorial) {
             this.ensureTutorialAssets(tutorial);
           }
+          this.loadVotesForKey(`tutorial:${id}`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
@@ -1753,6 +2183,7 @@
           this.panelFocus = "parts";
           this.isExpandedView = false;
           this.selectedPartRef = ref;
+          this.loadVotesForKey(`part:${ref}`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
@@ -1824,6 +2255,7 @@
           this.panelFocus = "tools";
           this.isExpandedView = false;
           this.selectedToolId = id;
+          this.loadVotesForKey(`tool:${id}`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 

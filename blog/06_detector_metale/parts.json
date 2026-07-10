@@ -1,12 +1,12 @@
 [
-  { "ref": "BC547", "qty": 2, "value": "BC547B TO-92", "role": "Oscilator referință și oscilator search" },
-  { "ref": "R 10kΩ", "qty": 4, "value": "10kΩ 1/4W", "role": "Polarizare baze tranzistoare" },
-  { "ref": "R 1kΩ", "qty": 2, "value": "1kΩ 1/4W", "role": "Rezistențe colector" },
-  { "ref": "R 100Ω", "qty": 1, "value": "100Ω 1/4W", "role": "Serie difuzor" },
-  { "ref": "C 1nF", "qty": 2, "value": "1nF / 50V ceramic (C0G)", "role": "Tank circuit oscilator" },
-  { "ref": "C 100nF", "qty": 2, "value": "100nF ceramic", "role": "Decuplare alimentare" },
-  { "ref": "L referinta", "qty": 1, "value": "100 spire / 10cm diametru / 0.3mm CuEm", "role": "Bobina oscilator referință" },
-  { "ref": "L search coil", "qty": 1, "value": "50 spire / 20cm diametru / 0.5mm CuEm", "role": "Bobina de căutare" },
-  { "ref": "Difuzor", "qty": 1, "value": "8Ω piezo sau difuzor mic", "role": "Ieșire audio bătăi" },
-  { "ref": "Alimentare", "qty": 1, "value": "9V baterie", "role": "Alimentare portabilă" }
+  { "ref": "BC547", "qty": 2, "value": "BC547B TO-92", "role": "Reference oscillator and search oscillator" },
+  { "ref": "R 10kΩ", "qty": 4, "value": "10kΩ 1/4W", "role": "Transistor base biasing" },
+  { "ref": "R 1kΩ", "qty": 2, "value": "1kΩ 1/4W", "role": "Collector resistors" },
+  { "ref": "R 100Ω", "qty": 1, "value": "100Ω 1/4W", "role": "Series speaker resistor" },
+  { "ref": "C 1nF", "qty": 2, "value": "1nF / 50V ceramic (C0G)", "role": "Oscillator tank circuit" },
+  { "ref": "C 100nF", "qty": 2, "value": "100nF ceramic", "role": "Power decoupling" },
+  { "ref": "L reference", "qty": 1, "value": "100 turns / 10cm diameter / 0.3mm enamel copper", "role": "Reference oscillator coil" },
+  { "ref": "L search coil", "qty": 1, "value": "50 turns / 20cm diameter / 0.5mm enamel copper", "role": "Search coil" },
+  { "ref": "Speaker", "qty": 1, "value": "8Ω piezo or small speaker", "role": "Beat-tone audio output" },
+  { "ref": "Power", "qty": 1, "value": "9V battery", "role": "Portable power source" }
 ]

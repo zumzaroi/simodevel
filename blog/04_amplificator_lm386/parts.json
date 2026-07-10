@@ -1,12 +1,12 @@
 [
-  { "ref": "LM386", "qty": 1, "value": "LM386N-1 DIP-8", "role": "Amplificator audio" },
-  { "ref": "C 250µF", "qty": 1, "value": "250µF / 16V electrolitic", "role": "Condensator de bypass (pin 7) — boost gain" },
-  { "ref": "C 10µF", "qty": 1, "value": "10µF / 16V electrolitic", "role": "Cuplaj ieșire spre difuzor" },
-  { "ref": "C 100nF", "qty": 2, "value": "100nF ceramic", "role": "Decuplare alimentare" },
-  { "ref": "R 10Ω", "qty": 1, "value": "10Ω 1/4W", "role": "Serie cu C snubber ieșire" },
-  { "ref": "C 47nF", "qty": 1, "value": "47nF ceramic", "role": "Snubber anti-oscilație ieșire" },
-  { "ref": "Potentiometru 10kΩ", "qty": 1, "value": "10kΩ log (audio)", "role": "Control volum intrare" },
-  { "ref": "Jack 3.5mm", "qty": 1, "value": "Mono sau stereo", "role": "Intrare audio" },
-  { "ref": "Difuzor", "qty": 1, "value": "8Ω / min 1W", "role": "Ieșire audio" },
-  { "ref": "Alimentare", "qty": 1, "value": "9V baterie sau adaptor", "role": "Alimentare circuit" }
+  { "ref": "LM386", "qty": 1, "value": "LM386N-1 DIP-8", "role": "Audio amplifier" },
+  { "ref": "C 250µF", "qty": 1, "value": "250µF / 16V electrolytic", "role": "Bypass capacitor (pin 7) - gain boost" },
+  { "ref": "C 10µF", "qty": 1, "value": "10µF / 16V electrolytic", "role": "Output coupling to speaker" },
+  { "ref": "C 100nF", "qty": 2, "value": "100nF ceramic", "role": "Power decoupling" },
+  { "ref": "R 10Ω", "qty": 1, "value": "10Ω 1/4W", "role": "Series resistor for output snubber capacitor" },
+  { "ref": "C 47nF", "qty": 1, "value": "47nF ceramic", "role": "Output anti-oscillation snubber" },
+  { "ref": "Potentiometer 10kΩ", "qty": 1, "value": "10kΩ log (audio)", "role": "Input volume control" },
+  { "ref": "3.5mm jack", "qty": 1, "value": "mono or stereo", "role": "Audio input" },
+  { "ref": "Speaker", "qty": 1, "value": "8Ω / min 1W", "role": "Audio output" },
+  { "ref": "Power", "qty": 1, "value": "9V battery or adapter", "role": "Circuit power input" }
 ]

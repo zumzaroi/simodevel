@@ -1,12 +1,12 @@
 [
-  { "ref": "LM317", "qty": 1, "value": "LM317T TO-220", "role": "Regulator tensiune ajustabil" },
-  { "ref": "R 240Ω", "qty": 1, "value": "240Ω 1W", "role": "R1 — setare tensiune minimă" },
-  { "ref": "Potentiometru 5kΩ", "qty": 1, "value": "5kΩ wirewound sau cermet", "role": "R2 — ajustare tensiune ieșire" },
-  { "ref": "C 0.1µF", "qty": 1, "value": "100nF / 50V ceramic", "role": "Decuplare intrare" },
-  { "ref": "C 1µF", "qty": 1, "value": "1µF / 50V tantal sau electrolitic", "role": "Stabilizare ieșire" },
-  { "ref": "C 2200µF", "qty": 1, "value": "2200µF / 50V electrolitic", "role": "Filtrare intrare (după redresor)" },
-  { "ref": "1N4148", "qty": 2, "value": "1N4148 sau 1N4001", "role": "Protecție la descărcare condensator" },
-  { "ref": "Transformator", "qty": 1, "value": "30V / 1A (sau mai mult)", "role": "Transformator de rețea" },
-  { "ref": "Punte redresoare", "qty": 1, "value": "W04 / 1A 400V", "role": "Redresor full-wave" },
-  { "ref": "Radiator", "qty": 1, "value": "TO-220 heatsink", "role": "Răcire LM317" }
+  { "ref": "LM317", "qty": 1, "value": "LM317T TO-220", "role": "Adjustable voltage regulator" },
+  { "ref": "R 240Ω", "qty": 1, "value": "240Ω 1W", "role": "R1 - minimum output setting" },
+  { "ref": "Potentiometer 5kΩ", "qty": 1, "value": "5kΩ wirewound or cermet", "role": "R2 - output voltage adjustment" },
+  { "ref": "C 0.1µF", "qty": 1, "value": "100nF / 50V ceramic", "role": "Input decoupling" },
+  { "ref": "C 1µF", "qty": 1, "value": "1µF / 50V tantalum or electrolytic", "role": "Output stabilization" },
+  { "ref": "C 2200µF", "qty": 1, "value": "2200µF / 50V electrolytic", "role": "Input filtering (after rectifier)" },
+  { "ref": "1N4148", "qty": 2, "value": "1N4148 or 1N4001", "role": "Capacitor discharge protection" },
+  { "ref": "Transformer", "qty": 1, "value": "30V / 1A (or higher)", "role": "Mains transformer" },
+  { "ref": "Bridge rectifier", "qty": 1, "value": "W04 / 1A 400V", "role": "Full-wave rectifier" },
+  { "ref": "Heatsink", "qty": 1, "value": "TO-220 heatsink", "role": "LM317 cooling" }
 ]

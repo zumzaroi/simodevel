@@ -1,12 +1,12 @@
 [
-  { "ref": "BC547", "qty": 1, "value": "BC547B", "role": "Oscilator RF Colpitts" },
-  { "ref": "trimmer 22pF", "qty": 1, "value": "22pF", "role": "Ajustare frecvență" },
+  { "ref": "BC547", "qty": 1, "value": "BC547B", "role": "Colpitts RF oscillator" },
+  { "ref": "Trimmer 22pF", "qty": 1, "value": "22pF", "role": "Frequency tuning" },
   { "ref": "C 10nF", "qty": 2, "value": "10nF / 50V ceramic", "role": "Tank circuit Colpitts" },
-  { "ref": "C 100nF", "qty": 1, "value": "100nF / 50V ceramic", "role": "Decuplare alimentare" },
-  { "ref": "R 10kΩ", "qty": 1, "value": "10kΩ 1/4W", "role": "Rezistență de bază" },
-  { "ref": "R 1kΩ", "qty": 1, "value": "1kΩ 1/4W", "role": "Rezistență de emitor" },
-  { "ref": "R 100Ω", "qty": 1, "value": "100Ω 1/4W", "role": "Rezistență colector" },
-  { "ref": "L antena", "qty": 1, "value": "5 spire / 6mm diametru / 1mm CuEm", "role": "Bobina oscilator + antenă" },
-  { "ref": "Jack 3.5mm", "qty": 1, "value": "stereo sau mono", "role": "Intrare audio" },
-  { "ref": "Alimentare", "qty": 1, "value": "9V baterie sau adaptor", "role": "Alimentare circuit" }
+  { "ref": "C 100nF", "qty": 1, "value": "100nF / 50V ceramic", "role": "Power decoupling" },
+  { "ref": "R 10kΩ", "qty": 1, "value": "10kΩ 1/4W", "role": "Base resistor" },
+  { "ref": "R 1kΩ", "qty": 1, "value": "1kΩ 1/4W", "role": "Emitter resistor" },
+  { "ref": "R 100Ω", "qty": 1, "value": "100Ω 1/4W", "role": "Collector resistor" },
+  { "ref": "L antenna", "qty": 1, "value": "5 turns / 6mm diameter / 1mm enamel copper", "role": "Oscillator coil + antenna" },
+  { "ref": "3.5mm jack", "qty": 1, "value": "stereo or mono", "role": "Audio input" },
+  { "ref": "Power", "qty": 1, "value": "9V battery or adapter", "role": "Circuit power input" }
 ]

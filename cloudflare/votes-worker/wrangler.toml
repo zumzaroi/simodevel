@@ -1,0 +1,12 @@
+name = "simodevel-votes-api"
+main = "src/worker.js"
+compatibility_date = "2026-07-10"
+routes = [
+	{ pattern = "simodevel.com/api/*", zone_name = "simodevel.com" },
+	{ pattern = "www.simodevel.com/api/*", zone_name = "simodevel.com" }
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "simodevel_votes"
+database_id = "de15e9fd-6473-47cc-8adf-597e2a28c1ad"
