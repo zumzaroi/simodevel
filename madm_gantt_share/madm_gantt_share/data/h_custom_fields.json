@@ -1,0 +1,703 @@
+{
+  "custom_fields": [
+    "addr",
+    "commute_time",
+    "orar",
+    "trans"
+  ],
+  "h_data": [
+    {
+      "h": "Colegiul Economic „A.D.Xenopol”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Economic „Costin C. Kiriţescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Economic „Hermes”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Economic „Nicolae Kretzulescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Economic „Viilor”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Economic „Virgil Madgearu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul German „Goethe”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional de Informatică „Tudor Vianu”",
+      "addr": "Str Arhitect Ion Mincu 10",
+      "commute_time": "46m",
+      "orar": "",
+      "trans": "416, M2 "
+    },
+    {
+      "h": "Colegiul Naţional „Aurel Vlaicu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Elena Cuza”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Gheorghe Lazăr”",
+      "addr": "Cismigiu",
+      "commute_time": "1h 13 min",
+      "orar": "13.30 (IX-X),7.30 (XI-XII)",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Gheorghe Şincai”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Grigore Moisil”",
+      "addr": "Bulevardul Timișoara 33",
+      "commute_time": "1h 8min",
+      "orar": "",
+      "trans": "416,M2, tram 1??"
+    },
+    {
+      "h": "Colegiul Naţional „I.L.Caragiale”",
+      "addr": "Calea Dorobanți 163",
+      "commute_time": "43",
+      "orar": "8.00 ? vech",
+      "trans": "416, metrou Aviatorilor, 335 la nevoie"
+    },
+    {
+      "h": "Colegiul Naţional „Ion Creangă”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Mihai Eminescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Octav Onicescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Naţional „Sfântul Sava”",
+      "addr": "str. G-ral Berthelot, nr. 23, sector 1",
+      "commute_time": "50m",
+      "orar": "dimineata ora 8.00, nu lasa in clasa",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național Bilingv „George Coșbuc”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Cantemir Vodă”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Emil Racoviță”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Ion Neculce”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Iulia Hașdeu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Matei Basarab”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Mihai Viteazul”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Spiru Haret”",
+      "addr": "Str. Italiană 17, in zona Romana",
+      "commute_time": "43m",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Tudor Vladimirescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Victor Babeș”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Național „Școala Centrală”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Romano-Catolic „Sfântul Iosif”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic de Aeronautică „Henri Coandă”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic de Arhitectură Şi Lucrări Publice „Ioan N. Socolescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic de Industrie Alimentară „Dumitru Moţoc”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic de Poştă și Telecomunicaţii „Gheorghe Airinei”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic Energetic",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic Feroviar „Mihai I”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Anghel Saligny”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Carol I”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Costin D. Nenițescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Dimitrie Leonida”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Dinicu Golescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Edmond Nicolau”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Gheorghe Asachi”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Iuliu Maniu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Media”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Mihai Bravu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Mircea cel Bătrân”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Petru Maior”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnic „Valter Mărăcineanu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnologic „Grigore Cerchez”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Colegiul Tehnologic „Viaceslav Harnaj”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul cu Program Sportiv „Mircea Eliade”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Dimitrie Paciurea",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Economic Nr. 1",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "LICEUL FEG",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Greco-Catolic „Timotei Cipariu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "LICEUL PARTICULAR ONICESCU-MIHOC",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic de Metrologie „Traian Vuia”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic Theodor Pallady",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Constantin Brâncuși”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Dacia”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Dimitrie Gusti”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Dragomir Hurmuzescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Elie Radu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Ion I.C. Brătianu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Nikola Tesla”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Petru Poni”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Sf. Antim Ivireanu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Tehnologic „Sfântul Pantelimon”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teologic Adventist „Ştefan Demetrescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teologic Baptist „Logos”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic Atlas",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic Bilingv „Ita Wegman”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic Bilingv „Miguel de Cervantes”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic Bulgar „Hristo Botev”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic German „Idees”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "LICEUL TEORETIC NAȚIONAL",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Ady Endre”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Alexandru Ioan Cuza”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Alexandru Vlahuţă”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Benjamin Franklin”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „C.A. Rosetti”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Constantin Brâncoveanu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Dante Alighieri”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Decebal”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Dimitrie Bolintineanu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Eugen Lovinescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „George Călinescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Ion Barbu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Jean Monnet”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Luca”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Lucian Blaga”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Marin Preda”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Mihail Sadoveanu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Nichita Stănescu”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Nicolae Iorga”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Traian”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul Teoretic „Ștefan Odobleja”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    },
+    {
+      "h": "Liceul „Profesia”",
+      "addr": "",
+      "commute_time": "",
+      "orar": "",
+      "trans": ""
+    }
+  ]
+}
