@@ -760,9 +760,9 @@
       </div>
     </section>
 
-    <aside>
+    <aside style="display:flex; flex-direction:column;">
       <!-- Compact Blog -->
-      <div class="panel" x-show="showCompact('blog') && visible.projects.length > 0">
+      <div class="panel" :style="{ order: compactOrder('blog') }" x-show="showCompact('blog') && visible.projects.length > 0">
         <div class="sec-title">Blogs <span class="count-pill" x-text="visible.projects.length"></span></div>
         <div class="compact-list">
           <template x-for="item in visible.projects.slice(0, 8)" :key="item.id + '-compact-blog'">
@@ -778,7 +778,7 @@
       </div>
 
       <!-- Compact Parts -->
-      <div class="panel" x-show="showCompact('parts') && visible.components.length > 0">
+      <div class="panel" :style="{ order: compactOrder('parts') }" x-show="showCompact('parts') && visible.components.length > 0">
         <div class="sec-title">Parts <span class="count-pill" x-text="visible.components.length"></span></div>
         <div class="compact-list">
           <template x-for="part in visible.components.slice(0, 10)" :key="part._ref + '-compact-part'">
@@ -793,7 +793,7 @@
       </div>
 
       <!-- Compact Tutorials -->
-      <div class="panel" x-show="showCompact('tutorials') && visible.tutorials.length > 0">
+      <div class="panel" :style="{ order: compactOrder('tutorials') }" x-show="showCompact('tutorials') && visible.tutorials.length > 0">
         <div class="sec-title">Tutorials <span class="count-pill" x-text="visible.tutorials.length"></span></div>
         <div class="compact-list">
           <template x-for="item in visible.tutorials.slice(0, 8)" :key="item.id + '-compact-tut'">
@@ -809,7 +809,7 @@
       </div>
 
       <!-- Compact Tools -->
-      <div class="panel" x-show="showCompact('tools') && visible.tools.length > 0">
+      <div class="panel" :style="{ order: compactOrder('tools') }" x-show="showCompact('tools') && visible.tools.length > 0">
         <div class="sec-title">Tools <span class="count-pill" x-text="visible.tools.length"></span></div>
         <div class="compact-list">
           <template x-for="tool in visible.tools.slice(0, 8)" :key="tool.id + '-compact-tool'">
@@ -823,7 +823,7 @@
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" style="order: 99;">
         <div class="sec-title">Register Project</div>
         <p class="card-desc">Use our structured submission template to send your project. No account required.</p>
         <a class="buy-link" href="contribute.html">Open Register Form</a>
@@ -994,6 +994,7 @@
         openBlog(id) {
           this.panelFocus = "blog";
           this.selectedBlogId = id;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         selectedBlog() {
@@ -1006,6 +1007,7 @@
         openTutorial(id) {
           this.panelFocus = "tutorials";
           this.selectedTutorialId = id;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         selectedTutorial() {
@@ -1016,6 +1018,7 @@
         openPart(ref) {
           this.panelFocus = "parts";
           this.selectedPartRef = ref;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         selectedPart() {
@@ -1026,6 +1029,7 @@
         openTool(id) {
           this.panelFocus = "tools";
           this.selectedToolId = id;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         selectedTool() {
@@ -1072,7 +1076,14 @@
           if (active === "default") {
             return name === "tutorials" || name === "tools";
           }
-          return active !== name;
+          return true;
+        },
+
+        compactOrder(name) {
+          const active = this.activePanel();
+          if (active === name) return 0;
+          const order = ['blog', 'parts', 'tutorials', 'tools'];
+          return order.indexOf(name) + 1;
         }
       };
     }
