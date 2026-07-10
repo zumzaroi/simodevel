@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - SimoDevel</title>
+  <meta name="description" content="About SimoDevel - a non-profit learning initiative for electronics and mechatronics education.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      background: #ffffff;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    .topbar {
+      background: #111827;
+      border-bottom: 3px solid #dc2626;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 900;
+      text-decoration: none;
+      letter-spacing: -0.4px;
+    }
+
+    .logo span { color: #dc2626; }
+
+    .nav-btn {
+      background: transparent;
+      border: 0;
+      color: #d1d5db;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      color: #ffffff;
+      border-color: #dc2626;
+    }
+
+    .nav-btn.active {
+      color: #ffffff;
+      border-bottom: 2px solid #dc2626;
+    }
+
+    .register-link {
+      color: #fca5a5;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .register-link:hover { color: #fecaca; }
+
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 36px 16px 48px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #111827;
+      border-left: 4px solid #dc2626;
+      padding-left: 14px;
+      margin-bottom: 32px;
+    }
+
+    .section-block {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #ffffff;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-family: "Courier New", monospace;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .section-label.red { border-color: #dc2626; color: #dc2626; }
+
+    .body-text {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.7;
+      margin: 0 0 10px;
+    }
+
+    .body-text:last-child { margin-bottom: 0; }
+
+    .disclaimer-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-left: 3px solid #dc2626;
+      border-radius: 3px;
+      background: #fafafa;
+      margin-bottom: 10px;
+    }
+
+    .disclaimer-item:last-child { margin-bottom: 0; }
+
+    .disclaimer-icon {
+      font-size: 15px;
+      line-height: 1.6;
+      flex-shrink: 0;
+    }
+
+    .disclaimer-text {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.6;
+    }
+
+    .disclaimer-text strong {
+      color: #111827;
+    }
+
+    .contact-box {
+      margin-top: 12px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      padding: 10px 14px;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .contact-box a {
+      color: #111827;
+      font-weight: 800;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 800;
+      border: 1px solid #d1d5db;
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 2px;
+      padding: 2px 6px;
+      margin-right: 4px;
+      margin-top: 4px;
+    }
+
+    footer {
+      margin-top: 0;
+      background: #111827;
+      color: #9ca3af;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <a href="index.html" class="logo">Simo<span>Devel</span></a>
+      <div class="flex flex-wrap items-center gap-4">
+        <a class="nav-btn" href="index.html">Blogs</a>
+        <a class="nav-btn" href="index.html">Parts</a>
+        <a class="nav-btn" href="index.html">Tutorials</a>
+        <a class="nav-btn" href="index.html">Tools</a>
+        <a class="nav-btn active" href="about.html">About</a>
+        <a class="register-link" href="contribute.html">Register Your Project</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <h1 class="page-title">About SimoDevel</h1>
+
+    <!-- Mission -->
+    <div class="section-block">
+      <div class="section-label">Our Mission</div>
+      <p class="body-text">
+        SimoDevel is a non-profit learning initiative built by people passionate about electronics and mechatronics.
+        We support learners from absolute beginner level to advanced design and simulation practice.
+      </p>
+      <p class="body-text">
+        Our goal is simple: provide practical, technical, and free resources so anyone can build real skills —
+        from first SPICE circuit to complete embedded projects. We value open collaboration, clear engineering
+        documentation, and hands-on experimentation.
+      </p>
+      <p class="body-text">
+        All content on SimoDevel is produced voluntarily by contributors who share the same commitment to accessible,
+        high-quality technical education. No paywalls. No mandatory accounts. No advertising-driven content.
+      </p>
+      <div style="margin-top:14px;">
+        <span class="badge">Non-profit</span>
+        <span class="badge">Open collaboration</span>
+        <span class="badge">Electronics</span>
+        <span class="badge">Mechatronics</span>
+        <span class="badge">SPICE simulation</span>
+        <span class="badge">Embedded systems</span>
+      </div>
+    </div>
+
+    <!-- Copyright & Legal -->
+    <div class="section-block">
+      <div class="section-label">Copyright &amp; Intellectual Property</div>
+      <p class="body-text">
+        <strong>Copyright &copy; 2026 SimoDevel.</strong> All rights reserved.
+      </p>
+      <p class="body-text">
+        All original content published on SimoDevel — including but not limited to text, schematics, project
+        documentation, tutorials, illustrations, and data files — is protected by applicable copyright law.
+        Reproduction, redistribution, or commercial use of any part of this content without the explicit written
+        consent of the original authors and SimoDevel is strictly prohibited.
+      </p>
+      <p class="body-text">
+        Educational and non-commercial sharing is permitted provided that proper attribution is given to SimoDevel
+        and the original contributor, and that no modifications are presented as original work without disclosure.
+        When in doubt, contact us before republishing.
+      </p>
+      <p class="body-text" style="color:#6b7280; font-size:12px; font-family:'Courier New',monospace; margin-top:10px;">
+        SimoDevel is not affiliated with any commercial entity. References to third-party tools, components,
+        or manufacturers are for educational purposes only and do not constitute endorsement.
+      </p>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="section-block">
+      <div class="section-label red">Community Guidelines &amp; Disclaimer</div>
+      <p class="body-text" style="margin-bottom:14px;">
+        SimoDevel is an open community platform. Participation implies acceptance of the following conduct standards.
+        Violations may result in immediate removal of content and permanent suspension from the platform.
+      </p>
+
+      <div class="disclaimer-item">
+        <span class="disclaimer-icon">&#9888;</span>
+        <div class="disclaimer-text">
+          <strong>No harmful or offensive content.</strong> SimoDevel does not tolerate content that is defamatory,
+          discriminatory, offensive, or harmful to any individual, group, or community — regardless of the medium
+          (text, images, schematics, comments, or project descriptions).
+        </div>
+      </div>
+
+      <div class="disclaimer-item">
+        <span class="disclaimer-icon">&#9432;</span>
+        <div class="disclaimer-text">
+          <strong>Contributor responsibility.</strong> Each person who submits content to SimoDevel is solely and
+          fully responsible for the accuracy, legality, and appropriateness of what they publish. SimoDevel acts as
+          a hosting platform and does not pre-screen submissions. Accidental or deliberate submission of inaccurate,
+          misleading, or harmful information remains the liability of the submitting contributor.
+        </div>
+      </div>
+
+      <div class="disclaimer-item">
+        <span class="disclaimer-icon">&#128275;</span>
+        <div class="disclaimer-text">
+          <strong>No plagiarism or copyright infringement.</strong> Submitting content that belongs to a third party
+          without proper attribution or permission is a violation of both platform policy and applicable law.
+          SimoDevel reserves the right to remove any content found to infringe on intellectual property rights.
+        </div>
+      </div>
+
+      <div class="disclaimer-item">
+        <span class="disclaimer-icon">&#128204;</span>
+        <div class="disclaimer-text">
+          <strong>Report abuse.</strong> If you encounter content that violates these guidelines — including
+          defamatory statements, illegal material, plagiarism, or misuse of the platform — please report it
+          immediately. All reports are reviewed confidentially.
+        </div>
+      </div>
+
+      <div class="contact-box">
+        Abuse reports &amp; legal inquiries:
+        <a href="mailto:simodevel@protonmail.com">simodevel@protonmail.com</a>
+        &nbsp;&mdash;&nbsp; We respond within 48 hours.
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    SimoDevel - Non-profit technical platform for electronics and mechatronics learning.
+    <br style="margin-bottom:4px;">
+    <a href="about.html" style="color:#6b7280; text-decoration:none; border-bottom:1px solid #374151;">Copyright &copy; 2026 | SimoDevel</a>
+  </footer>
+</body>
+</html>

@@ -67,6 +67,22 @@
 
     .register-link:hover { color: #fecaca; }
 
+    .nav-link {
+      color: #d1d5db;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+      border-color: #dc2626;
+    }
+
     .search-wrap {
       background: #f9fafb;
       border-bottom: 1px solid #e5e7eb;
@@ -428,6 +444,7 @@
         <button class="nav-btn" :class="isNavActive('parts') ? 'active' : ''" @click="setPanel('parts')">Parts</button>
         <button class="nav-btn" :class="isNavActive('tutorials') ? 'active' : ''" @click="setPanel('tutorials')">Tutorials</button>
         <button class="nav-btn" :class="isNavActive('tools') ? 'active' : ''" @click="setPanel('tools')">Tools</button>
+        <a class="nav-link" href="about.html">About</a>
         <a class="register-link" href="contribute.html">Register Your Project</a>
       </div>
     </div>
@@ -847,6 +864,8 @@
 
   <footer>
     SimoDevel - Non-profit technical platform for electronics and mechatronics learning.
+    <br style="margin-bottom:4px;">
+    <a href="about.html" style="color:#6b7280; text-decoration:none; border-bottom:1px solid #374151;">Copyright &copy; 2026 | SimoDevel</a>
   </footer>
 
   <script>
