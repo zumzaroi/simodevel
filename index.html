@@ -273,15 +273,6 @@
       margin-top: 10px;
     }
 
-    .vote-widget-title {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-
     .vote-actions {
       display: flex;
       flex-wrap: wrap;
@@ -289,38 +280,12 @@
       gap: 8px;
     }
 
-    .vote-like-btn {
-      border: 1px solid #d1d5db;
-      border-radius: 999px;
-      background: #ffffff;
-      color: #374151;
-      font-family: "Courier New", monospace;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    .vote-like-btn:hover {
-      border-color: #9ca3af;
-      color: #111827;
-    }
-
-    .vote-like-btn.active {
-      background: #eef2ff;
-      border-color: #a5b4fc;
-      color: #3730a3;
-    }
-
-    .vote-like-btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
     .vote-stars {
       display: inline-flex;
       align-items: center;
       gap: 2px;
+      position: relative;
+      top: -1px;
     }
 
     .vote-star {
@@ -342,22 +307,23 @@
       cursor: not-allowed;
     }
 
-    .vote-summary {
-      margin-top: 6px;
+    .vote-inline-summary {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       color: #4b5563;
       font-family: "Courier New", monospace;
       font-size: 11px;
-      flex-wrap: wrap;
     }
 
-    .vote-hint {
-      margin: 6px 0 0;
-      color: #6b7280;
-      font-family: "Courier New", monospace;
-      font-size: 11px;
+    .vote-avg {
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .vote-count {
+      color: #9ca3af;
+      font-weight: 700;
     }
 
     .list-vote-quiet {
@@ -375,19 +341,28 @@
       color: #d1d5db;
       font-size: 11px;
       line-height: 1;
+      position: relative;
+      top: -1px;
     }
 
     .list-vote-star.active {
       color: #f59e0b;
     }
 
-    .list-vote-likes {
+    .list-vote-avg {
       margin-left: 6px;
-      color: #6b7280;
+      color: #4b5563;
       font-family: "Courier New", monospace;
       font-size: 10px;
       font-weight: 700;
-      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .list-vote-count {
+      color: #9ca3af;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 700;
       letter-spacing: 0.03em;
     }
 
@@ -903,16 +878,7 @@
             </div>
 
             <div class="vote-widget">
-              <div class="vote-widget-title">Community Votes</div>
               <div class="vote-actions">
-                <button
-                  type="button"
-                  class="vote-like-btn"
-                  :class="currentVoteState().userLiked ? 'active' : ''"
-                  @click="toggleLikeVote()"
-                  :disabled="voteBusy || !voteApiAvailable"
-                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
-                ></button>
                 <div class="vote-stars">
                   <template x-for="star in [1,2,3,4,5]" :key="'blog-star-' + star">
                     <button
@@ -925,20 +891,11 @@
                     >&#9733;</button>
                   </template>
                 </div>
+                <div class="vote-inline-summary">
+                  <span class="vote-avg" x-text="formatVoteAverage(currentVoteState().avgStars)"></span>
+                  <span class="vote-count" x-text="'(' + Number(currentVoteState().totalVotes || 0) + ')'"></span>
+                </div>
               </div>
-              <div class="vote-summary">
-                <span x-text="currentVoteState().likes + ' likes'"></span>
-                <span>·</span>
-                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
-                <span>·</span>
-                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
-              </div>
-              <template x-if="!voteApiAvailable">
-                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
-              </template>
-              <template x-if="voteApiAvailable && currentVoteState().error">
-                <p class="vote-hint" x-text="currentVoteState().error"></p>
-              </template>
             </div>
 
             <div class="detail-stack">
@@ -1005,7 +962,8 @@
                   <template x-for="star in [1,2,3,4,5]" :key="'blog-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, blogVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
-                  <span class="list-vote-likes" x-text="blogVoteSummary(item.id).likes + ' likes'"></span>
+                  <span class="list-vote-avg" x-text="formatVoteAverage(blogVoteSummary(item.id).avgStars)"></span>
+                  <span class="list-vote-count" x-text="'(' + Number(blogVoteSummary(item.id).totalVotes || 0) + ')'"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
@@ -1153,16 +1111,7 @@
               </template>
             </div>
             <div class="vote-widget">
-              <div class="vote-widget-title">Community Votes</div>
               <div class="vote-actions">
-                <button
-                  type="button"
-                  class="vote-like-btn"
-                  :class="currentVoteState().userLiked ? 'active' : ''"
-                  @click="toggleLikeVote()"
-                  :disabled="voteBusy || !voteApiAvailable"
-                  x-text="currentVoteState().userLiked ? 'LIKED' : 'LIKE'"
-                ></button>
                 <div class="vote-stars">
                   <template x-for="star in [1,2,3,4,5]" :key="'tutorial-star-' + star">
                     <button
@@ -1175,20 +1124,11 @@
                     >&#9733;</button>
                   </template>
                 </div>
+                <div class="vote-inline-summary">
+                  <span class="vote-avg" x-text="formatVoteAverage(currentVoteState().avgStars)"></span>
+                  <span class="vote-count" x-text="'(' + Number(currentVoteState().totalVotes || 0) + ')'"></span>
+                </div>
               </div>
-              <div class="vote-summary">
-                <span x-text="currentVoteState().likes + ' likes'"></span>
-                <span>·</span>
-                <span x-text="currentVoteState().totalVotes + ' ratings'"></span>
-                <span>·</span>
-                <span x-text="'avg ' + formatVoteAverage(currentVoteState().avgStars) + '/5'"></span>
-              </div>
-              <template x-if="!voteApiAvailable">
-                <p class="vote-hint">Voting is enabled on deployed domain (HTTP/HTTPS).</p>
-              </template>
-              <template x-if="voteApiAvailable && currentVoteState().error">
-                <p class="vote-hint" x-text="currentVoteState().error"></p>
-              </template>
             </div>
             <div class="detail-stack">
               <div class="part-card">
@@ -1231,7 +1171,8 @@
                   <template x-for="star in [1,2,3,4,5]" :key="'tutorial-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, tutorialVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
-                  <span class="list-vote-likes" x-text="tutorialVoteSummary(item.id).likes + ' likes'"></span>
+                  <span class="list-vote-avg" x-text="formatVoteAverage(tutorialVoteSummary(item.id).avgStars)"></span>
+                  <span class="list-vote-count" x-text="'(' + Number(tutorialVoteSummary(item.id).totalVotes || 0) + ')'"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
@@ -1606,10 +1547,8 @@
 
         defaultVoteState() {
           return {
-            likes: 0,
             totalVotes: 0,
             avgStars: 0,
-            userLiked: false,
             userStars: 0,
             loaded: false,
             loading: false,
@@ -1654,7 +1593,7 @@
 
         formatVoteAverage(value) {
           const n = Number(value || 0);
-          return Number.isFinite(n) ? n.toFixed(1) : "0.0";
+          return Number.isFinite(n) ? n.toFixed(2) : "0.00";
         },
 
         resolveVoteApiBase() {
@@ -1756,10 +1695,8 @@
             const data = await this.parseVoteApiResponse(response, "Unable to load votes.");
 
             this.upsertVoteState(itemKey, {
-              likes: Number(data.stats && data.stats.likes || 0),
               totalVotes: Number(data.stats && data.stats.totalVotes || 0),
               avgStars: Number(data.stats && data.stats.avgStars || 0),
-              userLiked: !!(data.viewer && data.viewer.liked),
               userStars: Number(data.viewer && data.viewer.stars || 0),
               loaded: true,
               loading: false,
@@ -1774,7 +1711,7 @@
           }
         },
 
-        async voteForCurrent(liked, stars) {
+        async voteForCurrent(stars) {
           const target = this.selectedVoteTarget();
           if (!target) {
             return;
@@ -1803,7 +1740,7 @@
               body: JSON.stringify({
                 item: target.key,
                 deviceId: this.voteDeviceId,
-                liked: !!liked,
+                liked: false,
                 stars: Number(stars || 0)
               })
             });
@@ -1811,10 +1748,8 @@
             const data = await this.parseVoteApiResponse(response, "Vote request failed.");
 
             this.upsertVoteState(target.key, {
-              likes: Number(data.stats && data.stats.likes || 0),
               totalVotes: Number(data.stats && data.stats.totalVotes || 0),
               avgStars: Number(data.stats && data.stats.avgStars || 0),
-              userLiked: !!(data.viewer && data.viewer.liked),
               userStars: Number(data.viewer && data.viewer.stars || 0),
               loaded: true,
               loading: false,
@@ -1831,15 +1766,9 @@
           }
         },
 
-        async toggleLikeVote() {
-          const state = this.currentVoteState();
-          await this.voteForCurrent(!state.userLiked, state.userStars || 0);
-        },
-
         async setStarVote(stars) {
           const safeStars = Math.max(1, Math.min(5, Number(stars || 0)));
-          const state = this.currentVoteState();
-          await this.voteForCurrent(state.userLiked, safeStars);
+          await this.voteForCurrent(safeStars);
         },
 
         openBlog(id) {
