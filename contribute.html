@@ -89,7 +89,7 @@
       </p>
       <p class="font-mono text-xs text-gray-400 mt-2">
         Non-profit · Open source · No account required · Submissions sent to
-        <a href="mailto:contribute@simodevel.com" class="text-gray-600 hover:underline">contribute@simodevel.com</a>
+        <a href="mailto:simodevel@protonmail.com" class="text-gray-600 hover:underline">simodevel@protonmail.com</a>
       </p>
     </div>
   </div>
@@ -104,7 +104,17 @@
     </div>
     <div x-show="status === 'err'" x-cloak class="alert-err mb-6">
       <strong>Submission failed.</strong> Please try again or email directly to
-      <a href="mailto:contribute@simodevel.com" class="underline">contribute@simodevel.com</a>.
+      <a href="mailto:simodevel@protonmail.com" class="underline">simodevel@protonmail.com</a>.
+      <template x-if="errorMessage">
+        <div class="mt-2 font-mono text-xs" x-text="errorMessage"></div>
+      </template>
+    </div>
+    <div x-show="status === 'cfg'" x-cloak class="alert-err mb-6">
+      <strong>Form is not configured yet.</strong>
+      Add your Web3Forms access key in this file, then retry.
+      <div class="mt-2 font-mono text-xs">
+        Replace <strong>REPLACE_WITH_WEB3FORMS_KEY</strong> in the hidden input named access_key.
+      </div>
     </div>
 
     <form
@@ -115,9 +125,9 @@
       x-cloak
     >
       <!-- Web3Forms access key — replace with your key from web3forms.com -->
-      <input type="hidden" name="access_key" value="REPLACE_WITH_WEB3FORMS_KEY">
+      <input type="hidden" name="access_key" value="3ee3fae9-f0a8-40dc-916f-fc58bc30af39">
       <input type="hidden" name="subject"    value="[SimoDevel] New Project Submission">
-      <input type="hidden" name="to"         value="contribute@simodevel.com">
+      <input type="hidden" name="to"         value="simodevel@protonmail.com">
       <input type="hidden" name="from_name"  x-model="form.name">
 
       <!-- ── STEP 1: WHO ARE YOU ── -->
@@ -304,6 +314,7 @@
         dragging: false,
         submitting: false,
         status: null,   // null | 'ok' | 'err'
+        errorMessage: '',
         imageFiles: [],
 
         form: {
@@ -349,6 +360,14 @@
         async submit() {
           this.submitting = true;
           this.status = null;
+          this.errorMessage = '';
+
+          const accessKey = document.querySelector('[name="access_key"]').value;
+          if (!accessKey || accessKey === 'REPLACE_WITH_WEB3FORMS_KEY') {
+            this.status = 'cfg';
+            this.submitting = false;
+            return;
+          }
 
           // save contributor to cookie
           setCookie(COOKIE_NAME, JSON.stringify({
@@ -358,7 +377,7 @@
 
           // build FormData for Web3Forms
           const fd = new FormData();
-          fd.append('access_key',       document.querySelector('[name="access_key"]').value);
+          fd.append('access_key',       accessKey);
           fd.append('subject',          `[SimoDevel] New Project: ${this.form.title}`);
           fd.append('from_name',        this.form.name);
           fd.append('email',            this.form.email);
@@ -388,9 +407,15 @@
               body: fd
             });
             const data = await res.json();
-            this.status = data.success ? 'ok' : 'err';
+            if (data.success) {
+              this.status = 'ok';
+            } else {
+              this.status = 'err';
+              this.errorMessage = data.message || 'Web3Forms rejected the submission.';
+            }
           } catch(_) {
             this.status = 'err';
+            this.errorMessage = 'Network/API error while contacting Web3Forms.';
           }
 
           this.submitting = false;
