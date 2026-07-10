@@ -130,6 +130,33 @@
       gap: 22px;
     }
 
+    .layout.focus-mode {
+      grid-template-columns: 1fr;
+      max-width: 1280px;
+    }
+
+    .layout.expanded-view {
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 16px 10px;
+      overflow: visible;
+      background: transparent;
+      z-index: auto;
+    }
+
+    .layout.expanded-view > aside {
+      display: none;
+    }
+
+    .layout.expanded-view > section {
+      width: 100%;
+    }
+
     @media (max-width: 1024px) {
       .layout { grid-template-columns: 1fr; }
     }
@@ -173,6 +200,43 @@
       color: #111827;
       text-decoration: underline;
       text-underline-offset: 2px;
+    }
+
+    .topic-toolbar {
+      position: sticky;
+      top: 6px;
+      z-index: 12;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+    }
+
+    .topic-toggle {
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #4b5563;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 6px rgba(17, 24, 39, 0.08);
+      transition: all 0.15s ease;
+    }
+
+    .topic-toggle:hover {
+      color: #111827;
+      border-color: #9ca3af;
+      background: #ffffff;
+    }
+
+    .topic-toggle.active {
+      color: #ffffff;
+      background: #111827;
+      border-color: #111827;
     }
 
     .panel {
@@ -646,7 +710,7 @@
     </div>
   </div>
 
-  <main class="layout" x-cloak>
+  <main class="layout" :class="{ 'focus-mode': hasSelectedTopic() && isExpandedView, 'expanded-view': hasSelectedTopic() && isExpandedView }" x-cloak>
     <section>
       <!-- LARGE BLOG -->
       <div class="panel" x-show="showLarge('blog') && visible.projects.length > 0">
@@ -661,7 +725,16 @@
         </div>
         <template x-if="selectedBlog()">
           <article>
-            <button class="buy-link" @click="selectedBlogId = null">Back to all blogs</button>
+            <div class="topic-toolbar">
+              <button
+                type="button"
+                class="topic-toggle"
+                :class="isExpandedView ? 'active' : ''"
+                @click="toggleExpand()"
+                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+              ></button>
+            </div>
+            <button class="buy-link" @click="closeBlogDetail()">Back to all blogs</button>
             <img class="thumb" :src="selectedBlog().image" :alt="selectedBlog().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedBlog().title"></h2>
             <div class="meta" style="margin-top:6px;">
@@ -682,7 +755,7 @@
                 <p class="card-desc">This technical project is part of the <strong x-text="selectedBlog().category"></strong> track and follows a <strong x-text="selectedBlog().difficulty"></strong> learning path.</p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Project README</div>
+                <div class="detail-section-title">Content</div>
                 <div class="readme-content" x-html="renderMarkdown(selectedBlogReadme())"></div>
               </div>
               <div class="part-card">
@@ -760,7 +833,16 @@
         </div>
         <template x-if="selectedPart()">
           <article>
-            <button class="buy-link" @click="selectedPartRef = null">Back to all parts</button>
+            <div class="topic-toolbar">
+              <button
+                type="button"
+                class="topic-toggle"
+                :class="isExpandedView ? 'active' : ''"
+                @click="toggleExpand()"
+                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+              ></button>
+            </div>
+            <button class="buy-link" @click="closePartDetail()">Back to all parts</button>
             <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedPart()._ref"></h2>
             <div class="meta" style="margin-top:6px;">
               Type: <strong x-text="selectedPart().type || 'Component'"></strong> ·
@@ -849,7 +931,16 @@
         </div>
         <template x-if="selectedTutorial()">
           <article>
-            <button class="buy-link" @click="selectedTutorialId = null">Back to all tutorials</button>
+            <div class="topic-toolbar">
+              <button
+                type="button"
+                class="topic-toggle"
+                :class="isExpandedView ? 'active' : ''"
+                @click="toggleExpand()"
+                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+              ></button>
+            </div>
+            <button class="buy-link" @click="closeTutorialDetail()">Back to all tutorials</button>
             <img class="thumb" :src="selectedTutorial().image" :alt="selectedTutorial().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedTutorial().title"></h2>
             <div class="meta" style="margin-top:6px;">
@@ -873,7 +964,7 @@
                 <p class="card-desc">Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.</p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Tutorial README</div>
+                <div class="detail-section-title">Content</div>
                 <div class="readme-content" x-html="renderMarkdown(selectedTutorialReadme())"></div>
               </div>
               <div class="part-card">
@@ -924,7 +1015,16 @@
         </div>
         <template x-if="selectedTool()">
           <article>
-            <button class="buy-link" @click="selectedToolId = null">Back to all tools</button>
+            <div class="topic-toolbar">
+              <button
+                type="button"
+                class="topic-toggle"
+                :class="isExpandedView ? 'active' : ''"
+                @click="toggleExpand()"
+                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+              ></button>
+            </div>
+            <button class="buy-link" @click="closeToolDetail()">Back to all tools</button>
             <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedTool().name || selectedTool().title"></h2>
             <div class="meta" style="margin-top:6px;">
               Category: <strong x-text="selectedTool().category"></strong> ·
@@ -981,7 +1081,7 @@
       </div>
     </section>
 
-    <aside style="display:flex; flex-direction:column;">
+    <aside :style="isExpandedView ? 'display:none;' : 'display:flex; flex-direction:column;'">
       <!-- Compact Blog -->
       <div class="panel" :style="{ order: compactOrder('blog') }" x-show="showCompact('blog') && visible.projects.length > 0">
         <div class="sec-title">Blogs <span class="count-pill" x-text="visible.projects.length"></span></div>
@@ -1082,6 +1182,7 @@
         selectedTutorialId: null,
         selectedPartRef: null,
         selectedToolId: null,
+        isExpandedView: false,
         stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
         blogAssets: {},
         tutorialAssets: {},
@@ -1158,6 +1259,7 @@
             this.selectedTutorialId = null;
             this.selectedPartRef = null;
             this.selectedToolId = null;
+            this.isExpandedView = false;
           }
 
           if (!q) {
@@ -1214,10 +1316,43 @@
           if (this.selectedToolId && !this.visible.tools.some(t => t.id === this.selectedToolId)) {
             this.selectedToolId = null;
           }
+
+          if (!this.selectedBlogId && !this.selectedTutorialId && !this.selectedPartRef && !this.selectedToolId) {
+            this.isExpandedView = false;
+          }
+        },
+
+        hasSelectedTopic() {
+          return !!(this.selectedBlogId || this.selectedTutorialId || this.selectedPartRef || this.selectedToolId);
+        },
+
+        toggleExpand() {
+          this.isExpandedView = !this.isExpandedView;
+        },
+
+        closeBlogDetail() {
+          this.selectedBlogId = null;
+          this.isExpandedView = false;
+        },
+
+        closeTutorialDetail() {
+          this.selectedTutorialId = null;
+          this.isExpandedView = false;
+        },
+
+        closePartDetail() {
+          this.selectedPartRef = null;
+          this.isExpandedView = false;
+        },
+
+        closeToolDetail() {
+          this.selectedToolId = null;
+          this.isExpandedView = false;
         },
 
         openBlog(id) {
           this.panelFocus = "blog";
+          this.isExpandedView = false;
           this.selectedBlogId = id;
           const project = this.raw.projects.find(item => item.id === id) || null;
           if (project) {
@@ -1236,7 +1371,7 @@
             return;
           }
 
-          let readmeText = "Project README";
+          let readmeText = "Content unavailable.";
           let partsList = [];
 
           if (project.readme) {
@@ -1249,7 +1384,7 @@
                 }
               }
             } catch (_) {
-              readmeText = "Project README";
+              readmeText = "Content unavailable.";
             }
           }
 
@@ -1315,11 +1450,11 @@
         selectedBlogReadme() {
           const blog = this.selectedBlog();
           if (!blog) {
-            return "Project README";
+            return "Content unavailable.";
           }
           const asset = this.blogAssets[blog.id];
           if (!asset || !asset.readmeText) {
-            return "Project README";
+            return "Content unavailable.";
           }
           return asset.readmeText;
         },
@@ -1484,6 +1619,7 @@
 
         openTutorial(id) {
           this.panelFocus = "tutorials";
+          this.isExpandedView = false;
           this.selectedTutorialId = id;
           const tutorial = this.raw.tutorials.find(item => item.id === id) || null;
           if (tutorial) {
@@ -1516,7 +1652,7 @@
             return;
           }
 
-          let readmeText = "Tutorial README";
+          let readmeText = "Content unavailable.";
           const readmePath = this.tutorialReadmePath(tutorial);
           if (readmePath) {
             try {
@@ -1528,7 +1664,7 @@
                 }
               }
             } catch (_) {
-              readmeText = "Tutorial README";
+              readmeText = "Content unavailable.";
             }
           }
 
@@ -1546,11 +1682,11 @@
         selectedTutorialReadme() {
           const tutorial = this.selectedTutorial();
           if (!tutorial) {
-            return "Tutorial README";
+            return "Content unavailable.";
           }
           const asset = this.tutorialAssets[tutorial.id];
           if (!asset || !asset.readmeText) {
-            return "Tutorial README";
+            return "Content unavailable.";
           }
           return asset.readmeText;
         },
@@ -1588,6 +1724,7 @@
 
         openPart(ref) {
           this.panelFocus = "parts";
+          this.isExpandedView = false;
           this.selectedPartRef = ref;
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
@@ -1658,6 +1795,7 @@
 
         openTool(id) {
           this.panelFocus = "tools";
+          this.isExpandedView = false;
           this.selectedToolId = id;
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
