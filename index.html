@@ -1,355 +1,785 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SimoDevel — Electronics Simulation Hub</title>
-  <meta name="description" content="SPICE models, LTspice schematics, simulation tutorials and electronics projects. Non-profit, open source, community-driven.">
+  <title>SimoDevel - Electronics and Mechatronics Learning Hub</title>
+  <meta name="description" content="Technical tutorials, projects, tools and parts for electronics and mechatronics learners. Non-profit and community-driven.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
   <style>
     [x-cloak] { display: none !important; }
     * { box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #ffffff; color: #111827; font-size: 14px; }
 
-    .navbar { background: #111827; border-bottom: 3px solid #dc2626; }
-    .navbar a { color: #d1d5db; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-    .navbar a:hover { color: #ffffff; }
-    .navbar .logo { color: #ffffff; font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-    .navbar .logo span { color: #dc2626; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      background: #ffffff;
+      color: #111827;
+      font-size: 14px;
+    }
 
-    .search-wrap { background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
-    .search-input { width: 100%; font-size: 15px; border: 2px solid #d1d5db; border-radius: 3px; padding: 10px 14px 10px 40px; background: #ffffff; color: #111827; transition: border-color 0.15s; }
-    .search-input:focus { outline: none; border-color: #111827; }
-    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; }
+    .topbar {
+      background: #111827;
+      border-bottom: 3px solid #dc2626;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
 
-    .sec-header { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #6b7280; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-    .sec-header .count { font-size: 10px; background: #f3f4f6; border: 1px solid #e5e7eb; color: #6b7280; padding: 1px 5px; border-radius: 2px; font-weight: 700; }
+    .logo {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 900;
+      text-decoration: none;
+      letter-spacing: -0.4px;
+    }
 
-    .article-card { border-bottom: 1px solid #f3f4f6; padding: 10px 0; }
-    .article-card:last-child { border-bottom: none; }
-    .article-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.3; color: #111827; text-decoration: none; display: block; }
-    .article-title:hover { color: #dc2626; }
-    .article-desc { font-size: 12px; color: #6b7280; line-height: 1.5; margin-top: 3px; }
+    .logo span { color: #dc2626; }
 
-    .tag { display: inline-block; font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; background: #f3f4f6; border: 1px solid #e5e7eb; color: #4b5563; padding: 1px 5px; border-radius: 2px; text-transform: lowercase; }
-    .tag-cat { background: #111827; color: #f9fafb; border-color: #111827; }
+    .nav-btn {
+      background: transparent;
+      border: 0;
+      color: #d1d5db;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
 
-    .diff { font-family: monospace; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 2px; }
-    .diff-beginner { background: #d1fae5; color: #065f46; }
-    .diff-intermediate { background: #fef3c7; color: #92400e; }
-    .diff-advanced { background: #fee2e2; color: #991b1b; }
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: #ffffff;
+      border-color: #dc2626;
+    }
 
-    .comp-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 12px; }
-    .comp-row:last-child { border-bottom: none; }
-    .comp-ref { font-family: 'Courier New', monospace; font-weight: 700; font-size: 12px; color: #111827; }
-    .comp-meta { color: #6b7280; }
+    .register-link {
+      color: #fca5a5;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
 
-    .buy-link { font-size: 10px; font-weight: 700; font-family: monospace; padding: 2px 5px; border: 1px solid #d1d5db; border-radius: 2px; color: #374151; text-decoration: none; white-space: nowrap; display: inline-block; }
-    .buy-link:hover { background: #111827; color: #fff; border-color: #111827; }
+    .register-link:hover { color: #fecaca; }
 
-    .compact-card { padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
-    .compact-card:last-child { border-bottom: none; }
-    .compact-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #111827; text-decoration: none; }
-    .compact-title:hover { color: #dc2626; }
-    .compact-meta { font-family: monospace; font-size: 10px; color: #9ca3af; margin-top: 2px; }
+    .search-wrap {
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
 
-    .view-btn { font-size: 11px; font-weight: 700; font-family: monospace; padding: 3px 8px; border: 1px solid #d1d5db; cursor: pointer; background: #fff; color: #374151; }
-    .view-btn.active { background: #111827; color: #fff; border-color: #111827; }
-    .view-btn:first-child { border-radius: 2px 0 0 2px; }
-    .view-btn:last-child  { border-radius: 0 2px 2px 0; border-left: none; }
+    .search-box { position: relative; }
 
-    .results-section { max-height: 320px; overflow-y: auto; }
-    .results-section::-webkit-scrollbar { width: 4px; }
-    .results-section::-webkit-scrollbar-track { background: #f9fafb; }
-    .results-section::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+    .search-input {
+      width: 100%;
+      border: 2px solid #d1d5db;
+      border-radius: 3px;
+      padding: 11px 14px 11px 40px;
+      font-size: 15px;
+      color: #111827;
+      background: #ffffff;
+    }
 
-    footer { background: #111827; color: #6b7280; font-size: 11px; }
-    footer a { color: #9ca3af; text-decoration: none; }
-    footer a:hover { color: #fff; }
+    .search-input:focus {
+      outline: none;
+      border-color: #111827;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .status-line {
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 16px 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
+      gap: 22px;
+    }
+
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .sec-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+      color: #6b7280;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .count-pill {
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      border: 1px solid #d1d5db;
+      background: #f3f4f6;
+      color: #4b5563;
+      border-radius: 2px;
+      padding: 1px 5px;
+    }
+
+    .panel {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #ffffff;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 760px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    .tech-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f3f4f6;
+    }
+
+    .card-body {
+      padding: 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #111827;
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.45;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      border: 1px solid #d1d5db;
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 2px;
+      padding: 1px 5px;
+    }
+
+    .meta {
+      font-size: 11px;
+      color: #6b7280;
+      font-family: "Courier New", monospace;
+    }
+
+    .compact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 330px;
+      overflow-y: auto;
+      padding-right: 3px;
+    }
+
+    .compact-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 8px;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .compact-item img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 1px solid #e5e7eb;
+      background: #f3f4f6;
+    }
+
+    .compact-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.3;
+      color: #111827;
+    }
+
+    .parts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 800px) {
+      .parts-grid { grid-template-columns: 1fr; }
+    }
+
+    .part-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 8px;
+      background: #fff;
+    }
+
+    .part-ref {
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .buy-link {
+      display: inline-block;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      border: 1px solid #d1d5db;
+      border-radius: 2px;
+      color: #374151;
+      text-decoration: none;
+      padding: 2px 6px;
+      margin-right: 4px;
+      margin-top: 3px;
+    }
+
+    .buy-link:hover {
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+    }
+
+    .tools-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 760px) {
+      .tools-list { grid-template-columns: 1fr; }
+    }
+
+    .tool-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 9px;
+      background: #fff;
+    }
+
+    .tool-name {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .tool-meta {
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      color: #6b7280;
+      margin-bottom: 5px;
+    }
+
+    .empty-msg {
+      font-family: "Courier New", monospace;
+      color: #9ca3af;
+      font-size: 12px;
+      padding: 10px 0;
+    }
+
+    .about-box {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px 24px;
+    }
+
+    .mission {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #ffffff;
+      padding: 14px;
+    }
+
+    footer {
+      margin-top: 10px;
+      background: #111827;
+      color: #9ca3af;
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      padding: 12px 16px;
+      text-align: center;
+    }
   </style>
 </head>
 <body x-data="simodevel()" x-init="init()">
-
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-6 flex-wrap">
+  <nav class="topbar">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
       <a href="/" class="logo">Simo<span>Devel</span></a>
-      <div class="flex items-center gap-5 flex-wrap">
-        <a href="#blog">Blog</a>
-        <a href="#models">Models</a>
-        <a href="#parts">Parts</a>
-        <a href="#tutorials">Tutorials</a>
-        <a href="#tools">Tools</a>
-        <a href="https://github.com/zumzaroi/simodevel" target="_blank" rel="noopener" style="color:#f87171">Contribute ↗</a>
+      <div class="flex flex-wrap items-center gap-4">
+        <button class="nav-btn" :class="isNavActive('blog') ? 'active' : ''" @click="setPanel('blog')">Blogs</button>
+        <button class="nav-btn" :class="isNavActive('parts') ? 'active' : ''" @click="setPanel('parts')">Parts</button>
+        <button class="nav-btn" :class="isNavActive('tutorials') ? 'active' : ''" @click="setPanel('tutorials')">Tutorials</button>
+        <button class="nav-btn" :class="isNavActive('tools') ? 'active' : ''" @click="setPanel('tools')">Tools</button>
+        <a class="register-link" href="contribute.html">Register Your Project</a>
       </div>
     </div>
   </nav>
 
-  <!-- SEARCH -->
   <div class="search-wrap px-4 py-4">
     <div class="max-w-7xl mx-auto">
-      <div class="flex items-center gap-3 mb-2 flex-wrap">
-        <div class="relative flex-1" style="min-width:260px; max-width:700px">
-          <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-          <input type="text" class="search-input"
-            placeholder="search projects, components, models, tutorials..."
-            x-model="query"
-            @input.debounce.150ms="filter()"
-            @keydown.escape="query=''; filter()"
-            autofocus>
-        </div>
-        <div class="flex" x-cloak>
-          <button class="view-btn" :class="view==='list' && 'active'" @click="view='list'">≡ LIST</button>
-          <button class="view-btn" :class="view==='grid' && 'active'" @click="view='grid'">⊞ GRID</button>
-        </div>
+      <div class="search-box">
+        <svg class="search-icon w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search projects, components, tutorials, and tools..."
+          x-model="query"
+          @input.debounce.120ms="filterAll()"
+          @keydown.escape="query=''; filterAll()"
+        >
       </div>
-      <div class="font-mono text-xs text-gray-400 flex gap-4 flex-wrap" x-cloak>
-        <template x-if="loading"><span>loading index...</span></template>
-        <template x-if="!loading && query.length > 0">
-          <span><span x-text="totalResults()"></span> results for &ldquo;<span x-text="query" class="text-gray-700 font-bold"></span>&rdquo;</span>
+      <div class="status-line" x-cloak>
+        <template x-if="loading">
+          <span>Loading local JSON indexes...</span>
         </template>
-        <template x-if="!loading && query.length === 0">
+        <template x-if="!loading && isSearchMode()">
           <span>
-            <span x-text="stats.projects"></span> projects ·
-            <span x-text="stats.components"></span> components ·
-            <span x-text="stats.models"></span> models ·
-            <span x-text="stats.tutorials"></span> tutorials
+            <span x-text="totalResults()"></span> live matches for "<span x-text="query" class="font-bold"></span>".
+            Layout reset to default search mode.
+          </span>
+        </template>
+        <template x-if="!loading && !isSearchMode()">
+          <span>
+            Focus: <span class="font-bold" x-text="panelFocus.toUpperCase()"></span>.
+            Sections loaded: <span x-text="stats.projects"></span> projects,
+            <span x-text="stats.components"></span> parts,
+            <span x-text="stats.tutorials"></span> tutorials,
+            <span x-text="stats.tools"></span> tools.
           </span>
         </template>
       </div>
     </div>
   </div>
 
-  <!-- RESULTS -->
-  <main class="max-w-7xl mx-auto px-4 py-6" x-cloak>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-      <!-- LEFT: Projects + Components -->
-      <div class="lg:col-span-2 space-y-8">
-
-        <!-- PROJECTS -->
-        <section id="blog" x-show="results.projects.length > 0">
-          <div class="sec-header">
-            📝 Blog Projects
-            <span class="count" x-text="results.projects.length"></span>
-          </div>
-          <!-- LIST -->
-          <div x-show="view==='list'" class="results-section">
-            <template x-for="p in results.projects" :key="p.id">
-              <div class="article-card">
-                <a :href="p.readme || '#'" class="article-title" x-text="p.title"></a>
-                <p class="article-desc" x-text="p.description"></p>
-                <div class="flex flex-wrap gap-1 mt-2 items-center">
-                  <span class="tag tag-cat" x-text="p.category"></span>
-                  <span class="diff" :class="'diff-'+p.difficulty" x-text="p.difficulty"></span>
-                  <template x-for="t in (p.tags||[]).slice(0,5)" :key="t">
-                    <span class="tag" x-text="t"></span>
-                  </template>
-                </div>
-              </div>
-            </template>
-          </div>
-          <!-- GRID -->
-          <div x-show="view==='grid'" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <template x-for="p in results.projects" :key="p.id">
-              <div class="border border-gray-200 p-3 hover:border-gray-500 transition-colors" style="border-radius:2px">
-                <a :href="p.readme || '#'" class="article-title" x-text="p.title"></a>
-                <p class="article-desc mt-1" x-text="(p.description||'').slice(0,90)+'…'"></p>
-                <div class="flex flex-wrap gap-1 mt-2 items-center">
-                  <span class="tag tag-cat" x-text="p.category"></span>
-                  <span class="diff" :class="'diff-'+p.difficulty" x-text="p.difficulty"></span>
-                </div>
-              </div>
-            </template>
-          </div>
-        </section>
-
-        <!-- COMPONENTS -->
-        <section id="parts" x-show="results.components.length > 0">
-          <div class="sec-header">
-            🛒 Components
-            <span class="count" x-text="results.components.length"></span>
-          </div>
-          <div class="results-section">
-            <template x-for="c in results.components" :key="c._ref">
-              <div class="comp-row">
-                <span class="comp-ref" x-text="c._ref"></span>
-                <span class="comp-meta">
-                  <span x-text="c.type"></span>
-                  <span class="text-gray-300 mx-1">·</span>
-                  <span class="font-mono text-xs" x-text="c.package||''"></span>
-                  <span class="text-gray-300 mx-1">·</span>
-                  <span x-text="c.manufacturer"></span>
-                  <template x-if="c.datasheet">
-                    <a :href="c.datasheet" target="_blank" rel="noopener" class="ml-2 font-mono text-xs text-blue-600 hover:underline">DS↗</a>
-                  </template>
-                </span>
-                <div class="flex gap-1">
-                  <template x-if="c.buy && c.buy.DigiKey">
-                    <a :href="c.buy.DigiKey" target="_blank" rel="noopener" class="buy-link">DK</a>
-                  </template>
-                  <template x-if="c.buy && c.buy.Mouser">
-                    <a :href="c.buy.Mouser" target="_blank" rel="noopener" class="buy-link">MO</a>
-                  </template>
-                  <template x-if="c.buy && c.buy.TME">
-                    <a :href="c.buy.TME" target="_blank" rel="noopener" class="buy-link">TME</a>
-                  </template>
-                </div>
-              </div>
-            </template>
-          </div>
-        </section>
-
-        <!-- EMPTY -->
-        <div x-show="query.length > 0 && totalResults() === 0" class="font-mono text-xs text-gray-400 py-8">
-          no results for &ldquo;<span x-text="query"></span>&rdquo; — try a part number, keyword or simulator name.
+  <main class="layout" x-cloak>
+    <section>
+      <!-- LARGE BLOG -->
+      <div class="panel" x-show="showLarge('blog') && visible.projects.length > 0">
+        <div class="sec-title">
+          Technical Project Blogs
+          <span class="count-pill" x-text="visible.projects.length"></span>
         </div>
-      </div>
-
-      <!-- RIGHT SIDEBAR -->
-      <div class="space-y-8">
-
-        <!-- MODELS -->
-        <section id="models" x-show="results.models.length > 0">
-          <div class="sec-header">
-            📐 Simulation Models
-            <span class="count" x-text="results.models.length"></span>
-          </div>
-          <div class="results-section">
-            <template x-for="m in results.models" :key="m.id">
-              <div class="compact-card">
-                <a :href="m.file || '#'" class="compact-title" x-text="m.title"></a>
-                <div class="compact-meta" x-text="m.simulator + ' · ' + m.type"></div>
-                <div class="flex flex-wrap gap-1 mt-1">
-                  <template x-for="t in (m.tags||[]).slice(0,4)" :key="t">
-                    <span class="tag" x-text="t"></span>
-                  </template>
+        <div class="card-grid">
+          <template x-for="item in visible.projects" :key="item.id">
+            <article class="tech-card">
+              <img class="thumb" :src="item.image" :alt="item.title">
+              <div class="card-body">
+                <h3 class="card-title" x-text="item.title"></h3>
+                <p class="card-desc" x-text="item.description"></p>
+                <div class="meta">
+                  Contributor: <strong x-text="item.contributor"></strong> ·
+                  <span x-text="item.category"></span> ·
+                  <span x-text="item.difficulty"></span>
                 </div>
-              </div>
-            </template>
-          </div>
-        </section>
-
-        <!-- TUTORIALS -->
-        <section id="tutorials" x-show="results.tutorials.length > 0">
-          <div class="sec-header">
-            🎓 Tutorials
-            <span class="count" x-text="results.tutorials.length"></span>
-          </div>
-          <div class="results-section">
-            <template x-for="t in results.tutorials" :key="t.id">
-              <div class="compact-card">
-                <a :href="t.url || '#'" class="compact-title" x-text="t.title"></a>
-                <div class="compact-meta" x-text="t.category + ' · ' + t.difficulty"></div>
-                <div class="flex flex-wrap gap-1 mt-1">
-                  <template x-for="tag in (t.tags||[]).slice(0,4)" :key="tag">
+                <div class="flex flex-wrap gap-1">
+                  <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
                     <span class="tag" x-text="tag"></span>
                   </template>
                 </div>
               </div>
-            </template>
-          </div>
-        </section>
-
-        <!-- TOOLS (always visible when query is empty or matches) -->
-        <section id="tools" x-show="query.length === 0 || ['tool','ltspice','kicad','spice','ngspice','qucs','octave'].some(k => query.toLowerCase().includes(k))">
-          <div class="sec-header">🛠 Tools</div>
-          <div class="space-y-1">
-            <div class="text-xs font-bold uppercase tracking-wider text-gray-400 pb-1">External simulators &amp; tools</div>
-            <div class="grid grid-cols-2 gap-1">
-              <a href="https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html" target="_blank" rel="noopener" class="buy-link text-center">LTspice</a>
-              <a href="https://www.kicad.org/" target="_blank" rel="noopener" class="buy-link text-center">KiCad</a>
-              <a href="https://ra3xdh.github.io/" target="_blank" rel="noopener" class="buy-link text-center">Qucs-S</a>
-              <a href="https://ngspice.sourceforge.io/" target="_blank" rel="noopener" class="buy-link text-center">ngspice</a>
-              <a href="https://www.gnu.org/software/octave/" target="_blank" rel="noopener" class="buy-link text-center">Octave</a>
-              <a href="https://www.digikey.com" target="_blank" rel="noopener" class="buy-link text-center">DigiKey</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- REGISTER PROJECT -->
-        <section x-show="query.length === 0 || ['contribute','submit','project','register','add'].some(k => query.toLowerCase().includes(k))">
-          <div class="sec-header">⚡ Contribute</div>
-          <div>
-
-            <p class="text-xs text-gray-500 leading-relaxed space-y-1">
-              <strong class="text-gray-800">Non-profit · Open source.</strong><br>
-              Free content, no ads, no tracking.
-            </p>
-            <p class="text-xs text-gray-500 mt-2">Built something? Fill in the project template and submit — it will be reviewed and published.</p>
-            <a href="contribute.html" class="buy-link mt-3" style="display:inline-block">Register Your Project →</a>
-
-          </div>
-        </section>
-
+            </article>
+          </template>
+        </div>
       </div>
-    </div>
+
+      <!-- LARGE PARTS -->
+      <div class="panel" x-show="showLarge('parts') && visible.components.length > 0">
+        <div class="sec-title">
+          Components Database
+          <span class="count-pill" x-text="visible.components.length"></span>
+        </div>
+        <div class="parts-grid">
+          <template x-for="part in visible.components" :key="part._ref">
+            <article class="part-card">
+              <div class="part-ref" x-text="part._ref"></div>
+              <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.package || 'N/A')"></div>
+              <p class="card-desc" style="margin-top:5px;" x-text="part.manufacturer || 'Unknown manufacturer'"></p>
+              <div>
+                <template x-if="part.datasheet">
+                  <a class="buy-link" :href="part.datasheet" target="_blank" rel="noopener">Datasheet</a>
+                </template>
+                <template x-if="part.buy && part.buy.DigiKey">
+                  <a class="buy-link" :href="part.buy.DigiKey" target="_blank" rel="noopener">DigiKey</a>
+                </template>
+                <template x-if="part.buy && part.buy.Mouser">
+                  <a class="buy-link" :href="part.buy.Mouser" target="_blank" rel="noopener">Mouser</a>
+                </template>
+                <template x-if="part.buy && part.buy.TME">
+                  <a class="buy-link" :href="part.buy.TME" target="_blank" rel="noopener">TME</a>
+                </template>
+              </div>
+            </article>
+          </template>
+        </div>
+      </div>
+
+      <!-- LARGE TUTORIALS -->
+      <div class="panel" x-show="showLarge('tutorials') && visible.tutorials.length > 0">
+        <div class="sec-title">
+          Technical Tutorials
+          <span class="count-pill" x-text="visible.tutorials.length"></span>
+        </div>
+        <div class="card-grid">
+          <template x-for="item in visible.tutorials" :key="item.id">
+            <article class="tech-card">
+              <img class="thumb" :src="item.image" :alt="item.title">
+              <div class="card-body">
+                <h3 class="card-title" x-text="item.title"></h3>
+                <p class="card-desc" x-text="item.description"></p>
+                <div class="meta">
+                  Contributor: <strong x-text="item.contributor"></strong> ·
+                  <span x-text="item.category"></span> ·
+                  <span x-text="item.difficulty"></span>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
+                    <span class="tag" x-text="tag"></span>
+                  </template>
+                </div>
+              </div>
+            </article>
+          </template>
+        </div>
+      </div>
+
+      <!-- LARGE TOOLS -->
+      <div class="panel" x-show="showLarge('tools') && visible.tools.length > 0">
+        <div class="sec-title">
+          Free and Open Tools (Installation + Versions)
+          <span class="count-pill" x-text="visible.tools.length"></span>
+        </div>
+        <div class="tools-list">
+          <template x-for="tool in visible.tools" :key="tool.id">
+            <article class="tool-card">
+              <div class="tool-name" x-text="tool.name || tool.title"></div>
+              <div class="tool-meta">
+                <span x-text="tool.category"></span> ·
+                <span x-text="tool.free_version || tool.version || 'Free tier'"></span> ·
+                <span x-text="tool.license || 'Free'"></span>
+              </div>
+              <p class="card-desc" x-text="tool.description"></p>
+              <p class="meta" style="margin-top:6px;" x-text="'Install: ' + (tool.install || 'See official documentation.')"></p>
+              <a class="buy-link" :href="tool.link || tool.url" target="_blank" rel="noopener">Official Site</a>
+            </article>
+          </template>
+        </div>
+      </div>
+
+      <div x-show="isSearchMode() && totalResults() === 0" class="empty-msg">
+        No matching results. Try part numbers (e.g. BC547), topics (e.g. PWM), or tools (e.g. LTspice).
+      </div>
+    </section>
+
+    <aside>
+      <!-- Compact Blog -->
+      <div class="panel" x-show="showCompact('blog') && visible.projects.length > 0">
+        <div class="sec-title">Blogs <span class="count-pill" x-text="visible.projects.length"></span></div>
+        <div class="compact-list">
+          <template x-for="item in visible.projects.slice(0, 8)" :key="item.id + '-compact-blog'">
+            <div class="compact-item">
+              <img :src="item.image" :alt="item.title">
+              <div>
+                <div class="compact-title" x-text="item.title"></div>
+                <div class="meta" x-text="item.contributor"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Compact Parts -->
+      <div class="panel" x-show="showCompact('parts') && visible.components.length > 0">
+        <div class="sec-title">Parts <span class="count-pill" x-text="visible.components.length"></span></div>
+        <div class="compact-list">
+          <template x-for="part in visible.components.slice(0, 10)" :key="part._ref + '-compact-part'">
+            <div class="compact-item" style="grid-template-columns: 1fr;">
+              <div>
+                <div class="compact-title" x-text="part._ref"></div>
+                <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.manufacturer || '')"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Compact Tutorials -->
+      <div class="panel" x-show="showCompact('tutorials') && visible.tutorials.length > 0">
+        <div class="sec-title">Tutorials <span class="count-pill" x-text="visible.tutorials.length"></span></div>
+        <div class="compact-list">
+          <template x-for="item in visible.tutorials.slice(0, 8)" :key="item.id + '-compact-tut'">
+            <div class="compact-item">
+              <img :src="item.image" :alt="item.title">
+              <div>
+                <div class="compact-title" x-text="item.title"></div>
+                <div class="meta" x-text="item.category + ' · ' + item.difficulty"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Compact Tools -->
+      <div class="panel" x-show="showCompact('tools') && visible.tools.length > 0">
+        <div class="sec-title">Tools <span class="count-pill" x-text="visible.tools.length"></span></div>
+        <div class="compact-list">
+          <template x-for="tool in visible.tools.slice(0, 8)" :key="tool.id + '-compact-tool'">
+            <div class="compact-item" style="grid-template-columns: 1fr;">
+              <div>
+                <div class="compact-title" x-text="tool.name || tool.title"></div>
+                <div class="meta" x-text="(tool.free_version || tool.version || 'Free') + ' · ' + (tool.license || 'Free')"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="sec-title">Register Project</div>
+        <p class="card-desc">Use our structured submission template to send your project. No account required.</p>
+        <a class="buy-link" href="contribute.html">Open Register Form</a>
+      </div>
+    </aside>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="mt-16 px-4 py-5">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <span class="font-mono"><span class="text-white font-bold">SimoDevel</span> — Electronics Simulation Hub · Non-profit · Open Source · <a href="https://github.com/zumzaroi/simodevel" target="_blank" rel="noopener">GitHub</a></span>
-      <span class="font-mono">SPICE · LTspice · MATLAB · Verilog-A · PySpice</span>
+  <section class="about-box">
+    <div class="mission">
+      <div class="sec-title" style="margin-bottom:10px;">Who We Are and What We Want</div>
+      <p class="card-desc" style="margin:0 0 8px;">
+        SimoDevel is a non-profit learning initiative built by people passionate about electronics and mechatronics.
+        We support learners from absolute beginner level to advanced design and simulation practice.
+      </p>
+      <p class="card-desc" style="margin:0;">
+        Our goal is simple: provide practical, technical, and free resources so anyone can build real skills - from first SPICE circuit to complete embedded projects.
+        We value open collaboration, clear engineering documentation, and hands-on experimentation.
+      </p>
     </div>
+  </section>
+
+  <footer>
+    SimoDevel - Non-profit technical platform for electronics and mechatronics learning.
   </footer>
 
-  <!-- ALPINE CONTROLLER -->
   <script>
     function simodevel() {
       return {
-        query: '', view: 'list', loading: true,
-        _projects: [], _components: {}, _models: [], _tutorials: [],
-        stats: { projects: 0, components: 0, models: 0, tutorials: 0 },
-        results: { projects: [], components: [], models: [], tutorials: [] },
+        loading: true,
+        query: "",
+        panelFocus: "default",
+        stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
+
+        raw: {
+          projects: [],
+          components: [],
+          tutorials: [],
+          tools: []
+        },
+
+        visible: {
+          projects: [],
+          components: [],
+          tutorials: [],
+          tools: []
+        },
 
         async init() {
           try {
-            const [proj, comp, mod, tut] = await Promise.all([
-              fetch('data/projects_index.json').then(r => r.json()),
-              fetch('data/components.json').then(r => r.json()),
-              fetch('data/models_index.json').then(r => r.json()),
-              fetch('data/tutorials_index.json').then(r => r.json()),
+            const [projects, componentsObj, tutorials, tools] = await Promise.all([
+              fetch("data/projects_index.json").then(r => r.json()),
+              fetch("data/components.json").then(r => r.json()),
+              fetch("data/tutorials_index.json").then(r => r.json()),
+              fetch("data/tools_index.json").then(r => r.json())
             ]);
-            this._projects   = proj  || [];
-            this._components = comp  || {};
-            this._models     = mod   || [];
-            this._tutorials  = tut   || [];
-            Object.keys(this._components).forEach(k => { this._components[k]._ref = k; });
+
+            const components = Object.keys(componentsObj || {}).map(ref => ({
+              _ref: ref,
+              ...(componentsObj[ref] || {})
+            }));
+
+            this.raw.projects = Array.isArray(projects) ? projects : [];
+            this.raw.components = Array.isArray(components) ? components : [];
+            this.raw.tutorials = Array.isArray(tutorials) ? tutorials : [];
+            this.raw.tools = Array.isArray(tools) ? tools : [];
+
             this.stats = {
-              projects:   this._projects.length,
-              components: Object.keys(this._components).length,
-              models:     this._models.length,
-              tutorials:  this._tutorials.length,
+              projects: this.raw.projects.length,
+              components: this.raw.components.length,
+              tutorials: this.raw.tutorials.length,
+              tools: this.raw.tools.length
             };
-          } catch(e) { console.warn('Index load error:', e); }
-          this.loading = false;
-          this.filter();
+
+            this.filterAll();
+          } catch (err) {
+            console.warn("Could not load local JSON data", err);
+          } finally {
+            this.loading = false;
+          }
         },
 
-        filter() {
-          const q = this.query.trim().toLowerCase();
-          const match = s => String(s||'').toLowerCase().includes(q);
-          const matchArr = a => (a||[]).some(s => match(s));
+        isSearchMode() {
+          return this.query.trim().length > 0;
+        },
+
+        normalize(v) {
+          return String(v || "").toLowerCase();
+        },
+
+        hit(value, q) {
+          return this.normalize(value).includes(q);
+        },
+
+        hitTags(arr, q) {
+          return (arr || []).some(tag => this.hit(tag, q));
+        },
+
+        filterAll() {
+          const q = this.normalize(this.query.trim());
 
           if (!q) {
-            this.results.projects   = this._projects.filter(p => p.featured).slice(0, 6);
-            this.results.components = Object.values(this._components).slice(0, 10);
-            this.results.models     = this._models.filter(m => m.featured).slice(0, 6);
-            this.results.tutorials  = this._tutorials.filter(t => t.featured).slice(0, 5);
+            this.visible.projects = this.raw.projects.slice(0, 10);
+            this.visible.components = this.raw.components.slice(0, 20);
+            this.visible.tutorials = this.raw.tutorials.slice(0, 10);
+            this.visible.tools = this.raw.tools.slice(0, 10);
             return;
           }
-          this.results.projects   = this._projects.filter(p => match(p.title)||match(p.category)||match(p.description)||matchArr(p.tags)).slice(0,20);
-          this.results.components = Object.values(this._components).filter(c => match(c._ref)||match(c.type)||match(c.manufacturer)||match(c.package)).slice(0,20);
-          this.results.models     = this._models.filter(m => match(m.title)||match(m.simulator)||match(m.type)||matchArr(m.tags)).slice(0,20);
-          this.results.tutorials  = this._tutorials.filter(t => match(t.title)||match(t.category)||matchArr(t.tags)).slice(0,20);
+
+          this.visible.projects = this.raw.projects.filter(item =>
+            this.hit(item.title, q) ||
+            this.hit(item.description, q) ||
+            this.hit(item.category, q) ||
+            this.hit(item.contributor, q) ||
+            this.hitTags(item.tags, q)
+          ).slice(0, 20);
+
+          this.visible.components = this.raw.components.filter(item =>
+            this.hit(item._ref, q) ||
+            this.hit(item.type, q) ||
+            this.hit(item.package, q) ||
+            this.hit(item.manufacturer, q)
+          ).slice(0, 30);
+
+          this.visible.tutorials = this.raw.tutorials.filter(item =>
+            this.hit(item.title, q) ||
+            this.hit(item.description, q) ||
+            this.hit(item.category, q) ||
+            this.hit(item.contributor, q) ||
+            this.hitTags(item.tags, q)
+          ).slice(0, 20);
+
+          this.visible.tools = this.raw.tools.filter(item =>
+            this.hit(item.name, q) ||
+            this.hit(item.title, q) ||
+            this.hit(item.category, q) ||
+            this.hit(item.description, q) ||
+            this.hit(item.install, q) ||
+            this.hit(item.license, q) ||
+            this.hit(item.free_version, q) ||
+            this.hit(item.version, q)
+          ).slice(0, 20);
         },
 
         totalResults() {
-          return this.results.projects.length + this.results.components.length + this.results.models.length + this.results.tutorials.length;
+          return this.visible.projects.length +
+            this.visible.components.length +
+            this.visible.tutorials.length +
+            this.visible.tools.length;
+        },
+
+        setPanel(name) {
+          if (this.isSearchMode()) {
+            return;
+          }
+          this.panelFocus = name;
+        },
+
+        activePanel() {
+          return this.isSearchMode() ? "default" : this.panelFocus;
+        },
+
+        isNavActive(name) {
+          const active = this.activePanel();
+          if (active === "default") {
+            return name === "blog";
+          }
+          return active === name;
+        },
+
+        showLarge(name) {
+          const active = this.activePanel();
+          if (active === "default") {
+            return name === "blog" || name === "parts";
+          }
+          return active === name;
+        },
+
+        showCompact(name) {
+          const active = this.activePanel();
+          if (active === "default") {
+            return name === "tutorials" || name === "tools";
+          }
+          return active !== name;
         }
       };
     }
