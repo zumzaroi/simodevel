@@ -158,6 +158,23 @@
       padding: 1px 5px;
     }
 
+    .count-nav-btn {
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      font-weight: 800;
+      color: #374151;
+      background: transparent;
+      border: 0;
+      padding: 0 2px;
+      cursor: pointer;
+    }
+
+    .count-nav-btn:hover {
+      color: #111827;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .panel {
       border: 1px solid #e5e7eb;
       border-radius: 4px;
@@ -360,8 +377,6 @@
       border-radius: 3px;
       background: #f9fafb;
       padding: 10px;
-      max-height: 280px;
-      overflow-y: auto;
     }
 
     .readme-content h1,
@@ -402,6 +417,11 @@
       padding-left: 18px;
     }
 
+    .readme-content ol {
+      margin: 0 0 10px;
+      padding-left: 18px;
+    }
+
     .readme-content li {
       margin-bottom: 4px;
       line-height: 1.5;
@@ -423,15 +443,45 @@
       text-underline-offset: 2px;
     }
 
+    .readme-content blockquote {
+      margin: 0 0 10px;
+      border-left: 3px solid #d1d5db;
+      padding: 6px 10px;
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .readme-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 10px;
+      table-layout: fixed;
+    }
+
+    .readme-content th,
+    .readme-content td {
+      border: 1px solid #d1d5db;
+      padding: 6px 8px;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .readme-content th {
+      background: #e5e7eb;
+      color: #1f2937;
+      font-weight: 800;
+      text-align: left;
+    }
+
     .parts-table-wrap {
       margin-top: 4px;
-      overflow-x: auto;
     }
 
     .parts-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
+      table-layout: fixed;
     }
 
     .parts-table th,
@@ -440,6 +490,7 @@
       padding: 6px 8px;
       text-align: left;
       vertical-align: top;
+      word-break: break-word;
     }
 
     .parts-table th {
@@ -601,7 +652,12 @@
       <div class="panel" x-show="showLarge('blog') && visible.projects.length > 0">
         <div class="sec-title">
           Technical Project Blogs
-          <span class="count-pill" x-text="selectedBlog() ? '1 / ' + visible.projects.length : visible.projects.length"></span>
+          <span class="count-pill" x-show="!selectedBlog()" x-text="visible.projects.length"></span>
+          <span class="count-pill" x-show="selectedBlog()">
+            <button type="button" class="count-nav-btn" @click="openPrevBlog()" :title="'Previous blog'" x-text="selectedBlogIndex() + 1"></button>
+            <span>/</span>
+            <button type="button" class="count-nav-btn" @click="openNextBlog()" :title="'Next blog'" x-text="visible.projects.length"></button>
+          </span>
         </div>
         <template x-if="selectedBlog()">
           <article>
@@ -695,7 +751,12 @@
       <div class="panel" x-show="showLarge('parts') && visible.components.length > 0">
         <div class="sec-title">
           Components Database
-          <span class="count-pill" x-text="selectedPart() ? '1 / ' + visible.components.length : visible.components.length"></span>
+          <span class="count-pill" x-show="!selectedPart()" x-text="visible.components.length"></span>
+          <span class="count-pill" x-show="selectedPart()">
+            <button type="button" class="count-nav-btn" @click="openPrevPart()" :title="'Previous part'" x-text="selectedPartIndex() + 1"></button>
+            <span>/</span>
+            <button type="button" class="count-nav-btn" @click="openNextPart()" :title="'Next part'" x-text="visible.components.length"></button>
+          </span>
         </div>
         <template x-if="selectedPart()">
           <article>
@@ -779,7 +840,12 @@
       <div class="panel" x-show="showLarge('tutorials') && visible.tutorials.length > 0">
         <div class="sec-title">
           Technical Tutorials
-          <span class="count-pill" x-text="selectedTutorial() ? '1 / ' + visible.tutorials.length : visible.tutorials.length"></span>
+          <span class="count-pill" x-show="!selectedTutorial()" x-text="visible.tutorials.length"></span>
+          <span class="count-pill" x-show="selectedTutorial()">
+            <button type="button" class="count-nav-btn" @click="openPrevTutorial()" :title="'Previous tutorial'" x-text="selectedTutorialIndex() + 1"></button>
+            <span>/</span>
+            <button type="button" class="count-nav-btn" @click="openNextTutorial()" :title="'Next tutorial'" x-text="visible.tutorials.length"></button>
+          </span>
         </div>
         <template x-if="selectedTutorial()">
           <article>
@@ -805,6 +871,10 @@
               <div class="part-card">
                 <div class="detail-section-title">Learning Focus</div>
                 <p class="card-desc">Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.</p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Tutorial README</div>
+                <div class="readme-content" x-html="renderMarkdown(selectedTutorialReadme())"></div>
               </div>
               <div class="part-card">
                 <div class="detail-section-title">Tutorial Link</div>
@@ -845,7 +915,12 @@
       <div class="panel" x-show="showLarge('tools') && visible.tools.length > 0">
         <div class="sec-title">
           Free and Open Tools (Installation + Versions)
-          <span class="count-pill" x-text="selectedTool() ? '1 / ' + visible.tools.length : visible.tools.length"></span>
+          <span class="count-pill" x-show="!selectedTool()" x-text="visible.tools.length"></span>
+          <span class="count-pill" x-show="selectedTool()">
+            <button type="button" class="count-nav-btn" @click="openPrevTool()" :title="'Previous tool'" x-text="selectedToolIndex() + 1"></button>
+            <span>/</span>
+            <button type="button" class="count-nav-btn" @click="openNextTool()" :title="'Next tool'" x-text="visible.tools.length"></button>
+          </span>
         </div>
         <template x-if="selectedTool()">
           <article>
@@ -1009,6 +1084,7 @@
         selectedToolId: null,
         stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
         blogAssets: {},
+        tutorialAssets: {},
 
         raw: {
           projects: [],
@@ -1205,6 +1281,37 @@
           return this.visible.projects.find(item => item.id === this.selectedBlogId) || null;
         },
 
+        selectedBlogIndex() {
+          if (!this.selectedBlogId) {
+            return -1;
+          }
+          return this.visible.projects.findIndex(item => item.id === this.selectedBlogId);
+        },
+
+        openPrevBlog() {
+          if (!this.visible.projects.length) {
+            return;
+          }
+          const index = this.selectedBlogIndex();
+          if (index < 0) {
+            return;
+          }
+          const prevIndex = (index - 1 + this.visible.projects.length) % this.visible.projects.length;
+          this.openBlog(this.visible.projects[prevIndex].id);
+        },
+
+        openNextBlog() {
+          if (!this.visible.projects.length) {
+            return;
+          }
+          const index = this.selectedBlogIndex();
+          if (index < 0) {
+            return;
+          }
+          const nextIndex = (index + 1) % this.visible.projects.length;
+          this.openBlog(this.visible.projects[nextIndex].id);
+        },
+
         selectedBlogReadme() {
           const blog = this.selectedBlog();
           if (!blog) {
@@ -1239,10 +1346,30 @@
           return out;
         },
 
+        isPipeRow(line) {
+          const trimmed = String(line || "").trim();
+          return trimmed.includes('|');
+        },
+
+        isTableSeparatorRow(line) {
+          const trimmed = String(line || "").trim();
+          if (!trimmed.includes('|')) {
+            return false;
+          }
+          const normalized = trimmed.replace(/^\|/, '').replace(/\|$/, '');
+          return normalized.split('|').every(cell => /^:?-{3,}:?$/.test(cell.trim()));
+        },
+
+        parseTableRow(line) {
+          const normalized = String(line || "").trim().replace(/^\|/, '').replace(/\|$/, '');
+          return normalized.split('|').map(cell => this.renderInlineMarkdown(cell.trim()));
+        },
+
         renderMarkdown(markdownText) {
           const lines = String(markdownText || "").split(/\r?\n/);
           const html = [];
           let inList = false;
+          let inQuote = false;
 
           const closeList = () => {
             if (inList) {
@@ -1251,29 +1378,78 @@
             }
           };
 
-          for (const rawLine of lines) {
-            const line = rawLine.trim();
+          const closeQuote = () => {
+            if (inQuote) {
+              html.push('</blockquote>');
+              inQuote = false;
+            }
+          };
+
+          let i = 0;
+          while (i < lines.length) {
+            const line = lines[i].trim();
 
             if (!line) {
               closeList();
+              closeQuote();
+              i += 1;
               continue;
             }
+
+            if (this.isPipeRow(line) && i + 1 < lines.length && this.isTableSeparatorRow(lines[i + 1])) {
+              closeList();
+              closeQuote();
+              const headerCells = this.parseTableRow(line);
+              html.push('<table><thead><tr>');
+              headerCells.forEach(cell => html.push(`<th>${cell}</th>`));
+              html.push('</tr></thead><tbody>');
+
+              i += 2;
+              while (i < lines.length && this.isPipeRow(lines[i].trim()) && !this.isTableSeparatorRow(lines[i].trim())) {
+                const rowCells = this.parseTableRow(lines[i]);
+                html.push('<tr>');
+                rowCells.forEach(cell => html.push(`<td>${cell}</td>`));
+                html.push('</tr>');
+                i += 1;
+              }
+              html.push('</tbody></table>');
+              continue;
+            }
+
+            if (line.startsWith('>')) {
+              closeList();
+              if (!inQuote) {
+                html.push('<blockquote>');
+                inQuote = true;
+              }
+              const quotedText = line.replace(/^>\s?/, '').trim();
+              if (quotedText) {
+                html.push(`<p>${this.renderInlineMarkdown(quotedText)}</p>`);
+              }
+              i += 1;
+              continue;
+            }
+
+            closeQuote();
 
             if (line.startsWith('### ')) {
               closeList();
               html.push(`<h3>${this.renderInlineMarkdown(line.slice(4))}</h3>`);
+              i += 1;
               continue;
             }
 
             if (line.startsWith('## ')) {
               closeList();
               html.push(`<h2>${this.renderInlineMarkdown(line.slice(3))}</h2>`);
+              i += 1;
               continue;
             }
 
             if (line.startsWith('# ')) {
               closeList();
               html.push(`<h1>${this.renderInlineMarkdown(line.slice(2))}</h1>`);
+              i += 1;
               continue;
             }
 
@@ -1283,14 +1459,17 @@
                 inList = true;
               }
               html.push(`<li>${this.renderInlineMarkdown(line.slice(2))}</li>`);
+              i += 1;
               continue;
             }
 
             closeList();
             html.push(`<p>${this.renderInlineMarkdown(line)}</p>`);
+            i += 1;
           }
 
           closeList();
+          closeQuote();
           return html.join('');
         },
 
@@ -1306,12 +1485,105 @@
         openTutorial(id) {
           this.panelFocus = "tutorials";
           this.selectedTutorialId = id;
+          const tutorial = this.raw.tutorials.find(item => item.id === id) || null;
+          if (tutorial) {
+            this.ensureTutorialAssets(tutorial);
+          }
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        tutorialReadmePath(tutorial) {
+          if (!tutorial) {
+            return "";
+          }
+          if (tutorial.readme) {
+            return tutorial.readme;
+          }
+          const base = String(tutorial.url || "");
+          if (!base) {
+            return "";
+          }
+          return base.endsWith('/') ? `${base}README.md` : `${base}/README.md`;
+        },
+
+        async ensureTutorialAssets(tutorial) {
+          if (!tutorial || !tutorial.id) {
+            return;
+          }
+
+          const cached = this.tutorialAssets[tutorial.id];
+          if (cached && cached.loaded) {
+            return;
+          }
+
+          let readmeText = "Tutorial README";
+          const readmePath = this.tutorialReadmePath(tutorial);
+          if (readmePath) {
+            try {
+              const readmeRes = await fetch(readmePath);
+              if (readmeRes.ok) {
+                const txt = (await readmeRes.text()).trim();
+                if (txt) {
+                  readmeText = txt;
+                }
+              }
+            } catch (_) {
+              readmeText = "Tutorial README";
+            }
+          }
+
+          this.tutorialAssets[tutorial.id] = {
+            loaded: true,
+            readmeText
+          };
         },
 
         selectedTutorial() {
           if (!this.selectedTutorialId) return null;
           return this.visible.tutorials.find(item => item.id === this.selectedTutorialId) || null;
+        },
+
+        selectedTutorialReadme() {
+          const tutorial = this.selectedTutorial();
+          if (!tutorial) {
+            return "Tutorial README";
+          }
+          const asset = this.tutorialAssets[tutorial.id];
+          if (!asset || !asset.readmeText) {
+            return "Tutorial README";
+          }
+          return asset.readmeText;
+        },
+
+        selectedTutorialIndex() {
+          if (!this.selectedTutorialId) {
+            return -1;
+          }
+          return this.visible.tutorials.findIndex(item => item.id === this.selectedTutorialId);
+        },
+
+        openPrevTutorial() {
+          if (!this.visible.tutorials.length) {
+            return;
+          }
+          const index = this.selectedTutorialIndex();
+          if (index < 0) {
+            return;
+          }
+          const prevIndex = (index - 1 + this.visible.tutorials.length) % this.visible.tutorials.length;
+          this.openTutorial(this.visible.tutorials[prevIndex].id);
+        },
+
+        openNextTutorial() {
+          if (!this.visible.tutorials.length) {
+            return;
+          }
+          const index = this.selectedTutorialIndex();
+          if (index < 0) {
+            return;
+          }
+          const nextIndex = (index + 1) % this.visible.tutorials.length;
+          this.openTutorial(this.visible.tutorials[nextIndex].id);
         },
 
         openPart(ref) {
@@ -1323,6 +1595,37 @@
         selectedPart() {
           if (!this.selectedPartRef) return null;
           return this.visible.components.find(c => c._ref === this.selectedPartRef) || null;
+        },
+
+        selectedPartIndex() {
+          if (!this.selectedPartRef) {
+            return -1;
+          }
+          return this.visible.components.findIndex(c => c._ref === this.selectedPartRef);
+        },
+
+        openPrevPart() {
+          if (!this.visible.components.length) {
+            return;
+          }
+          const index = this.selectedPartIndex();
+          if (index < 0) {
+            return;
+          }
+          const prevIndex = (index - 1 + this.visible.components.length) % this.visible.components.length;
+          this.openPart(this.visible.components[prevIndex]._ref);
+        },
+
+        openNextPart() {
+          if (!this.visible.components.length) {
+            return;
+          }
+          const index = this.selectedPartIndex();
+          if (index < 0) {
+            return;
+          }
+          const nextIndex = (index + 1) % this.visible.components.length;
+          this.openPart(this.visible.components[nextIndex]._ref);
         },
 
         projectSlugFromPath(path) {
@@ -1362,6 +1665,37 @@
         selectedTool() {
           if (!this.selectedToolId) return null;
           return this.visible.tools.find(t => t.id === this.selectedToolId) || null;
+        },
+
+        selectedToolIndex() {
+          if (!this.selectedToolId) {
+            return -1;
+          }
+          return this.visible.tools.findIndex(t => t.id === this.selectedToolId);
+        },
+
+        openPrevTool() {
+          if (!this.visible.tools.length) {
+            return;
+          }
+          const index = this.selectedToolIndex();
+          if (index < 0) {
+            return;
+          }
+          const prevIndex = (index - 1 + this.visible.tools.length) % this.visible.tools.length;
+          this.openTool(this.visible.tools[prevIndex].id);
+        },
+
+        openNextTool() {
+          if (!this.visible.tools.length) {
+            return;
+          }
+          const index = this.selectedToolIndex();
+          if (index < 0) {
+            return;
+          }
+          const nextIndex = (index + 1) % this.visible.tools.length;
+          this.openTool(this.visible.tools[nextIndex].id);
         },
 
         totalResults() {
