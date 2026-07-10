@@ -548,26 +548,79 @@
       <div class="panel" x-show="showLarge('parts') && visible.components.length > 0">
         <div class="sec-title">
           Components Database
-          <span class="count-pill" x-text="visible.components.length"></span>
+          <span class="count-pill" x-text="selectedPart() ? '1 / ' + visible.components.length : visible.components.length"></span>
         </div>
-        <div class="parts-grid">
+        <template x-if="selectedPart()">
+          <article>
+            <button class="buy-link" @click="selectedPartRef = null">Back to all parts</button>
+            <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedPart()._ref"></h2>
+            <div class="meta" style="margin-top:6px;">
+              Type: <strong x-text="selectedPart().type || 'Component'"></strong> ·
+              Package: <span x-text="selectedPart().package || 'N/A'"></span> ·
+              Manufacturer: <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+              <div class="part-card">
+                <div class="detail-section-title">Component Details</div>
+                <p class="card-desc">
+                  <strong>Reference:</strong> <span x-text="selectedPart()._ref"></span><br>
+                  <strong>Type:</strong> <span x-text="selectedPart().type || 'N/A'"></span><br>
+                  <strong>Package:</strong> <span x-text="selectedPart().package || 'N/A'"></span><br>
+                  <strong>Manufacturer:</strong> <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
+                </p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Used In Projects</div>
+                <template x-if="(selectedPart().used_in_projects || []).length > 0">
+                  <div class="flex flex-wrap gap-1" style="margin-top:4px;">
+                    <template x-for="proj in (selectedPart().used_in_projects || [])" :key="proj">
+                      <span class="tag" x-text="proj"></span>
+                    </template>
+                  </div>
+                </template>
+                <template x-if="!(selectedPart().used_in_projects || []).length">
+                  <p class="card-desc">No project associations recorded.</p>
+                </template>
+              </div>
+              <div class="part-card" style="grid-column: 1 / -1;">
+                <div class="detail-section-title">Purchase Links</div>
+                <div style="margin-top:4px;">
+                  <template x-if="selectedPart().datasheet">
+                    <a class="buy-link" :href="selectedPart().datasheet" target="_blank" rel="noopener">Datasheet</a>
+                  </template>
+                  <template x-if="selectedPart().buy && selectedPart().buy.DigiKey">
+                    <a class="buy-link" :href="selectedPart().buy.DigiKey" target="_blank" rel="noopener">DigiKey</a>
+                  </template>
+                  <template x-if="selectedPart().buy && selectedPart().buy.Mouser">
+                    <a class="buy-link" :href="selectedPart().buy.Mouser" target="_blank" rel="noopener">Mouser</a>
+                  </template>
+                  <template x-if="selectedPart().buy && selectedPart().buy.TME">
+                    <a class="buy-link" :href="selectedPart().buy.TME" target="_blank" rel="noopener">TME</a>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </article>
+        </template>
+
+        <div class="parts-grid" x-show="!selectedPart()">
           <template x-for="part in visible.components" :key="part._ref">
-            <article class="part-card">
+            <article class="part-card clickable" @click="openPart(part._ref)">
               <div class="part-ref" x-text="part._ref"></div>
               <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.package || 'N/A')"></div>
               <p class="card-desc" style="margin-top:5px;" x-text="part.manufacturer || 'Unknown manufacturer'"></p>
               <div>
                 <template x-if="part.datasheet">
-                  <a class="buy-link" :href="part.datasheet" target="_blank" rel="noopener">Datasheet</a>
+                  <a class="buy-link" :href="part.datasheet" target="_blank" rel="noopener" @click.stop>Datasheet</a>
                 </template>
                 <template x-if="part.buy && part.buy.DigiKey">
-                  <a class="buy-link" :href="part.buy.DigiKey" target="_blank" rel="noopener">DigiKey</a>
+                  <a class="buy-link" :href="part.buy.DigiKey" target="_blank" rel="noopener" @click.stop>DigiKey</a>
                 </template>
                 <template x-if="part.buy && part.buy.Mouser">
-                  <a class="buy-link" :href="part.buy.Mouser" target="_blank" rel="noopener">Mouser</a>
+                  <a class="buy-link" :href="part.buy.Mouser" target="_blank" rel="noopener" @click.stop>Mouser</a>
                 </template>
                 <template x-if="part.buy && part.buy.TME">
-                  <a class="buy-link" :href="part.buy.TME" target="_blank" rel="noopener">TME</a>
+                  <a class="buy-link" :href="part.buy.TME" target="_blank" rel="noopener" @click.stop>TME</a>
                 </template>
               </div>
             </article>
@@ -579,11 +632,49 @@
       <div class="panel" x-show="showLarge('tutorials') && visible.tutorials.length > 0">
         <div class="sec-title">
           Technical Tutorials
-          <span class="count-pill" x-text="visible.tutorials.length"></span>
+          <span class="count-pill" x-text="selectedTutorial() ? '1 / ' + visible.tutorials.length : visible.tutorials.length"></span>
         </div>
-        <div class="card-grid">
+        <template x-if="selectedTutorial()">
+          <article>
+            <button class="buy-link" @click="selectedTutorialId = null">Back to all tutorials</button>
+            <img class="thumb" :src="selectedTutorial().image" :alt="selectedTutorial().title" style="margin-top:8px;">
+            <h2 class="blog-detail-title" x-text="selectedTutorial().title"></h2>
+            <div class="meta" style="margin-top:6px;">
+              Contributor: <strong x-text="selectedTutorial().contributor"></strong> ·
+              Category: <span x-text="selectedTutorial().category"></span>
+              <span class="difficulty-pill" :class="'diff-' + selectedTutorial().difficulty" x-text="selectedTutorial().difficulty" style="margin-left:8px;"></span>
+            </div>
+            <p class="card-desc" style="margin-top:10px;" x-text="selectedTutorial().description"></p>
+            <div class="flex flex-wrap gap-1" style="margin-top:8px;">
+              <template x-for="tag in (selectedTutorial().tags || [])" :key="tag + '-tut-detail'">
+                <span class="tag" x-text="tag"></span>
+              </template>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+              <div class="part-card">
+                <div class="detail-section-title">Overview</div>
+                <p class="card-desc">This tutorial is part of the <strong x-text="selectedTutorial().category"></strong> track and follows a <strong x-text="selectedTutorial().difficulty"></strong> level path.</p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Learning Focus</div>
+                <p class="card-desc">Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.</p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Tutorial Link</div>
+                <p class="card-desc" style="margin-bottom:6px;">Tutorial content is loaded directly from the local index.</p>
+                <a class="buy-link" :href="selectedTutorial().url || '#'" target="_blank" rel="noopener">Open Tutorial</a>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Contributor</div>
+                <p class="card-desc">Submitted by <strong x-text="selectedTutorial().contributor"></strong>. This tutorial is part of the SimoDevel community collection.</p>
+              </div>
+            </div>
+          </article>
+        </template>
+
+        <div class="card-grid" x-show="!selectedTutorial()">
           <template x-for="item in visible.tutorials" :key="item.id">
-            <article class="tech-card">
+            <article class="tech-card clickable" @click="openTutorial(item.id)">
               <img class="thumb" :src="item.image" :alt="item.title">
               <div class="card-body">
                 <h3 class="card-title" x-text="item.title"></h3>
@@ -608,20 +699,57 @@
       <div class="panel" x-show="showLarge('tools') && visible.tools.length > 0">
         <div class="sec-title">
           Free and Open Tools (Installation + Versions)
-          <span class="count-pill" x-text="visible.tools.length"></span>
+          <span class="count-pill" x-text="selectedTool() ? '1 / ' + visible.tools.length : visible.tools.length"></span>
         </div>
-        <div class="tools-list">
+        <template x-if="selectedTool()">
+          <article>
+            <button class="buy-link" @click="selectedToolId = null">Back to all tools</button>
+            <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedTool().name || selectedTool().title"></h2>
+            <div class="meta" style="margin-top:6px;">
+              Category: <strong x-text="selectedTool().category"></strong> ·
+              License: <span x-text="selectedTool().license || 'Free'"></span> ·
+              Version: <span x-text="selectedTool().free_version || selectedTool().version || 'Free tier'"></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:12px;">
+              <div class="part-card">
+                <div class="detail-section-title">About</div>
+                <p class="card-desc" x-text="selectedTool().description || selectedTool().best_for || 'No description available.'"></p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Best For</div>
+                <p class="card-desc" x-text="selectedTool().best_for || 'General electronics design and simulation.'"></p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Installation</div>
+                <p class="card-desc" x-text="selectedTool().install || 'See official documentation.'"></p>
+              </div>
+              <div class="part-card">
+                <div class="detail-section-title">Platforms &amp; Links</div>
+                <template x-if="(selectedTool().platforms || []).length > 0">
+                  <div class="flex flex-wrap gap-1" style="margin-bottom:6px;">
+                    <template x-for="pl in (selectedTool().platforms || [])" :key="pl">
+                      <span class="tag" x-text="pl"></span>
+                    </template>
+                  </div>
+                </template>
+                <a class="buy-link" :href="selectedTool().link || selectedTool().url || '#'" target="_blank" rel="noopener">Official Site</a>
+              </div>
+            </div>
+          </article>
+        </template>
+
+        <div class="tools-list" x-show="!selectedTool()">
           <template x-for="tool in visible.tools" :key="tool.id">
-            <article class="tool-card">
+            <article class="tool-card clickable" @click="openTool(tool.id)">
               <div class="tool-name" x-text="tool.name || tool.title"></div>
               <div class="tool-meta">
                 <span x-text="tool.category"></span> ·
                 <span x-text="tool.free_version || tool.version || 'Free tier'"></span> ·
                 <span x-text="tool.license || 'Free'"></span>
               </div>
-              <p class="card-desc" x-text="tool.description"></p>
+              <p class="card-desc" x-text="tool.description || tool.best_for"></p>
               <p class="meta" style="margin-top:6px;" x-text="'Install: ' + (tool.install || 'See official documentation.')"></p>
-              <a class="buy-link" :href="tool.link || tool.url" target="_blank" rel="noopener">Official Site</a>
+              <a class="buy-link" :href="tool.link || tool.url" target="_blank" rel="noopener" @click.stop>Official Site</a>
             </article>
           </template>
         </div>
@@ -638,7 +766,7 @@
         <div class="sec-title">Blogs <span class="count-pill" x-text="visible.projects.length"></span></div>
         <div class="compact-list">
           <template x-for="item in visible.projects.slice(0, 8)" :key="item.id + '-compact-blog'">
-            <div class="compact-item">
+            <div class="compact-item clickable" style="cursor:pointer;" @click="openBlog(item.id)">
               <img :src="item.image" :alt="item.title">
               <div>
                 <div class="compact-title" x-text="item.title"></div>
@@ -654,7 +782,7 @@
         <div class="sec-title">Parts <span class="count-pill" x-text="visible.components.length"></span></div>
         <div class="compact-list">
           <template x-for="part in visible.components.slice(0, 10)" :key="part._ref + '-compact-part'">
-            <div class="compact-item" style="grid-template-columns: 1fr;">
+            <div class="compact-item clickable" style="grid-template-columns: 1fr; cursor:pointer;" @click="openPart(part._ref)">
               <div>
                 <div class="compact-title" x-text="part._ref"></div>
                 <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.manufacturer || '')"></div>
@@ -669,7 +797,7 @@
         <div class="sec-title">Tutorials <span class="count-pill" x-text="visible.tutorials.length"></span></div>
         <div class="compact-list">
           <template x-for="item in visible.tutorials.slice(0, 8)" :key="item.id + '-compact-tut'">
-            <div class="compact-item">
+            <div class="compact-item clickable" style="cursor:pointer;" @click="openTutorial(item.id)">
               <img :src="item.image" :alt="item.title">
               <div>
                 <div class="compact-title" x-text="item.title"></div>
@@ -685,7 +813,7 @@
         <div class="sec-title">Tools <span class="count-pill" x-text="visible.tools.length"></span></div>
         <div class="compact-list">
           <template x-for="tool in visible.tools.slice(0, 8)" :key="tool.id + '-compact-tool'">
-            <div class="compact-item" style="grid-template-columns: 1fr;">
+            <div class="compact-item clickable" style="grid-template-columns: 1fr; cursor:pointer;" @click="openTool(tool.id)">
               <div>
                 <div class="compact-title" x-text="tool.name || tool.title"></div>
                 <div class="meta" x-text="(tool.free_version || tool.version || 'Free') + ' · ' + (tool.license || 'Free')"></div>
@@ -728,6 +856,9 @@
         query: "",
         panelFocus: "default",
         selectedBlogId: null,
+        selectedTutorialId: null,
+        selectedPartRef: null,
+        selectedToolId: null,
         stats: { projects: 0, components: 0, tutorials: 0, tools: 0 },
 
         raw: {
@@ -799,6 +930,9 @@
 
           if (q) {
             this.selectedBlogId = null;
+            this.selectedTutorialId = null;
+            this.selectedPartRef = null;
+            this.selectedToolId = null;
           }
 
           if (!q) {
@@ -846,6 +980,15 @@
           if (this.selectedBlogId && !this.visible.projects.some(item => item.id === this.selectedBlogId)) {
             this.selectedBlogId = null;
           }
+          if (this.selectedTutorialId && !this.visible.tutorials.some(item => item.id === this.selectedTutorialId)) {
+            this.selectedTutorialId = null;
+          }
+          if (this.selectedPartRef && !this.visible.components.some(c => c._ref === this.selectedPartRef)) {
+            this.selectedPartRef = null;
+          }
+          if (this.selectedToolId && !this.visible.tools.some(t => t.id === this.selectedToolId)) {
+            this.selectedToolId = null;
+          }
         },
 
         openBlog(id) {
@@ -858,6 +1001,36 @@
             return null;
           }
           return this.visible.projects.find(item => item.id === this.selectedBlogId) || null;
+        },
+
+        openTutorial(id) {
+          this.panelFocus = "tutorials";
+          this.selectedTutorialId = id;
+        },
+
+        selectedTutorial() {
+          if (!this.selectedTutorialId) return null;
+          return this.visible.tutorials.find(item => item.id === this.selectedTutorialId) || null;
+        },
+
+        openPart(ref) {
+          this.panelFocus = "parts";
+          this.selectedPartRef = ref;
+        },
+
+        selectedPart() {
+          if (!this.selectedPartRef) return null;
+          return this.visible.components.find(c => c._ref === this.selectedPartRef) || null;
+        },
+
+        openTool(id) {
+          this.panelFocus = "tools";
+          this.selectedToolId = id;
+        },
+
+        selectedTool() {
+          if (!this.selectedToolId) return null;
+          return this.visible.tools.find(t => t.id === this.selectedToolId) || null;
         },
 
         totalResults() {
