@@ -1,0 +1,12 @@
+[
+  { "ref": "LTC4054", "qty": 1, "value": "LTC4054ES5-4.2 SOT-23-5", "role": "IC încărcare Li-Ion 4.2V" },
+  { "ref": "R prog", "qty": 1, "value": "2kΩ 1% SMD 0603", "role": "Setare curent de încărcare ~500mA" },
+  { "ref": "C 10µF", "qty": 2, "value": "10µF / 10V ceramic X5R 0805", "role": "Decuplare VCC și VBAT" },
+  { "ref": "LED verde", "qty": 1, "value": "LED 3mm verde", "role": "Indicator încărcare completă (CHRG pin)" },
+  { "ref": "LED roșu", "qty": 1, "value": "LED 3mm roșu", "role": "Indicator în curs de încărcare" },
+  { "ref": "R 1kΩ", "qty": 2, "value": "1kΩ 1/4W", "role": "Limitare curent LED-uri status" },
+  { "ref": "Panou solar", "qty": 1, "value": "Panou 6V / 1W (min 500mA)", "role": "Sursă de alimentare solară" },
+  { "ref": "Conector JST 2pin", "qty": 2, "value": "JST PH 2.0mm 2 pini", "role": "Conector baterie și panou solar" },
+  { "ref": "Baterie Li-Ion", "qty": 1, "value": "Li-Ion 18650 3.7V / 2000mAh", "role": "Acumulator" },
+  { "ref": "PCB", "qty": 1, "value": "PCB custom sau breadboard SMD adapter", "role": "Suport circuit (LTC4054 e SMD)" }
+]

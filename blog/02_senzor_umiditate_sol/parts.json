@@ -1,0 +1,11 @@
+[
+  { "ref": "LM393", "qty": 1, "value": "LM393N DIP-8", "role": "Comparator tensiune" },
+  { "ref": "R 10kΩ", "qty": 2, "value": "10kΩ 1/4W", "role": "Divizor referință și pull-up" },
+  { "ref": "R 1kΩ", "qty": 1, "value": "1kΩ 1/4W", "role": "Limitare curent LED" },
+  { "ref": "Potentiometru 10kΩ", "qty": 1, "value": "10kΩ", "role": "Ajustare prag umiditate" },
+  { "ref": "LED roșu", "qty": 1, "value": "5mm roșu", "role": "Indicator sol uscat" },
+  { "ref": "Buzzer", "qty": 1, "value": "Buzzer activ 5V", "role": "Alarmă sonică" },
+  { "ref": "Electrozi Cu", "qty": 2, "value": "Sârmă Cu 1mm / 5cm", "role": "Sonde umiditate sol" },
+  { "ref": "C 100nF", "qty": 1, "value": "100nF ceramic", "role": "Decuplare alimentare" },
+  { "ref": "Alimentare", "qty": 1, "value": "5V sau 9V", "role": "Alimentare circuit" }
+]

@@ -1,0 +1,134 @@
+{
+  "BC547": {
+    "type": "BJT NPN",
+    "package": "TO-92",
+    "manufacturer": "Vishay / ON Semi / Fairchild",
+    "datasheet": "https://www.vishay.com/docs/85014/bc546.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/transistors-bipolar-bjt-single/276?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoMRACsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/discrete-semiconductors/transistors/bipolar-transistors-bjt/?q=BC547",
+      "TME": "https://www.tme.eu/ro/katalog/?search=BC547"
+    },
+    "used_in_projects": ["01_emitator_fm", "06_detector_metale"]
+  },
+  "LM393": {
+    "type": "Comparator dual",
+    "package": "DIP-8 / SO-8",
+    "manufacturer": "Texas Instruments / ST",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm393.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/comparators/697?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoURAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/integrated-circuits-ics/linear-ics-comparators/?q=LM393",
+      "TME": "https://www.tme.eu/ro/katalog/?search=LM393"
+    },
+    "used_in_projects": ["02_senzor_umiditate_sol"]
+  },
+  "LM317": {
+    "type": "Regulator tensiune ajustabil",
+    "package": "TO-220 / TO-92",
+    "manufacturer": "Texas Instruments / ST / ON Semi",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm317.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/linear-voltage-regulators-ic/696?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoMRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/power-management-ics/voltage-regulators-linear-ldo/?q=LM317",
+      "TME": "https://www.tme.eu/ro/katalog/?search=LM317"
+    },
+    "used_in_projects": ["03_sursa_lm317"]
+  },
+  "LM386": {
+    "type": "Amplificator audio",
+    "package": "DIP-8",
+    "manufacturer": "Texas Instruments / ST",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm386.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/audio-amplifiers/688?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoQRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/integrated-circuits-ics/amplifier-ics/audio-amplifiers/?q=LM386",
+      "TME": "https://www.tme.eu/ro/katalog/?search=LM386"
+    },
+    "used_in_projects": ["04_amplificator_lm386"]
+  },
+  "CD4026": {
+    "type": "Numărător BCD / driver 7 segmente",
+    "package": "DIP-16",
+    "manufacturer": "Texas Instruments / ST",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/cd4026b.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/logic-counters-dividers/703?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoURAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/integrated-circuits-ics/logic-ics/counters-dividers/?q=CD4026",
+      "TME": "https://www.tme.eu/ro/katalog/?search=CD4026"
+    },
+    "used_in_projects": ["05_ceas_cd4026"]
+  },
+  "NE555": {
+    "type": "Timer",
+    "package": "DIP-8 / SO-8",
+    "manufacturer": "Texas Instruments / ST / NXP",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/ne555.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/timers-oscillators/298?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoIRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/integrated-circuits-ics/timers-oscillators/?q=NE555",
+      "TME": "https://www.tme.eu/ro/katalog/?search=NE555"
+    },
+    "used_in_projects": ["05_ceas_cd4026", "09_invertor_12v"]
+  },
+  "LM358": {
+    "type": "Op-Amp dual",
+    "package": "DIP-8 / SO-8",
+    "manufacturer": "Texas Instruments / ST / ON Semi",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm358.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/linear-amplifiers-instrumentation-op-amps-buffer-amps/687?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoQRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/integrated-circuits-ics/amplifier-ics/operational-amplifiers-op-amps/?q=LM358",
+      "TME": "https://www.tme.eu/ro/katalog/?search=LM358"
+    },
+    "used_in_projects": ["07_termometru_ntc"]
+  },
+  "LTC4054": {
+    "type": "Încărcător Li-Ion",
+    "package": "SOT-23-5",
+    "manufacturer": "Analog Devices (Linear Technology)",
+    "datasheet": "https://www.analog.com/media/en/technical-documentation/data-sheets/405442fc.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/battery-management/91?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoIRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/power-management-ics/battery-management/?q=LTC4054",
+      "TME": "https://www.tme.eu/ro/katalog/?search=LTC4054"
+    },
+    "used_in_projects": ["08_incarcator_solar"]
+  },
+  "IRF540N": {
+    "type": "MOSFET N-Channel",
+    "package": "TO-220",
+    "manufacturer": "Vishay / Infineon",
+    "datasheet": "https://www.vishay.com/docs/91021/91021.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/transistors-fets-mosfets-single/278?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoMRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/discrete-semiconductors/transistors/mosfet/?q=IRF540N",
+      "TME": "https://www.tme.eu/ro/katalog/?search=IRF540N"
+    },
+    "used_in_projects": ["09_invertor_12v"]
+  },
+  "TSOP4838": {
+    "type": "Receptor IR 38kHz",
+    "package": "TO-92 (3-pin)",
+    "manufacturer": "Vishay",
+    "datasheet": "https://www.vishay.com/docs/82459/tsop48.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/infrared-receivers/285?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoURAAsEkA",
+      "Mouser": "https://www.mouser.com/c/optoelectronics/infrared-ultraviolet/?q=TSOP4838",
+      "TME": "https://www.tme.eu/ro/katalog/?search=TSOP4838"
+    },
+    "used_in_projects": ["10_receptor_ir"]
+  },
+  "1N4148": {
+    "type": "Diodă comutare rapidă",
+    "package": "DO-35",
+    "manufacturer": "Vishay / Fairchild / ON Semi",
+    "datasheet": "https://www.vishay.com/docs/85681/1n4148.pdf",
+    "buy": {
+      "DigiKey": "https://www.digikey.com/en/products/filter/diodes-rectifiers-single/280?s=N4IgjCBcoGwJxVAYygMwIYBsDOBTANCAPZQDaIALGGAOwDMhIAuoQA4AuUIAymwE4BLAHYBzEAF9CAWgAMoQRAAsEkA",
+      "Mouser": "https://www.mouser.com/c/semiconductors/discrete-semiconductors/diodes-rectifiers/diodes-general-purpose-power-switching/?q=1N4148",
+      "TME": "https://www.tme.eu/ro/katalog/?search=1N4148"
+    },
+    "used_in_projects": []
+  }
+}

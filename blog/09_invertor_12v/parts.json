@@ -1,0 +1,13 @@
+[
+  { "ref": "IRF540N", "qty": 2, "value": "IRF540N TO-220", "role": "MOSFET putere comutare 50Hz" },
+  { "ref": "NE555", "qty": 1, "value": "NE555 DIP-8", "role": "Oscilator 50Hz (100Hz, push-pull)" },
+  { "ref": "R 10kΩ", "qty": 2, "value": "10kΩ 1/4W", "role": "Rețea timing 555" },
+  { "ref": "R 100Ω", "qty": 2, "value": "100Ω 1W", "role": "Gate resistor MOSFET" },
+  { "ref": "R 10kΩ gate", "qty": 2, "value": "10kΩ 1/4W", "role": "Pull-down gate MOSFET" },
+  { "ref": "C 10nF", "qty": 1, "value": "10nF / 50V ceramic", "role": "Timing 555" },
+  { "ref": "C 100nF", "qty": 3, "value": "100nF ceramic", "role": "Decuplare alimentare" },
+  { "ref": "Transformator", "qty": 1, "value": "12V-0-12V / 220V / 50VA (centru trapt)", "role": "Transformator de putere center-tap" },
+  { "ref": "Diode 1N4007", "qty": 4, "value": "1N4007 1A/1000V", "role": "Protecție flyback" },
+  { "ref": "Radiator", "qty": 2, "value": "Heatsink TO-220 Rth < 5°C/W", "role": "Răcire MOSFET-uri" },
+  { "ref": "Fuzibil", "qty": 1, "value": "2A slow-blow", "role": "Protecție supracurent intrare 12V" }
+]

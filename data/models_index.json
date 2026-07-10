@@ -1,0 +1,74 @@
+[
+  {
+    "id": "mod_bc547_spice",
+    "title": "BC547 SPICE Model",
+    "simulator": "LTspice",
+    "type": "BJT NPN",
+    "tags": ["BC547", "BJT", "NPN", "SPICE", "LTspice", "tranzistor"],
+    "manufacturer": "Vishay",
+    "file": "models/spice/BC547.lib",
+    "datasheet": "https://www.vishay.com/docs/85014/bc546.pdf",
+    "description": "Model SPICE level 1 pentru BC547B. Parametri extrași din datasheet Vishay.",
+    "featured": true
+  },
+  {
+    "id": "mod_lm317_spice",
+    "title": "LM317 SPICE Macromodel",
+    "simulator": "LTspice",
+    "type": "Voltage Regulator",
+    "tags": ["LM317", "regulator", "macromodel", "SPICE", "LTspice"],
+    "manufacturer": "Texas Instruments",
+    "file": "models/spice/LM317.lib",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm317.pdf",
+    "description": "Macromodel SPICE pentru LM317. Include comportamentul de reglare și limitare de curent.",
+    "featured": true
+  },
+  {
+    "id": "mod_lm386_spice",
+    "title": "LM386 SPICE Macromodel",
+    "simulator": "LTspice",
+    "type": "Audio Amplifier",
+    "tags": ["LM386", "audio", "amplificator", "macromodel", "SPICE"],
+    "manufacturer": "Texas Instruments",
+    "file": "models/spice/LM386.lib",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/lm386.pdf",
+    "description": "Macromodel SPICE pentru amplificatorul audio LM386. Util pentru simularea etajelor audio de mică putere.",
+    "featured": false
+  },
+  {
+    "id": "mod_1n4148_spice",
+    "title": "1N4148 SPICE Model",
+    "simulator": "LTspice",
+    "type": "Diode",
+    "tags": ["1N4148", "diodă", "SPICE", "LTspice", "comutare"],
+    "manufacturer": "Vishay",
+    "file": "models/spice/1N4148.lib",
+    "datasheet": "https://www.vishay.com/docs/85681/1n4148.pdf",
+    "description": "Model SPICE standard pentru dioda de comutare rapidă 1N4148.",
+    "featured": false
+  },
+  {
+    "id": "mod_irf540n_spice",
+    "title": "IRF540N SPICE Model",
+    "simulator": "LTspice",
+    "type": "MOSFET N-Channel",
+    "tags": ["IRF540N", "MOSFET", "N-Channel", "SPICE", "LTspice", "putere"],
+    "manufacturer": "Vishay",
+    "file": "models/spice/IRF540N.lib",
+    "datasheet": "https://www.vishay.com/docs/91021/91021.pdf",
+    "description": "Model SPICE Level 3 pentru MOSFET de putere IRF540N. Include parametrii termici.",
+    "featured": true
+  },
+  {
+    "id": "mod_ne555_spice",
+    "title": "NE555 SPICE Macromodel",
+    "simulator": "LTspice",
+    "type": "Timer IC",
+    "tags": ["NE555", "555", "timer", "macromodel", "SPICE", "LTspice"],
+    "manufacturer": "Texas Instruments",
+    "file": "models/spice/NE555.lib",
+    "datasheet": "https://www.ti.com/lit/ds/symlink/ne555.pdf",
+    "description": "Macromodel SPICE pentru timer-ul NE555. Simulează modurile astabil și monostabil.",
+    "featured": true
+  }
+]

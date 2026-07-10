@@ -1,0 +1,62 @@
+[
+  {
+    "id": "tut_01_ltspice_install",
+    "title": "Instalare și configurare LTspice XVII",
+    "category": "Setup",
+    "tags": ["LTspice", "instalare", "Windows", "setup", "simulator"],
+    "difficulty": "beginner",
+    "description": "Cum să descarci, instalezi și configurezi LTspice XVII pe Windows. Primul circuit simulat în 10 minute.",
+    "url": "tutorials/01_ltspice_install/",
+    "featured": true
+  },
+  {
+    "id": "tut_02_analiza_dc",
+    "title": "Analiza DC în LTspice — punct de funcționare",
+    "category": "LTspice",
+    "tags": ["LTspice", "DC", "OP", "bias", "tranzistor"],
+    "difficulty": "beginner",
+    "description": "Cum să calculezi și verifici prin simulare punctul static de funcționare al unui amplificator cu BJT.",
+    "url": "tutorials/02_analiza_dc/",
+    "featured": true
+  },
+  {
+    "id": "tut_03_analiza_ac",
+    "title": "Analiza AC și Bode plot în LTspice",
+    "category": "LTspice",
+    "tags": ["LTspice", "AC", "Bode", "frecvență", "filtru"],
+    "difficulty": "beginner",
+    "description": "Simularea răspunsului în frecvență al unui filtru RC/RLC și citirea diagramei Bode.",
+    "url": "tutorials/03_analiza_ac/",
+    "featured": false
+  },
+  {
+    "id": "tut_04_analiza_transient",
+    "title": "Analiza tranzitorie — semnale în timp",
+    "category": "LTspice",
+    "tags": ["LTspice", "TRAN", "tranzitoriu", "oscilator", "semnal"],
+    "difficulty": "beginner",
+    "description": "Cum să simulezi comportamentul în timp al unui circuit oscilant sau al unui comutator.",
+    "url": "tutorials/04_analiza_transient/",
+    "featured": false
+  },
+  {
+    "id": "tut_05_modele_spice",
+    "title": "Cum adaugi modele SPICE externe în LTspice",
+    "category": "LTspice",
+    "tags": ["LTspice", "model", "SPICE", ".lib", ".sub", "component"],
+    "difficulty": "intermediate",
+    "description": "Importă fișiere .lib și .sub de la producători (TI, ST, Vishay) și folosește-le în schemele tale.",
+    "url": "tutorials/05_modele_spice/",
+    "featured": true
+  },
+  {
+    "id": "tut_06_verilog_a_intro",
+    "title": "Introducere în Verilog-A pentru modele comportamentale",
+    "category": "Verilog-A",
+    "tags": ["Verilog-A", "comportamental", "model", "AMS", "analog"],
+    "difficulty": "advanced",
+    "description": "Scrie primul tău model Verilog-A: o diodă ideală, un rezistor neliniar și un oscilator simplu.",
+    "url": "tutorials/06_verilog_a_intro/",
+    "featured": false
+  }
+]

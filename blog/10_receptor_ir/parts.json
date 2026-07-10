@@ -1,0 +1,10 @@
+[
+  { "ref": "TSOP4838", "qty": 1, "value": "TSOP4838 TO-92 3-pin", "role": "Receptor IR 38kHz" },
+  { "ref": "Arduino Nano", "qty": 1, "value": "Arduino Nano v3 (ATmega328P)", "role": "Microcontroller decodificare IR" },
+  { "ref": "LCD 16x2", "qty": 1, "value": "LCD 1602 HD44780 + I2C adaptor PCF8574", "role": "Afișaj cod IR recepționat" },
+  { "ref": "R 100Ω", "qty": 1, "value": "100Ω 1/4W", "role": "Serie pe linia de semnal TSOP" },
+  { "ref": "C 100nF", "qty": 1, "value": "100nF ceramic", "role": "Decuplare alimentare TSOP" },
+  { "ref": "C 10µF", "qty": 1, "value": "10µF electrolitic", "role": "Filtrare alimentare TSOP" },
+  { "ref": "Cablu USB", "qty": 1, "value": "USB Mini-B (pentru programare Nano)", "role": "Programare și alimentare" },
+  { "ref": "Breadboard", "qty": 1, "value": "400 puncte sau mai mare", "role": "Prototipare circuit" }
+]

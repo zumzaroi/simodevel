@@ -1,0 +1,11 @@
+[
+  { "ref": "LM358", "qty": 1, "value": "LM358N DIP-8", "role": "Op-Amp comparator / buffer" },
+  { "ref": "NTC 10kΩ", "qty": 1, "value": "NTC 10kΩ @ 25°C B=3950", "role": "Senzor temperatură" },
+  { "ref": "R 10kΩ", "qty": 3, "value": "10kΩ 1/4W ±1%", "role": "Divizor + rețea Wheatstone" },
+  { "ref": "Potentiometru 10kΩ", "qty": 1, "value": "10kΩ multiturn (de preferință)", "role": "Calibrare offset temperatură" },
+  { "ref": "LED bargraph 10seg", "qty": 1, "value": "LED bargraph 10 segmente roșu/verde", "role": "Afișaj analogic temperatură" },
+  { "ref": "R 470Ω", "qty": 10, "value": "470Ω 1/4W", "role": "Limitare curent LED-uri bargraph" },
+  { "ref": "LM3914", "qty": 1, "value": "LM3914N DIP-18 (opțional)", "role": "Driver bargraph (alternativ la LM358 multiplu)" },
+  { "ref": "C 100nF", "qty": 2, "value": "100nF ceramic", "role": "Decuplare alimentare" },
+  { "ref": "Alimentare", "qty": 1, "value": "9V sau 12V", "role": "Alimentare circuit" }
+]

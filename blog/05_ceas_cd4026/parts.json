@@ -1,0 +1,12 @@
+[
+  { "ref": "CD4026", "qty": 4, "value": "CD4026BE DIP-16", "role": "Numărător BCD + driver 7 segmente (cifre ore/minute)" },
+  { "ref": "NE555", "qty": 1, "value": "NE555 DIP-8", "role": "Oscilator 1Hz pentru clock" },
+  { "ref": "Display 7seg", "qty": 4, "value": "Anod comun 1 cifră 0.56\"", "role": "Afișaj ore și minute" },
+  { "ref": "R 1kΩ", "qty": 7, "value": "1kΩ 1/4W", "role": "Limitare curent segmente" },
+  { "ref": "R 10kΩ", "qty": 2, "value": "10kΩ 1/4W", "role": "Rețea RC oscilator 555" },
+  { "ref": "R 100kΩ", "qty": 1, "value": "100kΩ 1/4W", "role": "Rețea RC oscilator 555" },
+  { "ref": "C 10µF", "qty": 1, "value": "10µF / 16V electrolitic", "role": "Condensator timing 555" },
+  { "ref": "C 100nF", "qty": 5, "value": "100nF ceramic", "role": "Decuplare alimentare per IC" },
+  { "ref": "Buton reset", "qty": 1, "value": "Push button momentary", "role": "Reset numărătoare" },
+  { "ref": "Alimentare", "qty": 1, "value": "5V / 500mA", "role": "Alimentare CMOS + displays" }
+]
