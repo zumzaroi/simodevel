@@ -265,12 +265,8 @@
       border-color: #9ca3af;
     }
 
-    .vote-widget {
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      background: #f9fafb;
-      padding: 10px;
-      margin-top: 10px;
+    .topic-rating-row {
+      margin-top: 6px;
     }
 
     .vote-actions {
@@ -327,19 +323,19 @@
     }
 
     .list-vote-quiet {
-      margin-top: 6px;
+      margin-top: 4px;
       display: inline-flex;
       align-items: center;
       gap: 2px;
-      border: 1px solid #e5e7eb;
-      border-radius: 999px;
-      background: #f9fafb;
-      padding: 2px 8px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
     }
 
     .list-vote-star {
       color: #d1d5db;
-      font-size: 11px;
+      font-size: 20px;
       line-height: 1;
       position: relative;
       top: -1px;
@@ -353,17 +349,21 @@
       margin-left: 6px;
       color: #4b5563;
       font-family: "Courier New", monospace;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.03em;
+      line-height: 1;
+      transform: translateY(20%);
     }
 
     .list-vote-count {
       color: #9ca3af;
       font-family: "Courier New", monospace;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.03em;
+      line-height: 1;
+      transform: translateY(20%);
     }
 
     .panel {
@@ -865,19 +865,7 @@
             <button class="buy-link" @click="closeBlogDetail()">Back to all blogs</button>
             <img class="thumb" :src="selectedBlog().image" :alt="selectedBlog().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedBlog().title"></h2>
-            <div class="meta" style="margin-top:6px;">
-              Contributor: <strong x-text="selectedBlog().contributor"></strong> ·
-              Category: <span x-text="selectedBlog().category"></span>
-              <span class="difficulty-pill" :class="'diff-' + selectedBlog().difficulty" x-text="selectedBlog().difficulty" style="margin-left:8px;"></span>
-            </div>
-            <p class="card-desc" style="margin-top:10px;" x-text="selectedBlog().description"></p>
-            <div class="flex flex-wrap gap-1" style="margin-top:8px;">
-              <template x-for="tag in (selectedBlog().tags || [])" :key="tag + '-detail'">
-                <span class="tag" x-text="tag"></span>
-              </template>
-            </div>
-
-            <div class="vote-widget">
+            <div class="topic-rating-row">
               <div class="vote-actions">
                 <div class="vote-stars">
                   <template x-for="star in [1,2,3,4,5]" :key="'blog-star-' + star">
@@ -896,6 +884,17 @@
                   <span class="vote-count" x-text="'(' + Number(currentVoteState().totalVotes || 0) + ')'"></span>
                 </div>
               </div>
+            </div>
+            <div class="meta" style="margin-top:6px;">
+              Contributor: <strong x-text="selectedBlog().contributor"></strong> ·
+              Category: <span x-text="selectedBlog().category"></span>
+              <span class="difficulty-pill" :class="'diff-' + selectedBlog().difficulty" x-text="selectedBlog().difficulty" style="margin-left:8px;"></span>
+            </div>
+            <p class="card-desc" style="margin-top:10px;" x-text="selectedBlog().description"></p>
+            <div class="flex flex-wrap gap-1" style="margin-top:8px;">
+              <template x-for="tag in (selectedBlog().tags || [])" :key="tag + '-detail'">
+                <span class="tag" x-text="tag"></span>
+              </template>
             </div>
 
             <div class="detail-stack">
@@ -951,19 +950,19 @@
               <img class="thumb" :src="item.image" :alt="item.title">
               <div class="card-body">
                 <h3 class="card-title" x-text="item.title"></h3>
-                <p class="card-desc" x-text="item.description"></p>
-                <div class="meta" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                  <span>Contributor: <strong x-text="item.contributor"></strong></span>
-                  <span>·</span>
-                  <span x-text="item.category"></span>
-                  <span class="difficulty-pill" :class="'diff-' + item.difficulty" x-text="item.difficulty"></span>
-                </div>
                 <div class="list-vote-quiet">
                   <template x-for="star in [1,2,3,4,5]" :key="'blog-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, blogVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
                   <span class="list-vote-avg" x-text="formatVoteAverage(blogVoteSummary(item.id).avgStars)"></span>
                   <span class="list-vote-count" x-text="'(' + Number(blogVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                </div>
+                <p class="card-desc" x-text="item.description"></p>
+                <div class="meta" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                  <span>Contributor: <strong x-text="item.contributor"></strong></span>
+                  <span>·</span>
+                  <span x-text="item.category"></span>
+                  <span class="difficulty-pill" :class="'diff-' + item.difficulty" x-text="item.difficulty"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
@@ -1099,18 +1098,7 @@
             <button class="buy-link" @click="closeTutorialDetail()">Back to all tutorials</button>
             <img class="thumb" :src="selectedTutorial().image" :alt="selectedTutorial().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedTutorial().title"></h2>
-            <div class="meta" style="margin-top:6px;">
-              Contributor: <strong x-text="selectedTutorial().contributor"></strong> ·
-              Category: <span x-text="selectedTutorial().category"></span>
-              <span class="difficulty-pill" :class="'diff-' + selectedTutorial().difficulty" x-text="selectedTutorial().difficulty" style="margin-left:8px;"></span>
-            </div>
-            <p class="card-desc" style="margin-top:10px;" x-text="selectedTutorial().description"></p>
-            <div class="flex flex-wrap gap-1" style="margin-top:8px;">
-              <template x-for="tag in (selectedTutorial().tags || [])" :key="tag + '-tut-detail'">
-                <span class="tag" x-text="tag"></span>
-              </template>
-            </div>
-            <div class="vote-widget">
+            <div class="topic-rating-row">
               <div class="vote-actions">
                 <div class="vote-stars">
                   <template x-for="star in [1,2,3,4,5]" :key="'tutorial-star-' + star">
@@ -1129,6 +1117,17 @@
                   <span class="vote-count" x-text="'(' + Number(currentVoteState().totalVotes || 0) + ')'"></span>
                 </div>
               </div>
+            </div>
+            <div class="meta" style="margin-top:6px;">
+              Contributor: <strong x-text="selectedTutorial().contributor"></strong> ·
+              Category: <span x-text="selectedTutorial().category"></span>
+              <span class="difficulty-pill" :class="'diff-' + selectedTutorial().difficulty" x-text="selectedTutorial().difficulty" style="margin-left:8px;"></span>
+            </div>
+            <p class="card-desc" style="margin-top:10px;" x-text="selectedTutorial().description"></p>
+            <div class="flex flex-wrap gap-1" style="margin-top:8px;">
+              <template x-for="tag in (selectedTutorial().tags || [])" :key="tag + '-tut-detail'">
+                <span class="tag" x-text="tag"></span>
+              </template>
             </div>
             <div class="detail-stack">
               <div class="part-card">
@@ -1161,18 +1160,18 @@
               <img class="thumb" :src="item.image" :alt="item.title">
               <div class="card-body">
                 <h3 class="card-title" x-text="item.title"></h3>
-                <p class="card-desc" x-text="item.description"></p>
-                <div class="meta">
-                  Contributor: <strong x-text="item.contributor"></strong> ·
-                  <span x-text="item.category"></span> ·
-                  <span x-text="item.difficulty"></span>
-                </div>
                 <div class="list-vote-quiet">
                   <template x-for="star in [1,2,3,4,5]" :key="'tutorial-list-star-' + item.id + '-' + star">
                     <span class="list-vote-star" :class="voteStarClass(star, tutorialVoteSummary(item.id).avgStars)">&#9733;</span>
                   </template>
                   <span class="list-vote-avg" x-text="formatVoteAverage(tutorialVoteSummary(item.id).avgStars)"></span>
                   <span class="list-vote-count" x-text="'(' + Number(tutorialVoteSummary(item.id).totalVotes || 0) + ')'"></span>
+                </div>
+                <p class="card-desc" x-text="item.description"></p>
+                <div class="meta">
+                  Contributor: <strong x-text="item.contributor"></strong> ·
+                  <span x-text="item.category"></span> ·
+                  <span x-text="item.difficulty"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
@@ -1593,7 +1592,7 @@
 
         formatVoteAverage(value) {
           const n = Number(value || 0);
-          return Number.isFinite(n) ? n.toFixed(2) : "0.00";
+          return Number.isFinite(n) ? n.toFixed(1) : "0.0";
         },
 
         resolveVoteApiBase() {
