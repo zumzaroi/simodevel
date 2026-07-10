@@ -354,7 +354,7 @@
       letter-spacing: 0.03em;
       line-height: 1;
       position: relative;
-      top: 1.90px;
+      top: 1.84px;
     }
 
     .list-vote-count {
@@ -365,7 +365,7 @@
       letter-spacing: 0.03em;
       line-height: 1;
       position: relative;
-      top: 1.90px;
+      top: 1.84px;
     }
 
     .panel {
@@ -1594,7 +1594,7 @@
 
         formatVoteAverage(value) {
           const n = Number(value || 0);
-          return Number.isFinite(n) ? n.toFixed(1) : "0.0";
+          return Number.isFinite(n) ? n.toFixed(2) : "0.00";
         },
 
         resolveVoteApiBase() {
