@@ -699,7 +699,7 @@
         </template>
         <template x-if="!loading && !isSearchMode()">
           <span>
-            Focus: <span class="font-bold" x-text="panelFocus.toUpperCase()"></span>.
+            Focus: <span class="font-bold" x-text="panelFocus === 'default' ? 'OVERVIEW' : panelFocus.toUpperCase()"></span>.
             Sections loaded: <span x-text="stats.projects"></span> projects,
             <span x-text="stats.components"></span> parts,
             <span x-text="stats.tutorials"></span> tutorials,
@@ -1848,6 +1848,7 @@
             return;
           }
           this.panelFocus = name;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         activePanel() {
