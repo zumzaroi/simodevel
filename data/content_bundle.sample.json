@@ -1,0 +1,65 @@
+{
+  "projects": [
+    {
+      "id": "example_project_01",
+      "slug": "example_project_01",
+      "title": "Example Project",
+      "category": "RF",
+      "difficulty": "beginner",
+      "description": "Managed from one JSON object.",
+      "tags": ["example", "rf"],
+      "contributor": "Editorial Team",
+      "image": "assets/images/projects/01_fm_transmitter_bc547.jpg",
+      "content_md": "# Example Project\n\nProject content can live directly in this JSON field.",
+      "parts_list": [
+        {
+          "ref": "R1",
+          "qty": "1",
+          "value": "1k",
+          "role": "Bias"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "BC547": {
+      "type": "BJT NPN",
+      "package": "TO-92",
+      "manufacturer": "Various",
+      "datasheet": "https://www.vishay.com/docs/85014/bc546.pdf",
+      "buy": {
+        "DigiKey": "",
+        "Mouser": "",
+        "TME": ""
+      },
+      "used_in_projects": ["example_project_01"]
+    }
+  },
+  "tutorials": [
+    {
+      "id": "example_tutorial_01",
+      "title": "Example Tutorial",
+      "category": "Setup",
+      "difficulty": "beginner",
+      "description": "Tutorial content can be inline in JSON.",
+      "tags": ["example", "tutorial"],
+      "contributor": "Editorial Team",
+      "image": "assets/images/tutorials/tut_01_ltspice_download_install.jpg",
+      "url": "#",
+      "content_md": "# Example Tutorial\n\nInline markdown tutorial content."
+    }
+  ],
+  "tools": [
+    {
+      "id": "example_tool_01",
+      "name": "Example Tool",
+      "category": "EDA",
+      "license": "Open Source",
+      "free_version": "Latest",
+      "platforms": ["Windows"],
+      "install": "Install from official site.",
+      "best_for": "Quick prototyping",
+      "link": "https://example.com"
+    }
+  ]
+}

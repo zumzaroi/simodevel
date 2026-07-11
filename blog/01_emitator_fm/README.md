@@ -12,5 +12,5 @@ A one-transistor FM transmitter using a Colpitts tank, designed for short-range 
 Run a basic simulation before hardware assembly. Check operating points and compare simulated behavior with measured values.
 
 ## Build Notes
-Contributor: Alex M.
+Contributor: Alex G.
 Parts list: see parts.json in this project folder.

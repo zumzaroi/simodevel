@@ -1,0 +1,199 @@
+{
+  "dataPaths": {
+    "bundle": "",
+    "projects": "data/projects_index.json",
+    "components": "data/components.json",
+    "tutorials": "data/tutorials_index.json",
+    "tools": "data/tools_index.json"
+  },
+  "links": {
+    "home": "/",
+    "about": "about.html",
+    "contribute": "contribute.html"
+  },
+  "defaults": {
+    "panelFocus": "default",
+    "largeWhenDefault": [
+      "blog",
+      "parts"
+    ],
+    "compactWhenDefault": [
+      "tutorials",
+      "tools"
+    ],
+    "compactOrder": [
+      "blog",
+      "parts",
+      "tutorials",
+      "tools"
+    ]
+  },
+  "seo": {
+    "title": "SimoDevel - Electronics and Mechatronics Learning Hub",
+    "description": "Technical tutorials, projects, tools and parts for electronics and mechatronics learners. Non-profit and community-driven."
+  },
+  "vote": {
+    "apiBase": "/api/votes",
+    "githubIoApiBase": "https://simodevel.com/api/votes"
+  },
+  "limits": {
+    "default": {
+      "projects": 10,
+      "components": 20,
+      "tutorials": 10,
+      "tools": 10
+    },
+    "search": {
+      "projects": 20,
+      "components": 30,
+      "tutorials": 20,
+      "tools": 20
+    },
+    "compact": {
+      "blog": 8,
+      "parts": 10,
+      "tutorials": 8,
+      "tools": 8
+    },
+    "tags": {
+      "blog": 4,
+      "tutorial": 4
+    }
+  },
+  "texts": {
+    "search": {
+      "placeholder": "Search projects, components, tutorials, and tools...",
+      "empty": "No matching results. Try part numbers (e.g. BC547), topics (e.g. PWM), or tools (e.g. LTspice)."
+    },
+    "nav": {
+      "blog": "Blogs",
+      "parts": "Parts",
+      "tutorials": "Tutorials",
+      "tools": "Tools",
+      "about": "About",
+      "register": "Register Your Project"
+    },
+    "status": {
+      "loading": "Loading local JSON indexes...",
+      "search": "{count} live matches for \"{query}\". Layout reset to default search mode.",
+      "focus": "Focus:",
+      "overview": "OVERVIEW",
+      "sectionsLoaded": "Sections loaded:",
+      "projects": "projects",
+      "parts": "parts",
+      "tutorials": "tutorials",
+      "tools": "tools"
+    },
+    "sections": {
+      "blog": "Technical Project Blogs",
+      "parts": "Components Database",
+      "tutorials": "Technical Tutorials",
+      "tools": "Free and Open Tools (Installation + Versions)",
+      "compactBlog": "Blogs",
+      "compactParts": "Parts",
+      "compactTutorials": "Tutorials",
+      "compactTools": "Tools"
+    },
+    "actions": {
+      "minimize": "MINIMIZE VIEW",
+      "enlarge": "ENLARGE VIEW",
+      "backBlogs": "Back to all blogs",
+      "backParts": "Back to all parts",
+      "backTutorials": "Back to all tutorials",
+      "backTools": "Back to all tools",
+      "openTutorialPage": "Open Tutorial Page",
+      "officialSite": "Official Site",
+      "openRegisterForm": "Open Register Form"
+    },
+    "navTitles": {
+      "prevBlog": "Previous blog",
+      "nextBlog": "Next blog",
+      "prevPart": "Previous part",
+      "nextPart": "Next part",
+      "prevTutorial": "Previous tutorial",
+      "nextTutorial": "Next tutorial",
+      "prevTool": "Previous tool",
+      "nextTool": "Next tool"
+    },
+    "providers": {
+      "datasheet": "Datasheet",
+      "digikey": "DigiKey",
+      "mouser": "Mouser",
+      "tme": "TME"
+    },
+    "labels": {
+      "contributor": "Contributor",
+      "category": "Category",
+      "type": "Type",
+      "package": "Package",
+      "manufacturer": "Manufacturer",
+      "license": "License",
+      "version": "Version",
+      "install": "Install",
+      "reference": "Reference"
+    },
+    "details": {
+      "overview": "Overview",
+      "content": "Content",
+      "partList": "Part List",
+      "componentDetails": "Component Details",
+      "usedInProjects": "Used In Projects",
+      "purchaseLinks": "Purchase Links",
+      "learningFocus": "Learning Focus",
+      "tutorialLink": "Tutorial Link",
+      "about": "About",
+      "bestFor": "Best For",
+      "installation": "Installation",
+      "platformsLinks": "Platforms & Links",
+      "contributor": "Contributor"
+    },
+    "table": {
+      "ref": "Ref",
+      "qty": "Qty",
+      "value": "Value",
+      "role": "Role"
+    },
+    "dynamic": {
+      "blogOverview": "This technical project is part of the {category} track and follows a {difficulty} learning path.",
+      "tutorialOverview": "This tutorial is part of the {category} track and follows a {difficulty} level path.",
+      "learningFocus": "Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.",
+      "submittedBy": "Submitted by {contributor}.",
+      "registerIntro": "Use our structured submission template to send your project. No account required.",
+      "toolInstallPrefix": "Install: {value}"
+    },
+    "fallback": {
+      "contentUnavailable": "Content unavailable.",
+      "partsListUnavailable": "Parts list unavailable for this project.",
+      "noLinkedProjects": "No linked projects available.",
+      "component": "Component",
+      "na": "N/A",
+      "unknown": "Unknown",
+      "unknownManufacturer": "Unknown manufacturer",
+      "free": "Free",
+      "freeTier": "Free tier",
+      "toolDescription": "No description available.",
+      "toolBestFor": "General electronics design and simulation.",
+      "toolInstall": "See official documentation."
+    },
+    "messages": {
+      "voteDomainOnly": "Voting is available on deployed domain only.",
+      "voteLoadError": "Unable to load votes.",
+      "voteRequestFailed": "Vote request failed.",
+      "voteRouteInactive": "Voting API route is not active for this host yet.",
+      "voteNonJson": "Voting API returned a non-JSON response.",
+      "voteInvalidJson": "Voting API returned invalid JSON."
+    },
+    "register": {
+      "title": "Register Project"
+    },
+    "about": {
+      "title": "Who We Are and What We Want",
+      "paragraph1": "SimoDevel is a non-profit learning initiative built by people passionate about electronics and mechatronics. We support learners from absolute beginner level to advanced design and simulation practice.",
+      "paragraph2": "Our goal is simple: provide practical, technical, and free resources so anyone can build real skills - from first SPICE circuit to complete embedded projects. We value open collaboration, clear engineering documentation, and hands-on experimentation."
+    },
+    "footer": {
+      "text": "SimoDevel - Non-profit technical platform for electronics and mechatronics learning.",
+      "copyright": "Copyright © 2026 | SimoDevel"
+    }
+  }
+}

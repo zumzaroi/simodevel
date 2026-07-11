@@ -796,14 +796,14 @@
 <body x-data="simodevel()" x-init="init()">
   <nav class="topbar">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-      <a href="/" class="logo">Simo<span>Devel</span></a>
+      <a :href="link('home')" class="logo">Simo<span>Devel</span></a>
       <div class="flex flex-wrap items-center gap-4">
-        <button class="nav-btn" :class="isNavActive('blog') ? 'active' : ''" @click="setPanel('blog')">Blogs</button>
-        <button class="nav-btn" :class="isNavActive('parts') ? 'active' : ''" @click="setPanel('parts')">Parts</button>
-        <button class="nav-btn" :class="isNavActive('tutorials') ? 'active' : ''" @click="setPanel('tutorials')">Tutorials</button>
-        <button class="nav-btn" :class="isNavActive('tools') ? 'active' : ''" @click="setPanel('tools')">Tools</button>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="register-link" href="contribute.html">Register Your Project</a>
+        <button class="nav-btn" :class="isNavActive('blog') ? 'active' : ''" @click="setPanel('blog')" x-text="t('nav.blog')"></button>
+        <button class="nav-btn" :class="isNavActive('parts') ? 'active' : ''" @click="setPanel('parts')" x-text="t('nav.parts')"></button>
+        <button class="nav-btn" :class="isNavActive('tutorials') ? 'active' : ''" @click="setPanel('tutorials')" x-text="t('nav.tutorials')"></button>
+        <button class="nav-btn" :class="isNavActive('tools') ? 'active' : ''" @click="setPanel('tools')" x-text="t('nav.tools')"></button>
+        <a class="nav-link" :href="link('about')" x-text="t('nav.about')"></a>
+        <a class="register-link" :href="link('contribute')" x-text="t('nav.register')"></a>
       </div>
     </div>
   </nav>
@@ -818,7 +818,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search projects, components, tutorials, and tools..."
+          :placeholder="t('search.placeholder')"
           x-model="query"
           @input.debounce.120ms="filterAll()"
           @keydown.escape="query=''; filterAll()"
@@ -826,22 +826,19 @@
       </div>
       <div class="status-line" x-cloak>
         <template x-if="loading">
-          <span>Loading local JSON indexes...</span>
+          <span x-text="t('status.loading')"></span>
         </template>
         <template x-if="!loading && isSearchMode()">
-          <span>
-            <span x-text="totalResults()"></span> live matches for "<span x-text="query" class="font-bold"></span>".
-            Layout reset to default search mode.
-          </span>
+          <span x-text="searchStatusText()"></span>
         </template>
         <template x-if="!loading && !isSearchMode()">
           <span>
-            <span class="status-focus-fixed">Focus: <span class="font-bold status-focus-label" x-text="panelFocus === 'default' ? 'OVERVIEW' : panelFocus.toUpperCase()"></span></span>
-            Sections loaded:
-            <button type="button" class="status-jump" @click="jumpToPanel('blog')"><span x-text="stats.projects"></span> projects</button>,
-            <button type="button" class="status-jump" @click="jumpToPanel('parts')"><span x-text="stats.components"></span> parts</button>,
-            <button type="button" class="status-jump" @click="jumpToPanel('tutorials')"><span x-text="stats.tutorials"></span> tutorials</button>,
-            <button type="button" class="status-jump" @click="jumpToPanel('tools')"><span x-text="stats.tools"></span> tools</button>.
+            <span class="status-focus-fixed"><span x-text="t('status.focus')"></span> <span class="font-bold status-focus-label" x-text="panelFocus === 'default' ? t('status.overview') : panelFocus.toUpperCase()"></span></span>
+            <span x-text="t('status.sectionsLoaded')"></span>
+            <button type="button" class="status-jump" @click="jumpToPanel('blog')"><span x-text="stats.projects"></span> <span x-text="t('status.projects')"></span></button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('parts')"><span x-text="stats.components"></span> <span x-text="t('status.parts')"></span></button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('tutorials')"><span x-text="stats.tutorials"></span> <span x-text="t('status.tutorials')"></span></button>,
+            <button type="button" class="status-jump" @click="jumpToPanel('tools')"><span x-text="stats.tools"></span> <span x-text="t('status.tools')"></span></button>.
           </span>
         </template>
       </div>
@@ -853,12 +850,12 @@
       <!-- LARGE BLOG -->
       <div class="panel" x-show="showLarge('blog') && visible.projects.length > 0">
         <div class="sec-title">
-          Technical Project Blogs
+          <span x-text="t('sections.blog')"></span>
           <span class="count-pill" x-show="!selectedBlog()" x-text="visible.projects.length"></span>
           <span class="count-pill" x-show="selectedBlog()">
-            <button type="button" class="count-nav-btn" @click="openPrevBlog()" :title="'Previous blog'" x-text="selectedBlogIndex() + 1"></button>
+            <button type="button" class="count-nav-btn" @click="openPrevBlog()" :title="t('navTitles.prevBlog')" x-text="selectedBlogIndex() + 1"></button>
             <span>/</span>
-            <button type="button" class="count-nav-btn" @click="openNextBlog()" :title="'Next blog'" x-text="visible.projects.length"></button>
+            <button type="button" class="count-nav-btn" @click="openNextBlog()" :title="t('navTitles.nextBlog')" x-text="visible.projects.length"></button>
           </span>
         </div>
         <template x-if="selectedBlog()">
@@ -869,10 +866,10 @@
                 class="topic-toggle"
                 :class="isExpandedView ? 'active' : ''"
                 @click="toggleExpand()"
-                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+                x-text="isExpandedView ? t('actions.minimize') : t('actions.enlarge')"
               ></button>
             </div>
-            <button class="buy-link" @click="closeBlogDetail()">Back to all blogs</button>
+            <button class="buy-link" @click="closeBlogDetail()" x-text="t('actions.backBlogs')"></button>
             <img class="thumb" :src="selectedBlog().image" :alt="selectedBlog().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedBlog().title"></h2>
             <div class="topic-rating-row">
@@ -896,8 +893,8 @@
               </div>
             </div>
             <div class="meta" style="margin-top:6px;">
-              Contributor: <strong x-text="selectedBlog().contributor"></strong> ·
-              Category: <span x-text="selectedBlog().category"></span>
+              <span x-text="t('labels.contributor')"></span>: <strong x-text="selectedBlog().contributor"></strong> ·
+              <span x-text="t('labels.category')"></span>: <span x-text="selectedBlog().category"></span>
               <span class="difficulty-pill" :class="'diff-' + selectedBlog().difficulty" x-text="selectedBlog().difficulty" style="margin-left:8px;"></span>
             </div>
             <p class="card-desc" style="margin-top:10px;" x-text="selectedBlog().description"></p>
@@ -909,24 +906,24 @@
 
             <div class="detail-stack">
               <div class="part-card">
-                <div class="detail-section-title">Overview</div>
-                <p class="card-desc">This technical project is part of the <strong x-text="selectedBlog().category"></strong> track and follows a <strong x-text="selectedBlog().difficulty"></strong> learning path.</p>
+                <div class="detail-section-title" x-text="t('details.overview')"></div>
+                <p class="card-desc" x-text="blogOverviewText(selectedBlog())"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Content</div>
+                <div class="detail-section-title" x-text="t('details.content')"></div>
                 <div class="readme-content" x-html="renderMarkdown(selectedBlogReadme())"></div>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Part List</div>
+                <div class="detail-section-title" x-text="t('details.partList')"></div>
                 <template x-if="selectedBlogParts().length > 0">
                   <div class="parts-table-wrap">
                     <table class="parts-table">
                       <thead>
                         <tr>
-                          <th>Ref</th>
-                          <th>Qty</th>
-                          <th>Value</th>
-                          <th>Role</th>
+                          <th x-text="t('table.ref')"></th>
+                          <th x-text="t('table.qty')"></th>
+                          <th x-text="t('table.value')"></th>
+                          <th x-text="t('table.role')"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -943,12 +940,12 @@
                   </div>
                 </template>
                 <template x-if="selectedBlogParts().length === 0">
-                  <p class="card-desc">Parts list unavailable for this project.</p>
+                  <p class="card-desc" x-text="t('fallback.partsListUnavailable')"></p>
                 </template>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Contributor</div>
-                <p class="card-desc">Submitted by <strong x-text="selectedBlog().contributor"></strong>.</p>
+                <div class="detail-section-title" x-text="t('details.contributor')"></div>
+                <p class="card-desc" x-text="submittedByText(selectedBlog())"></p>
               </div>
             </div>
           </article>
@@ -971,13 +968,13 @@
                 </div>
                 <p class="card-desc" x-text="item.description"></p>
                 <div class="meta" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                  <span>Contributor: <strong x-text="item.contributor"></strong></span>
+                  <span><span x-text="t('labels.contributor')"></span>: <strong x-text="item.contributor"></strong></span>
                   <span>·</span>
                   <span x-text="item.category"></span>
                   <span class="difficulty-pill" :class="'diff-' + item.difficulty" x-text="item.difficulty"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
+                  <template x-for="tag in (item.tags || []).slice(0, limit('tags.blog', 4))" :key="tag">
                     <span class="tag" x-text="tag"></span>
                   </template>
                 </div>
@@ -990,12 +987,12 @@
       <!-- LARGE PARTS -->
       <div class="panel" x-show="showLarge('parts') && visible.components.length > 0">
         <div class="sec-title">
-          Components Database
+          <span x-text="t('sections.parts')"></span>
           <span class="count-pill" x-show="!selectedPart()" x-text="visible.components.length"></span>
           <span class="count-pill" x-show="selectedPart()">
-            <button type="button" class="count-nav-btn" @click="openPrevPart()" :title="'Previous part'" x-text="selectedPartIndex() + 1"></button>
+            <button type="button" class="count-nav-btn" @click="openPrevPart()" :title="t('navTitles.prevPart')" x-text="selectedPartIndex() + 1"></button>
             <span>/</span>
-            <button type="button" class="count-nav-btn" @click="openNextPart()" :title="'Next part'" x-text="visible.components.length"></button>
+            <button type="button" class="count-nav-btn" @click="openNextPart()" :title="t('navTitles.nextPart')" x-text="visible.components.length"></button>
           </span>
         </div>
         <template x-if="selectedPart()">
@@ -1006,28 +1003,28 @@
                 class="topic-toggle"
                 :class="isExpandedView ? 'active' : ''"
                 @click="toggleExpand()"
-                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+                x-text="isExpandedView ? t('actions.minimize') : t('actions.enlarge')"
               ></button>
             </div>
-            <button class="buy-link" @click="closePartDetail()">Back to all parts</button>
+            <button class="buy-link" @click="closePartDetail()" x-text="t('actions.backParts')"></button>
             <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedPart()._ref"></h2>
             <div class="meta" style="margin-top:6px;">
-              Type: <strong x-text="selectedPart().type || 'Component'"></strong> ·
-              Package: <span x-text="selectedPart().package || 'N/A'"></span> ·
-              Manufacturer: <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
+              <span x-text="t('labels.type')"></span>: <strong x-text="selectedPart().type || t('fallback.component')"></strong> ·
+              <span x-text="t('labels.package')"></span>: <span x-text="selectedPart().package || t('fallback.na')"></span> ·
+              <span x-text="t('labels.manufacturer')"></span>: <span x-text="selectedPart().manufacturer || t('fallback.unknown')"></span>
             </div>
             <div class="detail-stack">
               <div class="part-card">
-                <div class="detail-section-title">Component Details</div>
+                <div class="detail-section-title" x-text="t('details.componentDetails')"></div>
                 <p class="card-desc">
-                  <strong>Reference:</strong> <span x-text="selectedPart()._ref"></span><br>
-                  <strong>Type:</strong> <span x-text="selectedPart().type || 'N/A'"></span><br>
-                  <strong>Package:</strong> <span x-text="selectedPart().package || 'N/A'"></span><br>
-                  <strong>Manufacturer:</strong> <span x-text="selectedPart().manufacturer || 'Unknown'"></span>
+                  <strong><span x-text="t('labels.reference')"></span>:</strong> <span x-text="selectedPart()._ref"></span><br>
+                  <strong><span x-text="t('labels.type')"></span>:</strong> <span x-text="selectedPart().type || t('fallback.na')"></span><br>
+                  <strong><span x-text="t('labels.package')"></span>:</strong> <span x-text="selectedPart().package || t('fallback.na')"></span><br>
+                  <strong><span x-text="t('labels.manufacturer')"></span>:</strong> <span x-text="selectedPart().manufacturer || t('fallback.unknown')"></span>
                 </p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Used In Projects</div>
+                <div class="detail-section-title" x-text="t('details.usedInProjects')"></div>
                 <template x-if="(selectedPart().used_in_projects || []).length > 0">
                   <div class="flex flex-wrap gap-1" style="margin-top:4px;">
                     <template x-for="proj in (selectedPart().used_in_projects || [])" :key="proj">
@@ -1036,23 +1033,23 @@
                   </div>
                 </template>
                 <template x-if="!(selectedPart().used_in_projects || []).length">
-                  <p class="card-desc">No linked projects available.</p>
+                  <p class="card-desc" x-text="t('fallback.noLinkedProjects')"></p>
                 </template>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Purchase Links</div>
+                <div class="detail-section-title" x-text="t('details.purchaseLinks')"></div>
                 <div style="margin-top:4px;">
                   <template x-if="selectedPart().datasheet">
-                    <a class="buy-link" :href="selectedPart().datasheet" target="_blank" rel="noopener">Datasheet</a>
+                    <a class="buy-link" :href="selectedPart().datasheet" target="_blank" rel="noopener" x-text="t('providers.datasheet')"></a>
                   </template>
                   <template x-if="selectedPart().buy && selectedPart().buy.DigiKey">
-                    <a class="buy-link" :href="selectedPart().buy.DigiKey" target="_blank" rel="noopener">DigiKey</a>
+                    <a class="buy-link" :href="selectedPart().buy.DigiKey" target="_blank" rel="noopener" x-text="t('providers.digikey')"></a>
                   </template>
                   <template x-if="selectedPart().buy && selectedPart().buy.Mouser">
-                    <a class="buy-link" :href="selectedPart().buy.Mouser" target="_blank" rel="noopener">Mouser</a>
+                    <a class="buy-link" :href="selectedPart().buy.Mouser" target="_blank" rel="noopener" x-text="t('providers.mouser')"></a>
                   </template>
                   <template x-if="selectedPart().buy && selectedPart().buy.TME">
-                    <a class="buy-link" :href="selectedPart().buy.TME" target="_blank" rel="noopener">TME</a>
+                    <a class="buy-link" :href="selectedPart().buy.TME" target="_blank" rel="noopener" x-text="t('providers.tme')"></a>
                   </template>
                 </div>
               </div>
@@ -1064,20 +1061,20 @@
           <template x-for="part in visible.components" :key="part._ref">
             <article class="part-card clickable" @click="openPart(part._ref)">
               <div class="part-ref" x-text="part._ref"></div>
-              <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.package || 'N/A')"></div>
-              <p class="card-desc" style="margin-top:5px;" x-text="part.manufacturer || 'Unknown manufacturer'"></p>
+              <div class="meta" x-text="(part.type || t('fallback.component')) + ' · ' + (part.package || t('fallback.na'))"></div>
+              <p class="card-desc" style="margin-top:5px;" x-text="part.manufacturer || t('fallback.unknownManufacturer')"></p>
               <div>
                 <template x-if="part.datasheet">
-                  <a class="buy-link" :href="part.datasheet" target="_blank" rel="noopener" @click.stop>Datasheet</a>
+                  <a class="buy-link" :href="part.datasheet" target="_blank" rel="noopener" @click.stop x-text="t('providers.datasheet')"></a>
                 </template>
                 <template x-if="part.buy && part.buy.DigiKey">
-                  <a class="buy-link" :href="part.buy.DigiKey" target="_blank" rel="noopener" @click.stop>DigiKey</a>
+                  <a class="buy-link" :href="part.buy.DigiKey" target="_blank" rel="noopener" @click.stop x-text="t('providers.digikey')"></a>
                 </template>
                 <template x-if="part.buy && part.buy.Mouser">
-                  <a class="buy-link" :href="part.buy.Mouser" target="_blank" rel="noopener" @click.stop>Mouser</a>
+                  <a class="buy-link" :href="part.buy.Mouser" target="_blank" rel="noopener" @click.stop x-text="t('providers.mouser')"></a>
                 </template>
                 <template x-if="part.buy && part.buy.TME">
-                  <a class="buy-link" :href="part.buy.TME" target="_blank" rel="noopener" @click.stop>TME</a>
+                  <a class="buy-link" :href="part.buy.TME" target="_blank" rel="noopener" @click.stop x-text="t('providers.tme')"></a>
                 </template>
               </div>
             </article>
@@ -1088,12 +1085,12 @@
       <!-- LARGE TUTORIALS -->
       <div class="panel" x-show="showLarge('tutorials') && visible.tutorials.length > 0">
         <div class="sec-title">
-          Technical Tutorials
+          <span x-text="t('sections.tutorials')"></span>
           <span class="count-pill" x-show="!selectedTutorial()" x-text="visible.tutorials.length"></span>
           <span class="count-pill" x-show="selectedTutorial()">
-            <button type="button" class="count-nav-btn" @click="openPrevTutorial()" :title="'Previous tutorial'" x-text="selectedTutorialIndex() + 1"></button>
+            <button type="button" class="count-nav-btn" @click="openPrevTutorial()" :title="t('navTitles.prevTutorial')" x-text="selectedTutorialIndex() + 1"></button>
             <span>/</span>
-            <button type="button" class="count-nav-btn" @click="openNextTutorial()" :title="'Next tutorial'" x-text="visible.tutorials.length"></button>
+            <button type="button" class="count-nav-btn" @click="openNextTutorial()" :title="t('navTitles.nextTutorial')" x-text="visible.tutorials.length"></button>
           </span>
         </div>
         <template x-if="selectedTutorial()">
@@ -1104,10 +1101,10 @@
                 class="topic-toggle"
                 :class="isExpandedView ? 'active' : ''"
                 @click="toggleExpand()"
-                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+                x-text="isExpandedView ? t('actions.minimize') : t('actions.enlarge')"
               ></button>
             </div>
-            <button class="buy-link" @click="closeTutorialDetail()">Back to all tutorials</button>
+            <button class="buy-link" @click="closeTutorialDetail()" x-text="t('actions.backTutorials')"></button>
             <img class="thumb" :src="selectedTutorial().image" :alt="selectedTutorial().title" style="margin-top:8px;">
             <h2 class="blog-detail-title" x-text="selectedTutorial().title"></h2>
             <div class="topic-rating-row">
@@ -1131,8 +1128,8 @@
               </div>
             </div>
             <div class="meta" style="margin-top:6px;">
-              Contributor: <strong x-text="selectedTutorial().contributor"></strong> ·
-              Category: <span x-text="selectedTutorial().category"></span>
+              <span x-text="t('labels.contributor')"></span>: <strong x-text="selectedTutorial().contributor"></strong> ·
+              <span x-text="t('labels.category')"></span>: <span x-text="selectedTutorial().category"></span>
               <span class="difficulty-pill" :class="'diff-' + selectedTutorial().difficulty" x-text="selectedTutorial().difficulty" style="margin-left:8px;"></span>
             </div>
             <p class="card-desc" style="margin-top:10px;" x-text="selectedTutorial().description"></p>
@@ -1143,24 +1140,24 @@
             </div>
             <div class="detail-stack">
               <div class="part-card">
-                <div class="detail-section-title">Overview</div>
-                <p class="card-desc">This tutorial is part of the <strong x-text="selectedTutorial().category"></strong> track and follows a <strong x-text="selectedTutorial().difficulty"></strong> level path.</p>
+                <div class="detail-section-title" x-text="t('details.overview')"></div>
+                <p class="card-desc" x-text="tutorialOverviewText(selectedTutorial())"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Learning Focus</div>
-                <p class="card-desc">Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.</p>
+                <div class="detail-section-title" x-text="t('details.learningFocus')"></div>
+                <p class="card-desc" x-text="t('dynamic.learningFocus')"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Content</div>
+                <div class="detail-section-title" x-text="t('details.content')"></div>
                 <div class="readme-content" x-html="renderMarkdown(selectedTutorialReadme())"></div>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Tutorial Link</div>
-                <a class="buy-link" :href="selectedTutorial().url || '#'" target="_blank" rel="noopener">Open Tutorial Page</a>
+                <div class="detail-section-title" x-text="t('details.tutorialLink')"></div>
+                <a class="buy-link" :href="selectedTutorial().url || '#'" target="_blank" rel="noopener" x-text="t('actions.openTutorialPage')"></a>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Contributor</div>
-                <p class="card-desc">Submitted by <strong x-text="selectedTutorial().contributor"></strong>.</p>
+                <div class="detail-section-title" x-text="t('details.contributor')"></div>
+                <p class="card-desc" x-text="submittedByText(selectedTutorial())"></p>
               </div>
             </div>
           </article>
@@ -1183,12 +1180,12 @@
                 </div>
                 <p class="card-desc" x-text="item.description"></p>
                 <div class="meta">
-                  Contributor: <strong x-text="item.contributor"></strong> ·
+                  <span x-text="t('labels.contributor')"></span>: <strong x-text="item.contributor"></strong> ·
                   <span x-text="item.category"></span> ·
                   <span x-text="item.difficulty"></span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <template x-for="tag in (item.tags || []).slice(0, 4)" :key="tag">
+                  <template x-for="tag in (item.tags || []).slice(0, limit('tags.tutorial', 4))" :key="tag">
                     <span class="tag" x-text="tag"></span>
                   </template>
                 </div>
@@ -1201,12 +1198,12 @@
       <!-- LARGE TOOLS -->
       <div class="panel" x-show="showLarge('tools') && visible.tools.length > 0">
         <div class="sec-title">
-          Free and Open Tools (Installation + Versions)
+          <span x-text="t('sections.tools')"></span>
           <span class="count-pill" x-show="!selectedTool()" x-text="visible.tools.length"></span>
           <span class="count-pill" x-show="selectedTool()">
-            <button type="button" class="count-nav-btn" @click="openPrevTool()" :title="'Previous tool'" x-text="selectedToolIndex() + 1"></button>
+            <button type="button" class="count-nav-btn" @click="openPrevTool()" :title="t('navTitles.prevTool')" x-text="selectedToolIndex() + 1"></button>
             <span>/</span>
-            <button type="button" class="count-nav-btn" @click="openNextTool()" :title="'Next tool'" x-text="visible.tools.length"></button>
+            <button type="button" class="count-nav-btn" @click="openNextTool()" :title="t('navTitles.nextTool')" x-text="visible.tools.length"></button>
           </span>
         </div>
         <template x-if="selectedTool()">
@@ -1217,31 +1214,31 @@
                 class="topic-toggle"
                 :class="isExpandedView ? 'active' : ''"
                 @click="toggleExpand()"
-                x-text="isExpandedView ? 'MINIMIZE VIEW' : 'ENLARGE VIEW'"
+                x-text="isExpandedView ? t('actions.minimize') : t('actions.enlarge')"
               ></button>
             </div>
-            <button class="buy-link" @click="closeToolDetail()">Back to all tools</button>
+            <button class="buy-link" @click="closeToolDetail()" x-text="t('actions.backTools')"></button>
             <h2 class="blog-detail-title" style="margin-top:10px;" x-text="selectedTool().name || selectedTool().title"></h2>
             <div class="meta" style="margin-top:6px;">
-              Category: <strong x-text="selectedTool().category"></strong> ·
-              License: <span x-text="selectedTool().license || 'Free'"></span> ·
-              Version: <span x-text="selectedTool().free_version || selectedTool().version || 'Free tier'"></span>
+              <span x-text="t('labels.category')"></span>: <strong x-text="selectedTool().category"></strong> ·
+              <span x-text="t('labels.license')"></span>: <span x-text="selectedTool().license || t('fallback.free')"></span> ·
+              <span x-text="t('labels.version')"></span>: <span x-text="selectedTool().free_version || selectedTool().version || t('fallback.freeTier')"></span>
             </div>
             <div class="detail-stack">
               <div class="part-card">
-                <div class="detail-section-title">About</div>
-                <p class="card-desc" x-text="selectedTool().description || selectedTool().best_for || 'No description available.'"></p>
+                <div class="detail-section-title" x-text="t('details.about')"></div>
+                <p class="card-desc" x-text="selectedTool().description || selectedTool().best_for || t('fallback.toolDescription')"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Best For</div>
-                <p class="card-desc" x-text="selectedTool().best_for || 'General electronics design and simulation.'"></p>
+                <div class="detail-section-title" x-text="t('details.bestFor')"></div>
+                <p class="card-desc" x-text="selectedTool().best_for || t('fallback.toolBestFor')"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Installation</div>
-                <p class="card-desc" x-text="selectedTool().install || 'See official documentation.'"></p>
+                <div class="detail-section-title" x-text="t('details.installation')"></div>
+                <p class="card-desc" x-text="selectedTool().install || t('fallback.toolInstall')"></p>
               </div>
               <div class="part-card">
-                <div class="detail-section-title">Platforms &amp; Links</div>
+                <div class="detail-section-title" x-text="t('details.platformsLinks')"></div>
                 <template x-if="(selectedTool().platforms || []).length > 0">
                   <div class="flex flex-wrap gap-1" style="margin-bottom:6px;">
                     <template x-for="pl in (selectedTool().platforms || [])" :key="pl">
@@ -1249,7 +1246,7 @@
                     </template>
                   </div>
                 </template>
-                <a class="buy-link" :href="selectedTool().link || selectedTool().url || '#'" target="_blank" rel="noopener">Official Site</a>
+                <a class="buy-link" :href="selectedTool().link || selectedTool().url || '#'" target="_blank" rel="noopener" x-text="t('actions.officialSite')"></a>
               </div>
             </div>
           </article>
@@ -1261,28 +1258,28 @@
               <div class="tool-name" x-text="tool.name || tool.title"></div>
               <div class="tool-meta">
                 <span x-text="tool.category"></span> ·
-                <span x-text="tool.free_version || tool.version || 'Free tier'"></span> ·
-                <span x-text="tool.license || 'Free'"></span>
+                <span x-text="tool.free_version || tool.version || t('fallback.freeTier')"></span> ·
+                <span x-text="tool.license || t('fallback.free')"></span>
               </div>
               <p class="card-desc" x-text="tool.description || tool.best_for"></p>
-              <p class="meta" style="margin-top:6px;" x-text="'Install: ' + (tool.install || 'See official documentation.')"></p>
-              <a class="buy-link" :href="tool.link || tool.url" target="_blank" rel="noopener" @click.stop>Official Site</a>
+              <p class="meta" style="margin-top:6px;" x-text="toolInstallText(tool)"></p>
+              <a class="buy-link" :href="tool.link || tool.url" target="_blank" rel="noopener" @click.stop x-text="t('actions.officialSite')"></a>
             </article>
           </template>
         </div>
       </div>
 
       <div x-show="isSearchMode() && totalResults() === 0" class="empty-msg">
-        No matching results. Try part numbers (e.g. BC547), topics (e.g. PWM), or tools (e.g. LTspice).
+        <span x-text="t('search.empty')"></span>
       </div>
     </section>
 
     <aside :style="isExpandedView ? 'display:none;' : 'display:flex; flex-direction:column;'">
       <!-- Compact Blog -->
       <div class="panel" :style="{ order: compactOrder('blog') }" x-show="showCompact('blog') && visible.projects.length > 0">
-        <div class="sec-title">Blogs <span class="count-pill" x-text="visible.projects.length"></span></div>
+        <div class="sec-title"><span x-text="t('sections.compactBlog')"></span> <span class="count-pill" x-text="visible.projects.length"></span></div>
         <div class="compact-list">
-          <template x-for="item in visible.projects.slice(0, 8)" :key="item.id + '-compact-blog'">
+          <template x-for="item in visible.projects.slice(0, limit('compact.blog', 8))" :key="item.id + '-compact-blog'">
             <div class="compact-item clickable" style="cursor:pointer;" @click="openBlog(item.id)">
               <img :src="item.image" :alt="item.title">
               <div>
@@ -1296,13 +1293,13 @@
 
       <!-- Compact Parts -->
       <div class="panel" :style="{ order: compactOrder('parts') }" x-show="showCompact('parts') && visible.components.length > 0">
-        <div class="sec-title">Parts <span class="count-pill" x-text="visible.components.length"></span></div>
+        <div class="sec-title"><span x-text="t('sections.compactParts')"></span> <span class="count-pill" x-text="visible.components.length"></span></div>
         <div class="compact-list">
-          <template x-for="part in visible.components.slice(0, 10)" :key="part._ref + '-compact-part'">
+          <template x-for="part in visible.components.slice(0, limit('compact.parts', 10))" :key="part._ref + '-compact-part'">
             <div class="compact-item clickable" style="grid-template-columns: 1fr; cursor:pointer;" @click="openPart(part._ref)">
               <div>
                 <div class="compact-title" x-text="part._ref"></div>
-                <div class="meta" x-text="(part.type || 'Component') + ' · ' + (part.manufacturer || '')"></div>
+                <div class="meta" x-text="(part.type || t('fallback.component')) + ' · ' + (part.manufacturer || '')"></div>
               </div>
             </div>
           </template>
@@ -1311,9 +1308,9 @@
 
       <!-- Compact Tutorials -->
       <div class="panel" :style="{ order: compactOrder('tutorials') }" x-show="showCompact('tutorials') && visible.tutorials.length > 0">
-        <div class="sec-title">Tutorials <span class="count-pill" x-text="visible.tutorials.length"></span></div>
+        <div class="sec-title"><span x-text="t('sections.compactTutorials')"></span> <span class="count-pill" x-text="visible.tutorials.length"></span></div>
         <div class="compact-list">
-          <template x-for="item in visible.tutorials.slice(0, 8)" :key="item.id + '-compact-tut'">
+          <template x-for="item in visible.tutorials.slice(0, limit('compact.tutorials', 8))" :key="item.id + '-compact-tut'">
             <div class="compact-item clickable" style="cursor:pointer;" @click="openTutorial(item.id)">
               <img :src="item.image" :alt="item.title">
               <div>
@@ -1327,13 +1324,13 @@
 
       <!-- Compact Tools -->
       <div class="panel" :style="{ order: compactOrder('tools') }" x-show="showCompact('tools') && visible.tools.length > 0">
-        <div class="sec-title">Tools <span class="count-pill" x-text="visible.tools.length"></span></div>
+        <div class="sec-title"><span x-text="t('sections.compactTools')"></span> <span class="count-pill" x-text="visible.tools.length"></span></div>
         <div class="compact-list">
-          <template x-for="tool in visible.tools.slice(0, 8)" :key="tool.id + '-compact-tool'">
+          <template x-for="tool in visible.tools.slice(0, limit('compact.tools', 8))" :key="tool.id + '-compact-tool'">
             <div class="compact-item clickable" style="grid-template-columns: 1fr; cursor:pointer;" @click="openTool(tool.id)">
               <div>
                 <div class="compact-title" x-text="tool.name || tool.title"></div>
-                <div class="meta" x-text="(tool.free_version || tool.version || 'Free') + ' · ' + (tool.license || 'Free')"></div>
+                <div class="meta" x-text="(tool.free_version || tool.version || t('fallback.free')) + ' · ' + (tool.license || t('fallback.free'))"></div>
               </div>
             </div>
           </template>
@@ -1341,34 +1338,238 @@
       </div>
 
       <div class="panel" style="order: 99;">
-        <div class="sec-title">Register Project</div>
-        <p class="card-desc">Use our structured submission template to send your project. No account required.</p>
-        <a class="buy-link" href="contribute.html">Open Register Form</a>
+        <div class="sec-title" x-text="t('register.title')"></div>
+        <p class="card-desc" x-text="t('dynamic.registerIntro')"></p>
+        <a class="buy-link" :href="link('contribute')" x-text="t('actions.openRegisterForm')"></a>
       </div>
     </aside>
   </main>
 
   <section class="about-box">
     <div class="mission">
-      <div class="sec-title" style="margin-bottom:10px;">Who We Are and What We Want</div>
-      <p class="card-desc" style="margin:0 0 8px;">
-        SimoDevel is a non-profit learning initiative built by people passionate about electronics and mechatronics.
-        We support learners from absolute beginner level to advanced design and simulation practice.
-      </p>
-      <p class="card-desc" style="margin:0;">
-        Our goal is simple: provide practical, technical, and free resources so anyone can build real skills - from first SPICE circuit to complete embedded projects.
-        We value open collaboration, clear engineering documentation, and hands-on experimentation.
-      </p>
+      <div class="sec-title" style="margin-bottom:10px;" x-text="t('about.title')"></div>
+      <p class="card-desc" style="margin:0 0 8px;" x-text="t('about.paragraph1')"></p>
+      <p class="card-desc" style="margin:0;" x-text="t('about.paragraph2')"></p>
     </div>
   </section>
 
   <footer>
-    SimoDevel - Non-profit technical platform for electronics and mechatronics learning.
+    <span x-text="t('footer.text')"></span>
     <br style="margin-bottom:4px;">
-    <a href="about.html" style="color:#6b7280; text-decoration:none; border-bottom:1px solid #374151;">Copyright &copy; 2026 | SimoDevel</a>
+    <a :href="link('about')" style="color:#6b7280; text-decoration:none; border-bottom:1px solid #374151;" x-text="t('footer.copyright')"></a>
   </footer>
 
   <script>
+    function defaultUiConfig() {
+      return {
+        dataPaths: {
+          bundle: "",
+          projects: "data/projects_index.json",
+          components: "data/components.json",
+          tutorials: "data/tutorials_index.json",
+          tools: "data/tools_index.json"
+        },
+        links: {
+          home: "/",
+          about: "about.html",
+          contribute: "contribute.html"
+        },
+        defaults: {
+          panelFocus: "default",
+          largeWhenDefault: ["blog", "parts"],
+          compactWhenDefault: ["tutorials", "tools"],
+          compactOrder: ["blog", "parts", "tutorials", "tools"]
+        },
+        seo: {
+          title: "SimoDevel - Electronics and Mechatronics Learning Hub",
+          description: "Technical tutorials, projects, tools and parts for electronics and mechatronics learners. Non-profit and community-driven."
+        },
+        vote: {
+          apiBase: "/api/votes",
+          githubIoApiBase: "https://simodevel.com/api/votes"
+        },
+        limits: {
+          default: { projects: 10, components: 20, tutorials: 10, tools: 10 },
+          search: { projects: 20, components: 30, tutorials: 20, tools: 20 },
+          compact: { blog: 8, parts: 10, tutorials: 8, tools: 8 },
+          tags: { blog: 4, tutorial: 4 }
+        },
+        texts: {
+          search: {
+            placeholder: "Search projects, components, tutorials, and tools...",
+            empty: "No matching results. Try part numbers (e.g. BC547), topics (e.g. PWM), or tools (e.g. LTspice)."
+          },
+          nav: {
+            blog: "Blogs",
+            parts: "Parts",
+            tutorials: "Tutorials",
+            tools: "Tools",
+            about: "About",
+            register: "Register Your Project"
+          },
+          status: {
+            loading: "Loading local JSON indexes...",
+            search: "{count} live matches for \"{query}\". Layout reset to default search mode.",
+            focus: "Focus:",
+            overview: "OVERVIEW",
+            sectionsLoaded: "Sections loaded:",
+            projects: "projects",
+            parts: "parts",
+            tutorials: "tutorials",
+            tools: "tools"
+          },
+          sections: {
+            blog: "Technical Project Blogs",
+            parts: "Components Database",
+            tutorials: "Technical Tutorials",
+            tools: "Free and Open Tools (Installation + Versions)",
+            compactBlog: "Blogs",
+            compactParts: "Parts",
+            compactTutorials: "Tutorials",
+            compactTools: "Tools"
+          },
+          actions: {
+            minimize: "MINIMIZE VIEW",
+            enlarge: "ENLARGE VIEW",
+            backBlogs: "Back to all blogs",
+            backParts: "Back to all parts",
+            backTutorials: "Back to all tutorials",
+            backTools: "Back to all tools",
+            openTutorialPage: "Open Tutorial Page",
+            officialSite: "Official Site",
+            openRegisterForm: "Open Register Form"
+          },
+          navTitles: {
+            prevBlog: "Previous blog",
+            nextBlog: "Next blog",
+            prevPart: "Previous part",
+            nextPart: "Next part",
+            prevTutorial: "Previous tutorial",
+            nextTutorial: "Next tutorial",
+            prevTool: "Previous tool",
+            nextTool: "Next tool"
+          },
+          providers: {
+            datasheet: "Datasheet",
+            digikey: "DigiKey",
+            mouser: "Mouser",
+            tme: "TME"
+          },
+          labels: {
+            contributor: "Contributor",
+            category: "Category",
+            type: "Type",
+            package: "Package",
+            manufacturer: "Manufacturer",
+            license: "License",
+            version: "Version",
+            install: "Install",
+            reference: "Reference"
+          },
+          details: {
+            overview: "Overview",
+            content: "Content",
+            partList: "Part List",
+            componentDetails: "Component Details",
+            usedInProjects: "Used In Projects",
+            purchaseLinks: "Purchase Links",
+            learningFocus: "Learning Focus",
+            tutorialLink: "Tutorial Link",
+            about: "About",
+            bestFor: "Best For",
+            installation: "Installation",
+            platformsLinks: "Platforms & Links",
+            contributor: "Contributor"
+          },
+          table: {
+            ref: "Ref",
+            qty: "Qty",
+            value: "Value",
+            role: "Role"
+          },
+          dynamic: {
+            blogOverview: "This technical project is part of the {category} track and follows a {difficulty} learning path.",
+            tutorialOverview: "This tutorial is part of the {category} track and follows a {difficulty} level path.",
+            learningFocus: "Use the tags above as learning anchors. Work through the steps in order and validate each concept before moving on.",
+            submittedBy: "Submitted by {contributor}.",
+            registerIntro: "Use our structured submission template to send your project. No account required.",
+            toolInstallPrefix: "Install: {value}"
+          },
+          fallback: {
+            contentUnavailable: "Content unavailable.",
+            partsListUnavailable: "Parts list unavailable for this project.",
+            noLinkedProjects: "No linked projects available.",
+            component: "Component",
+            na: "N/A",
+            unknown: "Unknown",
+            unknownManufacturer: "Unknown manufacturer",
+            free: "Free",
+            freeTier: "Free tier",
+            toolDescription: "No description available.",
+            toolBestFor: "General electronics design and simulation.",
+            toolInstall: "See official documentation."
+          },
+          messages: {
+            voteDomainOnly: "Voting is available on deployed domain only.",
+            voteLoadError: "Unable to load votes.",
+            voteRequestFailed: "Vote request failed.",
+            voteRouteInactive: "Voting API route is not active for this host yet.",
+            voteNonJson: "Voting API returned a non-JSON response.",
+            voteInvalidJson: "Voting API returned invalid JSON."
+          },
+          register: {
+            title: "Register Project"
+          },
+          about: {
+            title: "Who We Are and What We Want",
+            paragraph1: "SimoDevel is a non-profit learning initiative built by people passionate about electronics and mechatronics. We support learners from absolute beginner level to advanced design and simulation practice.",
+            paragraph2: "Our goal is simple: provide practical, technical, and free resources so anyone can build real skills - from first SPICE circuit to complete embedded projects. We value open collaboration, clear engineering documentation, and hands-on experimentation."
+          },
+          footer: {
+            text: "SimoDevel - Non-profit technical platform for electronics and mechatronics learning.",
+            copyright: "Copyright © 2026 | SimoDevel"
+          }
+        }
+      };
+    }
+
+    function isPlainObject(value) {
+      return value !== null && typeof value === "object" && !Array.isArray(value);
+    }
+
+    function mergeObjects(base, incoming) {
+      if (!isPlainObject(base) || !isPlainObject(incoming)) {
+        return isPlainObject(incoming) ? { ...incoming } : base;
+      }
+
+      const output = { ...base };
+      for (const key of Object.keys(incoming)) {
+        const baseValue = base[key];
+        const incomingValue = incoming[key];
+        if (isPlainObject(baseValue) && isPlainObject(incomingValue)) {
+          output[key] = mergeObjects(baseValue, incomingValue);
+        } else {
+          output[key] = incomingValue;
+        }
+      }
+      return output;
+    }
+
+    function getByPath(source, path, fallbackValue = "") {
+      const chunks = String(path || "").split('.').filter(Boolean);
+      let current = source;
+      for (const chunk of chunks) {
+        if (current === null || typeof current !== "object" || !(chunk in current)) {
+          return fallbackValue;
+        }
+        current = current[chunk];
+      }
+      if (current === undefined || current === null) {
+        return fallbackValue;
+      }
+      return current;
+    }
+
     function simodevel() {
       return {
         loading: true,
@@ -1387,6 +1588,7 @@
         voteDeviceId: "",
         votesByKey: {},
         voteBusy: false,
+        ui: defaultUiConfig(),
 
         raw: {
           projects: [],
@@ -1403,41 +1605,223 @@
         },
 
         async init() {
+          const uiDefaults = defaultUiConfig();
+          this.ui = uiDefaults;
+
+          try {
+            const cfgResponse = await fetch("data/ui_config.json");
+            if (cfgResponse.ok) {
+              const cfgPayload = await cfgResponse.json();
+              this.ui = mergeObjects(uiDefaults, cfgPayload);
+            }
+          } catch (_) {
+            this.ui = uiDefaults;
+          }
+
+          this.applySeoConfig();
+          this.panelFocus = this.defaultPanelFocus();
+
           this.voteApiBase = this.resolveVoteApiBase();
           this.voteApiAvailable = window.location.protocol === "http:" || window.location.protocol === "https:";
           this.voteDeviceId = this.ensureVoteDeviceId();
 
           try {
-            const [projects, componentsObj, tutorials, tools] = await Promise.all([
-              fetch("data/projects_index.json").then(r => r.json()),
-              fetch("data/components.json").then(r => r.json()),
-              fetch("data/tutorials_index.json").then(r => r.json()),
-              fetch("data/tools_index.json").then(r => r.json())
-            ]);
+            const dataPaths = this.ui.dataPaths || {};
+            const bundlePath = String(dataPaths.bundle || "").trim();
+            let loadedBundle = false;
 
-            const components = Object.keys(componentsObj || {}).map(ref => ({
-              _ref: ref,
-              ...(componentsObj[ref] || {})
-            }));
+            if (bundlePath) {
+              try {
+                const bundleRes = await fetch(bundlePath);
+                if (bundleRes.ok) {
+                  const bundlePayload = await bundleRes.json();
+                  const bundleData = this.extractBundleData(bundlePayload);
+                  if (bundleData) {
+                    this.applyLoadedData(bundleData);
+                    loadedBundle = true;
+                  }
+                }
+              } catch (_) {
+                loadedBundle = false;
+              }
+            }
 
-            this.raw.projects = Array.isArray(projects) ? projects : [];
-            this.raw.components = Array.isArray(components) ? components : [];
-            this.raw.tutorials = Array.isArray(tutorials) ? tutorials : [];
-            this.raw.tools = Array.isArray(tools) ? tools : [];
+            if (!loadedBundle) {
+              const [projects, componentsSource, tutorials, tools] = await Promise.all([
+                fetch(dataPaths.projects || "data/projects_index.json").then(r => r.json()),
+                fetch(dataPaths.components || "data/components.json").then(r => r.json()),
+                fetch(dataPaths.tutorials || "data/tutorials_index.json").then(r => r.json()),
+                fetch(dataPaths.tools || "data/tools_index.json").then(r => r.json())
+              ]);
 
-            this.stats = {
-              projects: this.raw.projects.length,
-              components: this.raw.components.length,
-              tutorials: this.raw.tutorials.length,
-              tools: this.raw.tools.length
-            };
-
-            this.filterAll();
+              this.applyLoadedData({
+                projects,
+                components: this.normalizeComponents(componentsSource),
+                tutorials,
+                tools
+              });
+            }
           } catch (err) {
             console.warn("Could not load local JSON data", err);
           } finally {
             this.loading = false;
           }
+        },
+
+        cfg(path, fallbackValue = null) {
+          return getByPath(this.ui || {}, path, fallbackValue);
+        },
+
+        cfgArray(path, fallbackValue = []) {
+          const value = this.cfg(path, fallbackValue);
+          return Array.isArray(value) ? value : fallbackValue;
+        },
+
+        defaultPanelFocus() {
+          return String(this.cfg("defaults.panelFocus", "default") || "default");
+        },
+
+        defaultLargePanels() {
+          return this.cfgArray("defaults.largeWhenDefault", ["blog", "parts"]);
+        },
+
+        defaultCompactPanels() {
+          return this.cfgArray("defaults.compactWhenDefault", ["tutorials", "tools"]);
+        },
+
+        defaultCompactOrder() {
+          return this.cfgArray("defaults.compactOrder", ["blog", "parts", "tutorials", "tools"]);
+        },
+
+        defaultNavPanel() {
+          const panels = this.defaultLargePanels();
+          return panels.length ? String(panels[0]) : "blog";
+        },
+
+        applySeoConfig() {
+          const title = String(this.cfg("seo.title", "") || "").trim();
+          if (title) {
+            document.title = title;
+          }
+
+          const description = String(this.cfg("seo.description", "") || "").trim();
+          if (!description) {
+            return;
+          }
+
+          const descriptionMeta = document.querySelector('meta[name="description"]');
+          if (descriptionMeta) {
+            descriptionMeta.setAttribute("content", description);
+          }
+        },
+
+        normalizeComponents(componentsSource) {
+          if (Array.isArray(componentsSource)) {
+            return componentsSource
+              .filter(item => item && typeof item === "object")
+              .map(item => {
+                const ref = item._ref || item.ref || item.id || "";
+                return {
+                  ...item,
+                  _ref: ref
+                };
+              })
+              .filter(item => item._ref);
+          }
+
+          if (isPlainObject(componentsSource)) {
+            return Object.keys(componentsSource).map(ref => ({
+              _ref: ref,
+              ...(componentsSource[ref] || {})
+            }));
+          }
+
+          return [];
+        },
+
+        extractBundleData(bundlePayload) {
+          if (!isPlainObject(bundlePayload)) {
+            return null;
+          }
+
+          return {
+            projects: Array.isArray(bundlePayload.projects) ? bundlePayload.projects : [],
+            components: this.normalizeComponents(bundlePayload.components || []),
+            tutorials: Array.isArray(bundlePayload.tutorials) ? bundlePayload.tutorials : [],
+            tools: Array.isArray(bundlePayload.tools) ? bundlePayload.tools : []
+          };
+        },
+
+        applyLoadedData(dataPayload = {}) {
+          this.raw.projects = Array.isArray(dataPayload.projects) ? dataPayload.projects : [];
+          this.raw.components = Array.isArray(dataPayload.components) ? dataPayload.components : [];
+          this.raw.tutorials = Array.isArray(dataPayload.tutorials) ? dataPayload.tutorials : [];
+          this.raw.tools = Array.isArray(dataPayload.tools) ? dataPayload.tools : [];
+
+          this.stats = {
+            projects: this.raw.projects.length,
+            components: this.raw.components.length,
+            tutorials: this.raw.tutorials.length,
+            tools: this.raw.tools.length
+          };
+
+          this.filterAll();
+        },
+
+        t(path, fallbackValue = "") {
+          return String(getByPath(this.ui.texts || {}, path, fallbackValue));
+        },
+
+        link(name) {
+          return String(getByPath(this.ui.links || {}, name, "#"));
+        },
+
+        limit(path, fallbackValue = 0) {
+          const value = Number(getByPath(this.ui.limits || {}, path, fallbackValue));
+          return Number.isFinite(value) ? value : Number(fallbackValue || 0);
+        },
+
+        formatTemplate(template, vars = {}) {
+          return String(template || "").replace(/\{([a-zA-Z0-9_]+)\}/g, (_, token) => {
+            if (!(token in vars)) {
+              return "";
+            }
+            return String(vars[token] ?? "");
+          });
+        },
+
+        searchStatusText() {
+          return this.formatTemplate(this.t("status.search"), {
+            count: this.totalResults(),
+            query: this.query
+          });
+        },
+
+        submittedByText(item) {
+          return this.formatTemplate(this.t("dynamic.submittedBy"), {
+            contributor: item && item.contributor ? item.contributor : ""
+          });
+        },
+
+        blogOverviewText(item) {
+          return this.formatTemplate(this.t("dynamic.blogOverview"), {
+            category: item && item.category ? item.category : "",
+            difficulty: item && item.difficulty ? item.difficulty : ""
+          });
+        },
+
+        tutorialOverviewText(item) {
+          return this.formatTemplate(this.t("dynamic.tutorialOverview"), {
+            category: item && item.category ? item.category : "",
+            difficulty: item && item.difficulty ? item.difficulty : ""
+          });
+        },
+
+        toolInstallText(tool) {
+          const installValue = (tool && tool.install) ? tool.install : this.t("fallback.toolInstall");
+          return this.formatTemplate(this.t("dynamic.toolInstallPrefix"), {
+            value: installValue
+          });
         },
 
         isSearchMode() {
@@ -1468,10 +1852,10 @@
           }
 
           if (!q) {
-            this.visible.projects = this.raw.projects.slice(0, 10);
-            this.visible.components = this.raw.components.slice(0, 20);
-            this.visible.tutorials = this.raw.tutorials.slice(0, 10);
-            this.visible.tools = this.raw.tools.slice(0, 10);
+            this.visible.projects = this.raw.projects.slice(0, this.limit("default.projects", 10));
+            this.visible.components = this.raw.components.slice(0, this.limit("default.components", 20));
+            this.visible.tutorials = this.raw.tutorials.slice(0, this.limit("default.tutorials", 10));
+            this.visible.tools = this.raw.tools.slice(0, this.limit("default.tools", 10));
             this.prefetchVisibleVoteSummaries();
             return;
           }
@@ -1482,14 +1866,14 @@
             this.hit(item.category, q) ||
             this.hit(item.contributor, q) ||
             this.hitTags(item.tags, q)
-          ).slice(0, 20);
+          ).slice(0, this.limit("search.projects", 20));
 
           this.visible.components = this.raw.components.filter(item =>
             this.hit(item._ref, q) ||
             this.hit(item.type, q) ||
             this.hit(item.package, q) ||
             this.hit(item.manufacturer, q)
-          ).slice(0, 30);
+          ).slice(0, this.limit("search.components", 30));
 
           this.visible.tutorials = this.raw.tutorials.filter(item =>
             this.hit(item.title, q) ||
@@ -1497,7 +1881,7 @@
             this.hit(item.category, q) ||
             this.hit(item.contributor, q) ||
             this.hitTags(item.tags, q)
-          ).slice(0, 20);
+          ).slice(0, this.limit("search.tutorials", 20));
 
           this.visible.tools = this.raw.tools.filter(item =>
             this.hit(item.name, q) ||
@@ -1508,7 +1892,7 @@
             this.hit(item.license, q) ||
             this.hit(item.free_version, q) ||
             this.hit(item.version, q)
-          ).slice(0, 20);
+          ).slice(0, this.limit("search.tools", 20));
 
           if (this.selectedBlogId && !this.visible.projects.some(item => item.id === this.selectedBlogId)) {
             this.selectedBlogId = null;
@@ -1611,10 +1995,12 @@
 
         resolveVoteApiBase() {
           const host = String(window.location.hostname || "").toLowerCase();
+          const voteCfg = this.ui.vote || {};
+          const localBase = String(voteCfg.apiBase || "/api/votes");
           if (host.endsWith("github.io")) {
-            return "https://simodevel.com/api/votes";
+            return String(voteCfg.githubIoApiBase || localBase);
           }
-          return "/api/votes";
+          return localBase;
         },
 
         async parseVoteApiResponse(response, defaultErrorMessage) {
@@ -1623,16 +2009,16 @@
 
           if (!contentType.includes("application/json")) {
             if (response.status === 404 || response.status === 405) {
-              throw new Error("Voting API route is not active for this host yet.");
+              throw new Error(this.t("messages.voteRouteInactive"));
             }
-            throw new Error("Voting API returned a non-JSON response.");
+            throw new Error(this.t("messages.voteNonJson"));
           }
 
           let data;
           try {
             data = payloadText ? JSON.parse(payloadText) : {};
           } catch (_) {
-            throw new Error("Voting API returned invalid JSON.");
+            throw new Error(this.t("messages.voteInvalidJson"));
           }
 
           if (!response.ok || !data.ok) {
@@ -1705,7 +2091,7 @@
           try {
             const query = `${this.voteApiBase}?item=${encodeURIComponent(itemKey)}&device=${encodeURIComponent(this.voteDeviceId)}`;
             const response = await fetch(query);
-            const data = await this.parseVoteApiResponse(response, "Unable to load votes.");
+            const data = await this.parseVoteApiResponse(response, this.t("messages.voteLoadError"));
 
             this.upsertVoteState(itemKey, {
               totalVotes: Number(data.stats && data.stats.totalVotes || 0),
@@ -1716,7 +2102,7 @@
               error: ""
             });
           } catch (err) {
-            const message = err && err.message ? err.message : "Unable to load votes.";
+            const message = err && err.message ? err.message : this.t("messages.voteLoadError");
             this.upsertVoteState(itemKey, {
               loading: false,
               error: message
@@ -1732,7 +2118,7 @@
 
           if (!this.voteApiAvailable) {
             this.upsertVoteState(target.key, {
-              error: "Voting is available on deployed domain only."
+              error: this.t("messages.voteDomainOnly")
             });
             return;
           }
@@ -1758,7 +2144,7 @@
               })
             });
 
-            const data = await this.parseVoteApiResponse(response, "Vote request failed.");
+            const data = await this.parseVoteApiResponse(response, this.t("messages.voteRequestFailed"));
 
             this.upsertVoteState(target.key, {
               totalVotes: Number(data.stats && data.stats.totalVotes || 0),
@@ -1769,7 +2155,7 @@
               error: ""
             });
           } catch (err) {
-            const message = err && err.message ? err.message : "Vote request failed.";
+            const message = err && err.message ? err.message : this.t("messages.voteRequestFailed");
             this.upsertVoteState(target.key, {
               loading: false,
               error: message
@@ -1806,10 +2192,24 @@
             return;
           }
 
-          let readmeText = "Content unavailable.";
-          let partsList = [];
+          const inlineReadme = String(
+            project.readme_text ||
+            project.readmeText ||
+            project.content_md ||
+            project.contentMd ||
+            ""
+          ).trim();
 
-          if (project.readme) {
+          const inlineParts =
+            (Array.isArray(project.parts_list) && project.parts_list) ||
+            (Array.isArray(project.partsList) && project.partsList) ||
+            (Array.isArray(project.inline_parts) && project.inline_parts) ||
+            [];
+
+          let readmeText = inlineReadme || this.t("fallback.contentUnavailable");
+          let partsList = inlineParts;
+
+          if (project.readme && !inlineReadme) {
             try {
               const readmeRes = await fetch(project.readme);
               if (readmeRes.ok) {
@@ -1819,11 +2219,11 @@
                 }
               }
             } catch (_) {
-              readmeText = "Content unavailable.";
+              readmeText = this.t("fallback.contentUnavailable");
             }
           }
 
-          if (project.parts) {
+          if (project.parts && !partsList.length) {
             try {
               const partsRes = await fetch(project.parts);
               if (partsRes.ok) {
@@ -1885,11 +2285,11 @@
         selectedBlogReadme() {
           const blog = this.selectedBlog();
           if (!blog) {
-            return "Content unavailable.";
+            return this.t("fallback.contentUnavailable");
           }
           const asset = this.blogAssets[blog.id];
           if (!asset || !asset.readmeText) {
-            return "Content unavailable.";
+            return this.t("fallback.contentUnavailable");
           }
           return asset.readmeText;
         },
@@ -2088,9 +2488,17 @@
             return;
           }
 
-          let readmeText = "Content unavailable.";
+          const inlineReadme = String(
+            tutorial.readme_text ||
+            tutorial.readmeText ||
+            tutorial.content_md ||
+            tutorial.contentMd ||
+            ""
+          ).trim();
+
+          let readmeText = inlineReadme || this.t("fallback.contentUnavailable");
           const readmePath = this.tutorialReadmePath(tutorial);
-          if (readmePath) {
+          if (readmePath && !inlineReadme) {
             try {
               const readmeRes = await fetch(readmePath);
               if (readmeRes.ok) {
@@ -2100,7 +2508,7 @@
                 }
               }
             } catch (_) {
-              readmeText = "Content unavailable.";
+              readmeText = this.t("fallback.contentUnavailable");
             }
           }
 
@@ -2118,11 +2526,11 @@
         selectedTutorialReadme() {
           const tutorial = this.selectedTutorial();
           if (!tutorial) {
-            return "Content unavailable.";
+            return this.t("fallback.contentUnavailable");
           }
           const asset = this.tutorialAssets[tutorial.id];
           if (!asset || !asset.readmeText) {
-            return "Content unavailable.";
+            return this.t("fallback.contentUnavailable");
           }
           return asset.readmeText;
         },
@@ -2213,7 +2621,8 @@
           return this.raw.projects.find(item => {
             const readmeSlug = this.projectSlugFromPath(item.readme);
             const partsSlug = this.projectSlugFromPath(item.parts);
-            return readmeSlug === slug || partsSlug === slug;
+            const inlineSlug = String(item.slug || item.project_slug || item.id || "");
+            return readmeSlug === slug || partsSlug === slug || inlineSlug === slug;
           }) || null;
         },
 
@@ -2302,7 +2711,7 @@
         isNavActive(name) {
           const active = this.activePanel();
           if (active === "default") {
-            return name === "blog";
+            return name === this.defaultNavPanel();
           }
           return active === name;
         },
@@ -2310,7 +2719,7 @@
         showLarge(name) {
           const active = this.activePanel();
           if (active === "default") {
-            return name === "blog" || name === "parts";
+            return this.defaultLargePanels().includes(name);
           }
           return active === name;
         },
@@ -2318,7 +2727,7 @@
         showCompact(name) {
           const active = this.activePanel();
           if (active === "default") {
-            return name === "tutorials" || name === "tools";
+            return this.defaultCompactPanels().includes(name);
           }
           return true;
         },
@@ -2326,8 +2735,9 @@
         compactOrder(name) {
           const active = this.activePanel();
           if (active === name) return 0;
-          const order = ['blog', 'parts', 'tutorials', 'tools'];
-          return order.indexOf(name) + 1;
+          const order = this.defaultCompactOrder();
+          const index = order.indexOf(name);
+          return index >= 0 ? index + 1 : 999;
         }
       };
     }
