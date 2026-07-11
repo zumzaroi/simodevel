@@ -828,10 +828,10 @@
 
       const left = 80;
       const right = 190;
-      const top = 64;
-      const bottom = 44;
+      const top = 128;
+      const bottom = 88;
       const plotW = 1320;
-      const plotH = 270;
+      const plotH = 540;
       const width = left + plotW + right;
       const height = top + plotH + bottom;
 
@@ -848,7 +848,7 @@
 
       target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
 
-      const ttl = mk("text", { x: 16, y: 32, "font-size": 15, "font-weight": 700, fill: "#111827" });
+      const ttl = mk("text", { x: 16, y: 64, "font-size": 30, "font-weight": 700, fill: "#111827" });
       ttl.textContent = `${titleText} | x axis: note, y axis: numar de elevi`;
       target.appendChild(ttl);
 
@@ -915,7 +915,7 @@
           stroke: "#e5e7eb",
           "stroke-width": 1
         }));
-        const t = mk("text", { x: left - 10, y: y + 4, "font-size": 10, "text-anchor": "end", fill: "#6b7280" });
+        const t = mk("text", { x: left - 12, y: y + 8, "font-size": 20, "text-anchor": "end", fill: "#6b7280" });
         t.textContent = String(Math.round(v));
         target.appendChild(t);
       }
@@ -963,8 +963,8 @@
         }));
         const t = mk("text", {
           x,
-          y: plotBottom + 16,
-          "font-size": 10,
+          y: plotBottom + 30,
+          "font-size": 20,
           "text-anchor": "middle",
           fill: "#6b7280"
         });
