@@ -501,8 +501,8 @@
 
       <div class="controls">
         <div class="field">
-          <label for="hInput">nume liceu (partial sau all)</label>
-          <input id="hInput" value="Sava" placeholder="examples: all or Cosbuc, Neculce">
+          <label for="hInput">nume licee (partial sau all)</label>
+          <input id="hInput" value="Sava, Lazar" placeholder="examples: all or Cosbuc, Neculce">
         </div>
 
         <div class="field">
@@ -2448,7 +2448,7 @@
 
           if (!filtered.length) {
             const lookupSummary = formatLookupMarkerSummary(lookupMarker);
-            meta.textContent = `No matches found for nume liceu=${h}${sp ? ` and specializare=${sp}` : ""}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
+            meta.textContent = `No matches found for nume licee=${h}${sp ? ` and specializare=${sp}` : ""}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
             const gradeTitle = "Note (axa x) vs Numar elevi (axa y)";
             lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
             if (lastGradeView) gradeCenter = lastGradeView.center;
@@ -2467,7 +2467,7 @@
           lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
           if (lastGradeView) gradeCenter = lastGradeView.center;
 
-          const title = `TOP_PLACE intervals by specializare for nume liceu: ${hFilterText}, specializare:${spFilterText}, sortare dupa medie ${rankMode.toLowerCase()}. 2025`;
+          const title = `TOP_PLACE intervals by specializare for nume licee: ${hFilterText}, specializare:${spFilterText}, sortare dupa medie ${rankMode.toLowerCase()}. 2025`;
           renderChart(chart, groupedRows, title, hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
           applyPageZoom();
         } catch (err) {
