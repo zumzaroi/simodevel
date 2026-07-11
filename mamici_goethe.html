@@ -776,9 +776,53 @@
       const raw = String(query ?? "").trim();
       if (!raw) return null;
 
+      const hasLetters = /[a-z]/i.test(raw);
+      const numericValue = Number(String(raw).replace(",", "."));
+      const isFiniteNumeric = Number.isFinite(numericValue);
+      const canBeGrade = isFiniteNumeric && numericValue >= 0 && numericValue <= 10;
+      const gradeQuery = canBeGrade ? Number(numericValue.toFixed(2)) : null;
       const rankQuery = /^\d+$/.test(raw) ? Number(raw) : null;
       const codeQuery = normalizeStudentLookup(raw);
       let student = null;
+      let lookupType = "student";
+
+      // For inputs like 9.50 / 9,50 (or <=10), prefer grade lookup as requested by UI label.
+      if (!hasLetters && canBeGrade) {
+        lookupType = "grade";
+        const marker = {
+          query: raw,
+          studentCode: `media ${gradeQuery.toFixed(2)}`,
+          school: "",
+          grade2026: gradeQuery,
+          rank2026: null,
+          relativeFraction: null,
+          row2026: null,
+          equivalent2025: null,
+          error: null,
+          lookupType
+        };
+
+        const matched2025 = (rows2025 || [])
+          .map(r => ({
+            grade: Number(r.madm),
+            place: Number(r.madm_top_place)
+          }))
+          .filter(v => Number.isFinite(v.grade) && Number.isFinite(v.place) && Number(v.grade.toFixed(2)) === gradeQuery);
+
+        if (matched2025.length) {
+          const places = matched2025.map(v => v.place).sort((a, b) => a - b);
+          marker.equivalent2025 = {
+            exactGradeMatch: true,
+            relativeRankMatch: false,
+            grade: gradeQuery,
+            placeMin: places[0],
+            placeMax: places[places.length - 1],
+            placeCenter: (places[0] + places[places.length - 1]) / 2
+          };
+        }
+
+        return marker;
+      }
 
       if (Number.isFinite(rankQuery)) {
         student = (rows2026 || []).find(r => Number(r.madm_top_place) === rankQuery) || null;
@@ -814,7 +858,8 @@
         relativeFraction: null,
         row2026: student,
         equivalent2025: null,
-        error: null
+        error: null,
+        lookupType
       };
 
       if (!Number.isFinite(rank2026) || !ranked2025.length || !ranked2026.length) {
@@ -842,6 +887,18 @@
     function formatLookupMarkerSummary(marker) {
       if (!marker) return "";
       if (marker.error) return marker.error;
+
+      if (marker.lookupType === "grade") {
+        const gradeText = Number.isFinite(marker.grade2026) ? marker.grade2026.toFixed(2) : "-";
+        if (!marker.equivalent2025 || !Number.isFinite(marker.equivalent2025.placeCenter)) {
+          return `Media ${gradeText}: fara echivalent direct in setul 2025 pentru aceasta valoare.`;
+        }
+        const eq = marker.equivalent2025;
+        const placeText = eq.placeMin !== eq.placeMax
+          ? `${Math.round(eq.placeMin)}-${Math.round(eq.placeMax)}`
+          : `${Math.round(eq.placeCenter)}`;
+        return `Media ${gradeText}: echivalent 2025 la pozitia ${placeText} (match direct dupa media admitere).`;
+      }
 
       const studentCode = marker.studentCode || "UNKNOWN";
       const rankText = Number.isFinite(marker.rank2026) ? String(marker.rank2026) : "-";
@@ -1176,7 +1233,9 @@
             fill: "#dc2626",
             "text-anchor": markerX > left + (plotW * 0.7) ? "end" : "start"
           });
-          markerLabel.textContent = `${lookupMarker.studentCode || "2026"} | loc ${lookupMarker.rank2026} | ${markerGrade.toFixed(2)}`;
+          markerLabel.textContent = lookupMarker.lookupType === "grade"
+            ? `media ${markerGrade.toFixed(2)}`
+            : `${lookupMarker.studentCode || "2026"} | loc ${Number.isFinite(lookupMarker.rank2026) ? lookupMarker.rank2026 : "-"} | ${markerGrade.toFixed(2)}`;
           if (markerX > left + (plotW * 0.7)) markerLabel.setAttribute("x", String(markerX - 6));
           target.appendChild(markerLabel);
         }
