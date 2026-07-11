@@ -1613,9 +1613,10 @@
       const bottom = 86;
       const baseRowH = showProvenance ? 52 : 48;
       const spGap = showProvenance ? 14 : 10;
-      const headerBaseH = 62;
+      const headerBaseH = 78;
       const headerTitleLineH = 24;
-      const headerMetaLineH = 16;
+      const headerMetaLineH = 19;
+      const headerAfterGap = 26;
       const barH = 16;
       let axisW = 920;
 
@@ -1690,6 +1691,8 @@
 
       const provTotalW = selectedYears.length ? (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0;
       const width = left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + provTotalW : 0) + right;
+      const maxHeaderTitleChars = Math.max(30, Math.floor((width - 54) / 11.2));
+      const maxHeaderMetaChars = Math.max(24, Math.floor((width - 72) / 10.4));
       const groupLayout = new Map();
       const headerLayout = new Map();
 
@@ -1699,7 +1702,7 @@
         const item = groupedRows[i];
         if (item.type !== "h-header") continue;
 
-        const hLines = wrapWords(`${item.hRank}. ${item.hName}`, maxSchoolChars);
+        const hLines = wrapWords(`${item.hRank}. ${item.hName}`, maxHeaderTitleChars);
         const extra = hMetaByH.get(norm(item.hName));
         const metaLines = [];
         if (extra) {
@@ -1708,7 +1711,7 @@
           for (const [k, v] of entries) {
             const value = String(v).trim();
             const label = `${k}: `;
-            const perLineChars = Math.max(8, maxSchoolChars - label.length);
+            const perLineChars = Math.max(12, maxHeaderMetaChars - label.length);
             const chunks = wrapWords(value, perLineChars);
             const lineColor = isCommuteTimeKey(k)
               ? (() => {
@@ -1729,7 +1732,7 @@
 
         const computedHeaderH = Math.max(
           headerBaseH,
-          10 + (hLines.length * headerTitleLineH) + (metaLines.length ? (6 + (metaLines.length * headerMetaLineH)) : 0) + 8
+          16 + (hLines.length * headerTitleLineH) + (metaLines.length ? (10 + (metaLines.length * headerMetaLineH)) : 0) + 14
         );
         headerLayout.set(i, { hLines, metaLines, height: computedHeaderH });
       }
@@ -1776,7 +1779,7 @@
         const r = groupedRows[i];
         if (r.type === "h-header") {
           const headerLayoutEntry = headerLayout.get(i);
-          rowsHeight += headerLayoutEntry ? headerLayoutEntry.height : headerBaseH;
+          rowsHeight += (headerLayoutEntry ? headerLayoutEntry.height : headerBaseH) + headerAfterGap;
           continue;
         }
 
@@ -1960,19 +1963,46 @@
         const item = groupedRows[i];
 
         if (item.type === "h-header") {
-          const headerLayoutEntry = headerLayout.get(i) || { hLines: wrapWords(`${item.hRank}. ${item.hName}`, maxSchoolChars), metaLines: [], height: headerBaseH };
+          const headerLayoutEntry = headerLayout.get(i) || { hLines: wrapWords(`${item.hRank}. ${item.hName}`, maxHeaderTitleChars), metaLines: [], height: headerBaseH };
 
-          const hLabel = mk("text", { x: 16, y: cursorY + 10, "font-size": 20, "font-weight": 700, fill: "#334155", "clip-path": `url(#${leftTextClipId})` });
+          const headerBandX = 8;
+          const headerBandY = cursorY + 2;
+          const headerBandW = width - 16;
+          const headerBandH = Math.max(40, headerLayoutEntry.height - 4);
+          target.appendChild(mk("rect", {
+            x: headerBandX,
+            y: headerBandY,
+            width: headerBandW,
+            height: headerBandH,
+            fill: "#f1f5f9",
+            opacity: 0.96,
+            stroke: "#cbd5e1",
+            "stroke-width": 1,
+            rx: 6,
+            ry: 6
+          }));
+
+          target.appendChild(mk("line", {
+            x1: headerBandX + 8,
+            y1: headerBandY + headerBandH,
+            x2: headerBandX + headerBandW - 8,
+            y2: headerBandY + headerBandH,
+            stroke: "#94a3b8",
+            "stroke-width": 1,
+            "stroke-dasharray": "4,3"
+          }));
+
+          const hLabel = mk("text", { x: 20, y: cursorY + 30, "font-size": 24, "font-weight": 800, fill: "#0f172a" });
           headerLayoutEntry.hLines.forEach((line, idx) => {
-            const tspan = mk("tspan", { x: 16, dy: idx === 0 ? 0 : headerTitleLineH });
+            const tspan = mk("tspan", { x: 20, dy: idx === 0 ? 0 : headerTitleLineH });
             tspan.textContent = line;
             hLabel.appendChild(tspan);
           });
           target.appendChild(hLabel);
 
           if (headerLayoutEntry.metaLines.length) {
-            const metaStartY = cursorY + 10 + (headerLayoutEntry.hLines.length * headerTitleLineH) + 6;
-            const hMetaLabel = mk("text", { x: 28, y: metaStartY, "font-size": 11, "font-weight": 500, fill: "#64748b", "clip-path": `url(#${leftTextClipId})` });
+            const metaStartY = cursorY + 30 + (headerLayoutEntry.hLines.length * headerTitleLineH) + 8;
+            const hMetaLabel = mk("text", { x: 28, y: metaStartY, "font-size": 14, "font-weight": 600, fill: "#475569" });
             headerLayoutEntry.metaLines.forEach((line, idx) => {
               const span = mk("tspan", {
                 x: 28,
@@ -1986,13 +2016,13 @@
             target.appendChild(hMetaLabel);
           }
 
-          cursorY += headerLayoutEntry.height;
+          cursorY += headerLayoutEntry.height + headerAfterGap;
           continue;
         }
 
         const groupLayoutEntry = groupLayout.get(groupKeyOf(item));
         const rowH = groupLayoutEntry ? groupLayoutEntry.rowH : baseRowH;
-        const y = cursorY;
+        const y = cursorY + (rowH / 2);
         const yBar = y - barH / 2;
         const x1 = left + ((item.min - xMin) * axisW) / span;
         const x2 = left + ((item.max - xMin) * axisW) / span;
