@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MADM Top Place Gantt</title>
+  <title>Simulator Admitere Liceu Bucuresti 2026</title>
   <style>
     :root {
-      --bg: #f7f7f4;
+      --bg: #ffffff;
       --panel: #ffffff;
-      --ink: #1f2937;
+      --ink: #111827;
       --muted: #6b7280;
-      --line: #d1d5db;
-      --accent: #0f766e;
-      --accent-soft: #99f6e4;
+      --line: #e5e7eb;
+      --accent: #dc2626;
+      --accent-dark: #991b1b;
+      --topbar: #111827;
+      --topbar-text: #d1d5db;
     }
 
     * { box-sizing: border-box; }
@@ -24,81 +26,140 @@
 
     body {
       margin: 0;
-      background: radial-gradient(circle at 20% 10%, #eefdf7, transparent 40%),
-                  radial-gradient(circle at 80% 20%, #e8f5ff, transparent 35%),
-                  var(--bg);
+      background: var(--bg);
       color: var(--ink);
-      font-family: "Segoe UI", "Noto Sans", sans-serif;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
       overflow-x: hidden;
     }
 
-    .wrap {
-      width: 100%;
-      min-height: 100dvh;
-      padding: 10px;
+    .topbar {
+      background: var(--topbar);
+      border-bottom: 3px solid var(--accent);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      line-height: 1;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: var(--topbar-text);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 3px;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .page-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px;
     }
 
     .card {
-      min-height: calc(100dvh - 20px);
+      min-height: calc(100dvh - 95px);
       display: flex;
       flex-direction: column;
       background: var(--panel);
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
       overflow: hidden;
     }
 
     .header {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid #eef2f7;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
     }
 
     h1 {
       margin: 0;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
 
     .subtitle {
       margin-top: 6px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
+      font-family: "Courier New", monospace;
     }
 
     .controls {
       display: grid;
-      grid-template-columns: 1fr 1fr 220px 220px auto;
-      gap: 12px;
-      padding: 16px 20px;
-      border-bottom: 1px solid #eef2f7;
-      background: #fcfdfd;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+      align-items: end;
     }
 
     .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      min-width: 0;
     }
 
     .field label {
       font-size: 12px;
       color: var(--muted);
-      font-weight: 600;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.06em;
     }
 
     .toggle-field {
-      justify-content: end;
+      justify-content: flex-end;
+      align-self: end;
     }
 
     .toggle-control {
       display: flex;
       align-items: center;
       gap: 8px;
-      min-height: 40px;
+      min-height: 38px;
       padding: 0 2px;
     }
 
@@ -108,56 +169,95 @@
     }
 
     .toggle-control span {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--ink);
-      font-weight: 600;
+      font-weight: 700;
+    }
+
+    .controls-secondary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #f9fafb;
+    }
+
+    .year-toggles,
+    .zoom-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .zoom-label {
+      color: #6b7280;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 800;
+      margin-right: 2px;
     }
 
     input, select {
       width: 100%;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 10px 12px;
+      border: 2px solid #d1d5db;
+      border-radius: 4px;
+      padding: 10px;
       font-size: 14px;
       outline: none;
-      transition: border-color 120ms ease;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+      background: #ffffff;
+      color: var(--ink);
     }
 
-    input:focus, select:focus { border-color: var(--accent); }
+    input:focus,
+    select:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.06);
+    }
 
     button {
       align-self: end;
-      height: 40px;
+      height: 34px;
       border: 0;
-      border-radius: 8px;
-      padding: 0 16px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      background: linear-gradient(120deg, #0f766e, #0ea5a0);
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--accent);
       cursor: pointer;
     }
 
-    button:hover { filter: brightness(1.03); }
+    button:hover { background: var(--accent-dark); }
 
     .ghost-btn {
       align-self: auto;
       background: #ffffff;
-      color: #0f766e;
-      border: 1px solid #99f6e4;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      min-width: 36px;
     }
 
     .ghost-btn:hover {
-      filter: none;
-      background: #f0fdfa;
+      background: #111827;
+      border-color: #111827;
+      color: #ffffff;
     }
 
     .meta {
-      padding: 10px 20px;
-      font-size: 13px;
+      padding: 10px 16px;
+      font-size: 12px;
       color: var(--muted);
-      border-bottom: 1px solid #eef2f7;
+      border-bottom: 1px solid var(--line);
       min-height: 40px;
+      font-family: "Courier New", monospace;
     }
 
     .meta:empty {
@@ -170,17 +270,19 @@
     .chart-wrap {
       flex: 1 1 auto;
       min-height: 0;
-      padding: 14px 14px 20px;
+      padding: 12px;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x pan-y pinch-zoom;
+      background: #ffffff;
     }
 
     .chart-stack {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      min-width: 0;
+      gap: 14px;
+      min-width: 980px;
+      width: 100%;
       transform-origin: top left;
     }
 
@@ -191,7 +293,7 @@
     }
 
     svg text {
-      font-family: "Segoe UI", "Noto Sans", sans-serif;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
       fill: var(--ink);
     }
 
@@ -201,44 +303,115 @@
     }
 
     @media (max-width: 860px) {
-      .wrap {
-        min-height: 100dvh;
-        padding: 6px;
+      .page-shell {
+        padding: 10px;
       }
 
       .card {
-        min-height: calc(100dvh - 12px);
+        min-height: calc(100dvh - 86px);
         height: auto;
         overflow: visible;
       }
 
-      .controls {
-        grid-template-columns: 1fr;
+      .topbar-inner {
+        padding: 10px 12px;
       }
 
-      button {
+      .top-links {
+        gap: 10px;
+      }
+
+      .controls {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .controls-secondary {
+        align-items: stretch;
+      }
+
+      .year-toggles,
+      .zoom-tools {
         width: 100%;
       }
 
+      .zoom-tools {
+        justify-content: flex-start;
+      }
+
       .chart-wrap {
-        flex: 0 1 auto;
-        min-height: 50vh;
-        max-height: none;
-        overflow: auto;
+        min-height: 60vh;
       }
 
       .chart-stack {
         min-width: 100%;
       }
     }
+
+    @media (max-width: 560px) {
+      .header {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 17px;
+      }
+
+      .subtitle {
+        font-size: 11px;
+      }
+
+      .controls,
+      .controls-secondary,
+      .meta,
+      .chart-wrap {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .toggle-control span {
+        font-size: 12px;
+      }
+
+      .ghost-btn {
+        height: 32px;
+        min-width: 34px;
+        padding: 0 8px;
+      }
+
+      .chart-wrap {
+        overflow-x: hidden;
+      }
+
+      .chart-stack {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+    }
+
+    @media (max-width: 1220px) {
+      .controls {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <div class="logo" aria-label="SimoDevel">Simo<span>Devel</span></div>
+    </div>
+  </nav>
+
+  <main class="page-shell">
     <div class="card">
       <div class="header">
-        <h1>MADM Top Place Gantt</h1>
-        <div class="subtitle">x axis: madm_top_place (smaller left, larger right), y axis: specialization</div>
+        <h1>Simulator Admitere Liceu Bucuresti 2026</h1>
+        <div class="subtitle">Doar pentru Bucuresti. Axa X: pozitia dupa media admitere (stanga = pozitie mai buna), Axa Y: specializare.</div>
       </div>
 
       <div class="controls">
@@ -274,16 +447,20 @@
         </div>
       </div>
 
-      <div style="display:flex; gap:8px; align-items:center; padding: 12px 20px; border-bottom: 1px solid #eef2f7; background: #f9fcfb;">
-        <label class="toggle-control"><input id="show2024Input" type="checkbox" checked><span>2024</span></label>
-        <label class="toggle-control"><input id="show2025Input" type="checkbox" checked><span>2025</span></label>
-        <label class="toggle-control"><input id="show2026Input" type="checkbox" checked><span>2026 (grade chart)</span></label>
-        <span style="margin-left: 10px; color: #64748b; font-size: 12px;">Zoom histograma:</span>
-        <button id="gradePanLeftBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">&#8592;</button>
-        <button id="gradePanRightBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">&#8594;</button>
-        <button id="gradeZoomOutBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">-</button>
-        <button id="gradeZoomInBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">+</button>
-        <button id="gradeZoomResetBtn" class="ghost-btn" type="button" style="height:30px; padding:0 10px;">Reset</button>
+      <div class="controls-secondary">
+        <div class="year-toggles">
+          <label class="toggle-control"><input id="show2024Input" type="checkbox" checked><span>2024</span></label>
+          <label class="toggle-control"><input id="show2025Input" type="checkbox" checked><span>2025</span></label>
+          <label class="toggle-control"><input id="show2026Input" type="checkbox" checked><span>2026 (grade chart)</span></label>
+        </div>
+        <div class="zoom-tools">
+          <span class="zoom-label">Zoom histograma</span>
+          <button id="gradePanLeftBtn" class="ghost-btn" type="button" aria-label="Pan left">&#8592;</button>
+          <button id="gradePanRightBtn" class="ghost-btn" type="button" aria-label="Pan right">&#8594;</button>
+          <button id="gradeZoomOutBtn" class="ghost-btn" type="button" aria-label="Zoom out">-</button>
+          <button id="gradeZoomInBtn" class="ghost-btn" type="button" aria-label="Zoom in">+</button>
+          <button id="gradeZoomResetBtn" class="ghost-btn" type="button">Reset</button>
+        </div>
       </div>
 
       <div id="meta" class="meta">Loading data...</div>
@@ -294,7 +471,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
   <script src="./madm_gantt_share/madm_gantt_share/madm_year_data.js"></script>
 
@@ -329,6 +506,16 @@
     function detectYearFromFileName(name) {
       const match = String(name || "").match(/(2024|2025|2026)/);
       return match ? match[1] : null;
+    }
+
+    function debounce(fn, wait = 160) {
+      let timer = null;
+      return (...args) => {
+        if (timer) {
+          window.clearTimeout(timer);
+        }
+        timer = window.setTimeout(() => fn(...args), wait);
+      };
     }
 
     function tagRowsWithYear(rows, year) {
@@ -555,15 +742,15 @@
       const rankText = Number.isFinite(marker.rank2026) ? String(marker.rank2026) : "-";
       const gradeText = Number.isFinite(marker.grade2026) ? marker.grade2026.toFixed(2) : "-";
       if (!marker.equivalent2025 || !Number.isFinite(marker.equivalent2025.placeCenter)) {
-        return `2026 student ${studentCode}: rank ${rankText}, MADM ${gradeText}. No 2025 equivalent rank could be derived.`;
+        return `2026 student ${studentCode}: rank ${rankText}, media admitere ${gradeText}. No 2025 equivalent rank could be derived.`;
       }
 
       const eq = marker.equivalent2025;
       const placeText = eq.placeMin !== eq.placeMax
         ? `${Math.round(eq.placeMin)}-${Math.round(eq.placeMax)}`
         : `${Math.round(eq.placeCenter)}`;
-      const matchText = eq.relativeRankMatch ? "mapped from relative rank position" : (eq.exactGradeMatch ? "same MADM in 2025" : "estimated 2025 position from MADM");
-      return `2026 student ${studentCode}: rank ${rankText}, MADM ${gradeText}. 2025 equivalent rank: ${placeText} (${matchText}).`;
+      const matchText = eq.relativeRankMatch ? "mapped from relative rank position" : (eq.exactGradeMatch ? "same media admitere in 2025" : "estimated 2025 position from media admitere");
+      return `2026 student ${studentCode}: rank ${rankText}, media admitere ${gradeText}. 2025 equivalent rank: ${placeText} (${matchText}).`;
     }
 
     function setResponsiveSvgSize(target, innerW, innerH) {
@@ -1245,27 +1432,69 @@
         return;
       }
 
-      const left = 500;
-      const right = 70;
-      const histGap = 22;
-      const histW = 280;
-      const noteGap = 10;
-      const noteW = 120;
-      const provGap = 10;
-      const provColGap = 10;
-      const provColW = 230;
-      const top = 80;
-      const bottom = 42;
-      const baseRowH = showProvenance ? 40 : 34;
-      const spGap = showProvenance ? 12 : 8;
-      const headerH = 42;
-      const barH = 14;
-      const axisW = 860;
+      const host = target.closest(".chart-stack") || target.parentElement;
+      const hostW = host ? host.clientWidth : window.innerWidth;
+      const availableW = Math.max(760, Math.floor(hostW - 6));
+
+      let left = 560;
+      let right = 90;
+      let histGap = 22;
+      let histW = 300;
+      let noteGap = 10;
+      let noteW = 120;
+      let provGap = 10;
+      let provColGap = 10;
+      let provColW = 230;
+      const top = 132;
+      const bottom = 86;
+      const baseRowH = showProvenance ? 44 : 38;
+      const spGap = showProvenance ? 14 : 10;
+      const headerH = 48;
+      const barH = 16;
+      let axisW = 920;
 
       const dataRows = groupedRows.filter(r => r.type === "sp-row");
       const selectedYears = showProvenance
         ? [...new Set(dataRows.map(r => String(r.year || "")).filter(Boolean))].sort((a, b) => Number(b) - Number(a))
         : [];
+
+      const totalWidthFor = () => (
+        left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0) + right
+      );
+
+      let totalW = totalWidthFor();
+      if (totalW > availableW) {
+        const minLeft = 300;
+        const minAxisW = 500;
+        const minHistW = 180;
+        const minNoteW = 84;
+        const minProvColW = 140;
+
+        const reducible =
+          (left - minLeft) +
+          (axisW - minAxisW) +
+          (histW - minHistW) +
+          (noteW - minNoteW) +
+          ((provColW - minProvColW) * selectedYears.length);
+
+        if (reducible > 0) {
+          const ratio = Math.min(1, (totalW - availableW) / reducible);
+          left = Math.round(left - ((left - minLeft) * ratio));
+          axisW = Math.round(axisW - ((axisW - minAxisW) * ratio));
+          histW = Math.round(histW - ((histW - minHistW) * ratio));
+          noteW = Math.round(noteW - ((noteW - minNoteW) * ratio));
+          provColW = Math.round(provColW - ((provColW - minProvColW) * ratio));
+        }
+
+        if (availableW < 980) {
+          right = 36;
+          histGap = 12;
+          noteGap = 8;
+          provGap = 8;
+          provColGap = 6;
+        }
+      }
+
       const xMin = Math.min(...dataRows.map(v => v.min));
       const xMax = Math.max(...dataRows.map(v => v.max));
       const span = Math.max(1, xMax - xMin);
@@ -1330,27 +1559,71 @@
         return el;
       };
 
+      const wrapTitleText = (text, maxCharsPerLine) => {
+        const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+        if (!words.length) return [""];
+        const lines = [];
+        let current = "";
+        for (const word of words) {
+          const candidate = current ? `${current} ${word}` : word;
+          if (candidate.length <= maxCharsPerLine || !current) {
+            current = candidate;
+            continue;
+          }
+          lines.push(current);
+          current = word;
+        }
+        if (current) lines.push(current);
+        return lines;
+      };
+
       target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
 
-      const ttl = mk("text", { x: 16, y: 26, "font-size": 15, "font-weight": 700 });
-      ttl.textContent = titleText;
-      target.appendChild(ttl);
+      const titleBandY = 10;
+      const titleBandH = top - 38;
+      target.appendChild(mk("rect", {
+        x: 8,
+        y: titleBandY,
+        width: width - 16,
+        height: titleBandH,
+        fill: "#f8fafc",
+        stroke: "#e2e8f0",
+        "stroke-width": 1,
+        rx: 6,
+        ry: 6
+      }));
 
-      let legendX = width - 180;
+      const titleMaxChars = Math.max(50, Math.floor((width - 340) / 8.4));
+      const titleLines = wrapTitleText(titleText, titleMaxChars).slice(0, 4);
+      const titleLineH = 19;
+      const titleStartY = titleBandY + 24;
+      for (let i = 0; i < titleLines.length; i++) {
+        const ttl = mk("text", {
+          x: 20,
+          y: titleStartY + (i * titleLineH),
+          "font-size": i === 0 ? 17 : 15,
+          "font-weight": i === 0 ? 800 : 700,
+          fill: "#0f172a"
+        });
+        ttl.textContent = titleLines[i];
+        target.appendChild(ttl);
+      }
+
+      let legendX = width - 236;
       for (const year of ["2024", "2025"]) {
         target.appendChild(mk("rect", {
           x: legendX,
-          y: 14,
-          width: 12,
-          height: 12,
+          y: titleBandY + 16,
+          width: 18,
+          height: 18,
           fill: getYearColor(year),
-          rx: 2,
-          ry: 2
+          rx: 3,
+          ry: 3
         }));
-        const legendLabel = mk("text", { x: legendX + 18, y: 24, "font-size": 11, fill: "#475569" });
+        const legendLabel = mk("text", { x: legendX + 26, y: titleBandY + 30, "font-size": 15, "font-weight": 700, fill: "#334155" });
         legendLabel.textContent = year;
         target.appendChild(legendLabel);
-        legendX += 66;
+        legendX += 104;
       }
 
       const axisY = top - 24;
@@ -1374,7 +1647,7 @@
         }));
 
         target.appendChild(mk("line", { x1: x, y1: axisY, x2: x, y2: axisY + 6, stroke: "#9ca3af", "stroke-width": 1 }));
-        const t = mk("text", { x, y: axisY - 8, "font-size": 11, "text-anchor": "middle", fill: "#6b7280" });
+        const t = mk("text", { x, y: axisY - 8, "font-size": 13, "text-anchor": "middle", fill: "#6b7280" });
         t.textContent = String(value);
         target.appendChild(t);
       }
@@ -1417,7 +1690,7 @@
             const label = mk("text", {
               x: markerX + 6,
               y: axisY - 20,
-              "font-size": 10,
+              "font-size": 12,
               "font-weight": 700,
               fill: "#dc2626",
               "text-anchor": markerX > left + (axisW * 0.7) ? "end" : "start"
@@ -1447,7 +1720,7 @@
           });
           target.appendChild(bg);
 
-          const hLabel = mk("text", { x: 16, y: cursorY + 1, "font-size": 12, "font-weight": 700, fill: "#334155" });
+          const hLabel = mk("text", { x: 16, y: cursorY + 1, "font-size": 14, "font-weight": 700, fill: "#334155" });
           const extra = hMetaByH.get(norm(item.hName));
           const extraText = extra
             ? Object.entries(extra)
@@ -1459,7 +1732,7 @@
           target.appendChild(hLabel);
 
           if (extraText) {
-            const hMetaLabel = mk("text", { x: 28, y: cursorY + 17, "font-size": 11, "font-weight": 500, fill: "#64748b" });
+            const hMetaLabel = mk("text", { x: 28, y: cursorY + 19, "font-size": 12, "font-weight": 500, fill: "#64748b" });
             const entries = Object.entries(extra)
               .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "");
 
@@ -1508,12 +1781,12 @@
         const madmMinTxtVal = item.madmMin == null ? "-" : item.madmMin.toFixed(2);
         const madmMaxTxtVal = item.madmMax == null ? "-" : item.madmMax.toFixed(2);
         const yearColor = getYearColor(item.year);
-        const yearTag = mk("text", { x: 28, y: y + 4, "font-size": 11, "font-weight": 700, fill: yearColor });
+        const yearTag = mk("text", { x: 28, y: y + 4, "font-size": 13, "font-weight": 700, fill: yearColor });
         yearTag.textContent = item.year;
         target.appendChild(yearTag);
 
         if (item.showSpecialtyLabel) {
-          const label = mk("text", { x: 70, y: y + 4, "font-size": 12, "font-weight": 600, fill: "#0f172a" });
+          const label = mk("text", { x: 74, y: y + 4, "font-size": 14, "font-weight": 600, fill: "#0f172a" });
           const codeText = item.allCodes ? ` (${item.allCodes})` : (item.spCode ? ` (${item.spCode})` : "");
           label.textContent = `${item.spName}${codeText} | ${item.spProfile} (${item.count})`;
           target.appendChild(label);
@@ -1551,7 +1824,7 @@
         const maxValueTxt = mk("text", {
           x: maxValueX,
           y: valueY,
-          "font-size": 10,
+          "font-size": 12,
           "text-anchor": "start",
           fill: fitsInside ? "#ffffff" : "#0f172a",
           "font-weight": 700
@@ -1562,7 +1835,7 @@
         const minValueTxt = mk("text", {
           x: minValueX,
           y: valueY,
-          "font-size": 10,
+          "font-size": 12,
           "text-anchor": "end",
           fill: fitsInside ? "#ffffff" : "#0f172a",
           "font-weight": 700
@@ -1570,11 +1843,11 @@
         minValueTxt.textContent = madmMinTxtVal;
         target.appendChild(minValueTxt);
 
-        const minTxt = mk("text", { x: minRankX, y: yBar - 4, "font-size": 10, "text-anchor": "start", fill: "#6b7280" });
+        const minTxt = mk("text", { x: minRankX, y: yBar - 4, "font-size": 12, "text-anchor": "start", fill: "#6b7280" });
         minTxt.textContent = minRankTxtVal;
         target.appendChild(minTxt);
 
-        const maxTxt = mk("text", { x: maxRankX, y: yBar - 4, "font-size": 10, "text-anchor": "end", fill: "#6b7280" });
+        const maxTxt = mk("text", { x: maxRankX, y: yBar - 4, "font-size": 12, "text-anchor": "end", fill: "#6b7280" });
         maxTxt.textContent = maxRankTxtVal;
         target.appendChild(maxTxt);
 
@@ -1677,7 +1950,7 @@
               const gTick = mk("text", {
                 x: gradeCenterX,
                 y: plotBottomH + 10,
-                "font-size": 7,
+                "font-size": 10,
                 "text-anchor": "middle",
                 fill: "#64748b"
               });
@@ -1705,7 +1978,7 @@
                   const countTxt = mk("text", {
                     x: bx + (barW / 2),
                     y: Math.max(plotTopH + 7, by - 2),
-                    "font-size": 7,
+                    "font-size": 10,
                     "text-anchor": "middle",
                     fill: "#1f2937",
                     "font-weight": 700
@@ -1719,7 +1992,7 @@
             const info = mk("text", {
               x: histLeft + 4,
               y: boxTop + 10,
-              "font-size": 8,
+              "font-size": 11,
               fill: "#475569"
             });
             info.textContent = `students by grade (${yearKeys.join("+")})`;
@@ -1734,7 +2007,7 @@
               const noteMajor = mk("text", {
                 x: noteLeft,
                 y: boxTop + 10,
-                "font-size": 8,
+                "font-size": 11,
                 "text-anchor": "start",
                 fill: "#334155",
                 "font-weight": 700
@@ -1745,7 +2018,7 @@
               const noteCount = mk("text", {
                 x: noteLeft,
                 y: boxTop + 20,
-                "font-size": 8,
+                "font-size": 10,
                 "text-anchor": "start",
                 fill: "#334155"
               });
@@ -1773,7 +2046,7 @@
               const colTitle = mk("text", {
                 x: colLeft + 5,
                 y: boxTop + 10,
-                "font-size": 8,
+                "font-size": 11,
                 fill: "#334155",
                 "font-weight": 700
               });
@@ -1784,7 +2057,7 @@
                 ? provRows.map(v => `${v.school} (${v.count})`)
                 : ["-"];
               const maxCharsPerLine = Math.max(20, Math.floor((provColW - 10) / 4.2));
-              const lineHeight = 8;
+              const lineHeight = 11;
               const maxLines = Math.max(1, Math.floor((boxHeight - 22) / lineHeight));
               const clippedEntries = entries.map(line => (
                 line.length > maxCharsPerLine
@@ -1801,7 +2074,7 @@
               const provText = mk("text", {
                 x: colLeft + 5,
                 y: boxTop + 20,
-                "font-size": 7,
+                "font-size": 10,
                 fill: "#475569"
               });
               shownLines.forEach((line, idx) => {
@@ -1862,10 +2135,13 @@
       const applyPageZoom = () => {
         const scale = Math.min(3, Math.max(0.5, pageZoom));
         const stack = gradeChart.closest(".chart-stack");
+        const wrap = gradeChart.closest(".chart-wrap");
         if (!stack) return;
         stack.style.transform = `scale(${scale})`;
         stack.style.width = `${100 / scale}%`;
-        stack.style.minWidth = `${Math.round(980 * scale)}px`;
+        const wrapWidth = wrap ? wrap.clientWidth : window.innerWidth;
+        const baseWidth = Math.max(320, Math.round(wrapWidth - 4));
+        stack.style.minWidth = `${Math.round(baseWidth * scale)}px`;
       };
 
       const setPageZoom = (nextZoom) => {
@@ -1899,7 +2175,7 @@
             if (!anyVisibleYear) {
               meta.innerHTML = '<span class="error">No visible data. Enable at least one year checkbox.</span>';
             } else {
-              meta.innerHTML = '<span class="error">Year checkboxes are enabled, but no bundled year data is loaded. Ensure madm_year_data.js is present next to this HTML file.</span>';
+              meta.innerHTML = '<span class="error">Year checkboxes are enabled, but no bundled year data is loaded. Ensure the bundled data file path is reachable.</span>';
             }
             renderGradeChart(gradeChart, [], "No grade chart data", { lookupMarker });
             renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
@@ -2012,6 +2288,13 @@
         render();
       };
 
+      const renderLive = debounce(() => {
+        render();
+      }, 180);
+
+      hInput.addEventListener("input", renderLive);
+      spInput.addEventListener("input", renderLive);
+      studentLookupInput.addEventListener("input", renderLive);
       hInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
       spInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
       studentLookupInput.addEventListener("keydown", e => { if (e.key === "Enter") render(); });
