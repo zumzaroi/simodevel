@@ -1798,17 +1798,6 @@
         if (item.type === "h-header") {
           const headerLayoutEntry = headerLayout.get(i) || { hLines: wrapWords(`${item.hRank}. ${item.hName}`, maxSchoolChars), metaLines: [], height: headerBaseH };
 
-          const bg = mk("rect", {
-            x: 8,
-            y: cursorY - 4,
-            width: Math.max(180, left - 16),
-            height: headerLayoutEntry.height,
-            fill: "#eef2f7",
-            rx: 5,
-            ry: 5
-          });
-          target.appendChild(bg);
-
           const hLabel = mk("text", { x: 16, y: cursorY + 10, "font-size": 20, "font-weight": 700, fill: "#334155", "clip-path": `url(#${leftTextClipId})` });
           headerLayoutEntry.hLines.forEach((line, idx) => {
             const tspan = mk("tspan", { x: 16, dy: idx === 0 ? 0 : headerTitleLineH });
