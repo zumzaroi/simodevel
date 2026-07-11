@@ -1680,6 +1680,9 @@
       const maxSpecialtyChars = Math.max(16, Math.floor((left - 110) / 14));
       const specialtyFontSize = 18;
       const specialtyLineH = 22;
+      const noteTextMaxChars = Math.max(10, Math.floor((noteW - 8) / 6.5));
+      const noteMajorLineH = 13;
+      const noteCountLineH = 12;
 
       const width = left + axisW + histGap + histW + noteGap + noteW + right;
       const maxHeaderTitleChars = Math.max(30, Math.floor((width - 54) / 11.2));
@@ -1783,17 +1786,30 @@
         const specialtyText = `${item.spName}${codeText} | ${item.spProfile} (${item.count})`;
         const specialtyLines = wrapWords(specialtyText, maxSpecialtyChars);
         const minRowForLabel = item.showSpecialtyLabel
-          ? Math.max(baseRowH, 10 + (specialtyLines.length * specialtyLineH))
+          ? Math.max(baseRowH, 36 + (Math.max(0, specialtyLines.length - 1) * specialtyLineH))
           : baseRowH;
+
+        let noteMajorLines = [];
+        let noteCountLines = [];
+        let minRowForNote = 0;
+        if (item.showSpecialtyLabel && item.thirdMajorCountTotal > 0) {
+          const thirdMajorName = (item.thirdMajorSubjects && item.thirdMajorSubjects.length)
+            ? item.thirdMajorSubjects.join("/")
+            : "unknown";
+          const thirdMajorGradeText = formatGradeSummary(item.thirdMajorGrades);
+          noteMajorLines = wrapWords(`3rd major: ${thirdMajorName}`, noteTextMaxChars);
+          noteCountLines = wrapWords(`students: ${item.thirdMajorCountTotal} | grade: ${thirdMajorGradeText}`, noteTextMaxChars);
+          minRowForNote = 18 + (noteMajorLines.length * noteMajorLineH) + 4 + (noteCountLines.length * noteCountLineH) + 8;
+        }
 
         const provenancePanels = item.showSpecialtyLabel ? buildProvenancePanelData(item.provenanceByYear) : [];
         const provenancePanelH = provenancePanels.length
           ? provenanceTopGap + provenancePanels.reduce((sum, panel) => sum + panel.panelHeight, 0) + (Math.max(0, provenancePanels.length - 1) * provenancePanelGap)
           : 0;
 
-        rowH = Math.max(rowH, minRowForLabel);
+        rowH = Math.max(rowH, minRowForLabel, minRowForNote);
 
-        groupLayout.set(groupKey, { rowH, spanRows, specialtyLines, provenancePanelH, provenancePanels });
+        groupLayout.set(groupKey, { rowH, spanRows, specialtyLines, provenancePanelH, provenancePanels, noteMajorLines, noteCountLines });
       }
 
       let rowsHeight = 0;
@@ -2063,7 +2079,7 @@
         target.appendChild(yearTag);
 
         if (item.showSpecialtyLabel) {
-          const label = mk("text", { x: 74, y: y + 12, "font-size": String(specialtyFontSize), "font-weight": 600, fill: "#0f172a", "clip-path": `url(#${leftTextClipId})` });
+          const label = mk("text", { x: 74, y: cursorY + 26, "font-size": String(specialtyFontSize), "font-weight": 600, fill: "#0f172a", "clip-path": `url(#${leftTextClipId})` });
           const specialtyLines = (groupLayoutEntry && groupLayoutEntry.specialtyLines && groupLayoutEntry.specialtyLines.length)
             ? groupLayoutEntry.specialtyLines
             : wrapWords(`${item.spName} | ${item.spProfile} (${item.count})`, maxSpecialtyChars);
@@ -2285,26 +2301,46 @@
                 ? item.thirdMajorSubjects.join("/")
                 : "unknown";
               const thirdMajorGradeText = formatGradeSummary(item.thirdMajorGrades);
+              const wrappedMajorLines = (groupLayoutEntry && groupLayoutEntry.noteMajorLines && groupLayoutEntry.noteMajorLines.length)
+                ? groupLayoutEntry.noteMajorLines
+                : wrapWords(`3rd major: ${thirdMajorName}`, noteTextMaxChars);
+              const wrappedCountLines = (groupLayoutEntry && groupLayoutEntry.noteCountLines && groupLayoutEntry.noteCountLines.length)
+                ? groupLayoutEntry.noteCountLines
+                : wrapWords(`students: ${item.thirdMajorCountTotal} | grade: ${thirdMajorGradeText}`, noteTextMaxChars);
 
               const noteMajor = mk("text", {
                 x: noteLeft,
-                y: boxTop + 10,
+                y: boxTop + 16,
                 "font-size": 11,
                 "text-anchor": "start",
                 fill: "#334155",
                 "font-weight": 700
               });
-              noteMajor.textContent = `3rd major: ${thirdMajorName}`;
+              wrappedMajorLines.forEach((line, idx) => {
+                const span = mk("tspan", {
+                  x: noteLeft,
+                  dy: idx === 0 ? 0 : noteMajorLineH
+                });
+                span.textContent = line;
+                noteMajor.appendChild(span);
+              });
               target.appendChild(noteMajor);
 
               const noteCount = mk("text", {
                 x: noteLeft,
-                y: boxTop + 20,
+                y: boxTop + 16 + (wrappedMajorLines.length * noteMajorLineH) + 4,
                 "font-size": 10,
                 "text-anchor": "start",
                 fill: "#334155"
               });
-              noteCount.textContent = `students: ${item.thirdMajorCountTotal} | grade: ${thirdMajorGradeText}`;
+              wrappedCountLines.forEach((line, idx) => {
+                const span = mk("tspan", {
+                  x: noteLeft,
+                  dy: idx === 0 ? 0 : noteCountLineH
+                });
+                span.textContent = line;
+                noteCount.appendChild(span);
+              });
               target.appendChild(noteCount);
             }
 
