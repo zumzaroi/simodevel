@@ -280,7 +280,7 @@
     .chart-stack {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 24px;
       min-width: 980px;
       width: 100%;
       transform-origin: top left;
@@ -1445,11 +1445,13 @@
       let provGap = 10;
       let provColGap = 10;
       let provColW = 230;
-      const top = 132;
+      const top = 142;
       const bottom = 86;
-      const baseRowH = showProvenance ? 44 : 38;
+      const baseRowH = showProvenance ? 52 : 48;
       const spGap = showProvenance ? 14 : 10;
-      const headerH = 48;
+      const headerBaseH = 62;
+      const headerTitleLineH = 24;
+      const headerMetaLineH = 16;
       const barH = 16;
       let axisW = 920;
 
@@ -1457,6 +1459,24 @@
       const selectedYears = showProvenance
         ? [...new Set(dataRows.map(r => String(r.year || "")).filter(Boolean))].sort((a, b) => Number(b) - Number(a))
         : [];
+
+      const wrapWords = (text, maxChars) => {
+        const words = String(text || "").trim().split(/\s+/).filter(Boolean);
+        if (!words.length) return [""];
+        const lines = [];
+        let line = "";
+        for (const word of words) {
+          const next = line ? `${line} ${word}` : word;
+          if (next.length <= maxChars || !line) {
+            line = next;
+          } else {
+            lines.push(line);
+            line = word;
+          }
+        }
+        if (line) lines.push(line);
+        return lines;
+      };
 
       const totalWidthFor = () => (
         left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0) + right
@@ -1499,11 +1519,56 @@
       const xMax = Math.max(...dataRows.map(v => v.max));
       const span = Math.max(1, xMax - xMin);
 
+      const maxSchoolChars = Math.max(16, Math.floor((left - 40) / 14));
+      const maxSpecialtyChars = Math.max(16, Math.floor((left - 110) / 14));
+      const specialtyFontSize = 18;
+      const specialtyLineH = 22;
+
       const provTotalW = selectedYears.length ? (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0;
       const width = left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + provTotalW : 0) + right;
       const groupLayout = new Map();
+      const headerLayout = new Map();
 
       const groupKeyOf = item => `${item.hName}|||${item.spName}|||${item.spProfile}`;
+
+      for (let i = 0; i < groupedRows.length; i++) {
+        const item = groupedRows[i];
+        if (item.type !== "h-header") continue;
+
+        const hLines = wrapWords(`${item.hRank}. ${item.hName}`, maxSchoolChars);
+        const extra = hMetaByH.get(norm(item.hName));
+        const metaLines = [];
+        if (extra) {
+          const entries = Object.entries(extra)
+            .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "");
+          for (const [k, v] of entries) {
+            const value = String(v).trim();
+            const label = `${k}: `;
+            const perLineChars = Math.max(8, maxSchoolChars - label.length);
+            const chunks = wrapWords(value, perLineChars);
+            const lineColor = isCommuteTimeKey(k)
+              ? (() => {
+                  const mins = parseCommuteMinutes(value);
+                  if (mins == null) return "#64748b";
+                  return mins < 60 ? "#15803d" : "#b91c1c";
+                })()
+              : "#64748b";
+            chunks.forEach((chunk, idx) => {
+              metaLines.push({
+                text: idx === 0 ? `${label}${chunk}` : `   ${chunk}`,
+                color: lineColor,
+                weight: isCommuteTimeKey(k) ? 700 : 500
+              });
+            });
+          }
+        }
+
+        const computedHeaderH = Math.max(
+          headerBaseH,
+          10 + (hLines.length * headerTitleLineH) + (metaLines.length ? (6 + (metaLines.length * headerMetaLineH)) : 0) + 8
+        );
+        headerLayout.set(i, { hLines, metaLines, height: computedHeaderH });
+      }
 
       for (let i = 0; i < groupedRows.length; i++) {
         const item = groupedRows[i];
@@ -1521,23 +1586,33 @@
         }
 
         let rowH = baseRowH;
+        const codeText = item.allCodes ? ` (${item.allCodes})` : (item.spCode ? ` (${item.spCode})` : "");
+        const specialtyText = `${item.spName}${codeText} | ${item.spProfile} (${item.count})`;
+        const specialtyLines = wrapWords(specialtyText, maxSpecialtyChars);
+        const minRowForLabel = item.showSpecialtyLabel
+          ? Math.max(baseRowH, 10 + (specialtyLines.length * specialtyLineH))
+          : baseRowH;
+
         if (showProvenance) {
           const maxProvEntries = selectedYears.reduce((maxCount, year) => {
             const entries = (item.provenanceByYear && item.provenanceByYear[year]) ? item.provenanceByYear[year].length : 0;
             return Math.max(maxCount, entries);
           }, 0);
-          const requiredBoxHeight = Math.max(spanRows * baseRowH, 28 + (maxProvEntries * 8));
+          const requiredBoxHeight = Math.max(spanRows * baseRowH, 40 + (maxProvEntries * 20));
           rowH = Math.max(baseRowH, Math.ceil(requiredBoxHeight / spanRows));
         }
 
-        groupLayout.set(groupKey, { rowH, spanRows });
+        rowH = Math.max(rowH, minRowForLabel);
+
+        groupLayout.set(groupKey, { rowH, spanRows, specialtyLines });
       }
 
       let rowsHeight = 0;
       for (let i = 0; i < groupedRows.length; i++) {
         const r = groupedRows[i];
         if (r.type === "h-header") {
-          rowsHeight += headerH;
+          const headerLayoutEntry = headerLayout.get(i);
+          rowsHeight += headerLayoutEntry ? headerLayoutEntry.height : headerBaseH;
           continue;
         }
 
@@ -1576,6 +1651,18 @@
         if (current) lines.push(current);
         return lines;
       };
+
+      const leftTextClipId = `${target.id || "chart"}-left-text-clip`;
+      const defs = mk("defs");
+      const clipPath = mk("clipPath", { id: leftTextClipId });
+      clipPath.appendChild(mk("rect", {
+        x: 10,
+        y: 0,
+        width: Math.max(40, left - 20),
+        height
+      }));
+      defs.appendChild(clipPath);
+      target.appendChild(defs);
 
       target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
 
@@ -1709,62 +1796,44 @@
         const item = groupedRows[i];
 
         if (item.type === "h-header") {
+          const headerLayoutEntry = headerLayout.get(i) || { hLines: wrapWords(`${item.hRank}. ${item.hName}`, maxSchoolChars), metaLines: [], height: headerBaseH };
+
           const bg = mk("rect", {
             x: 8,
-            y: cursorY - 16,
-            width: width - 16,
-            height: headerH,
+            y: cursorY - 4,
+            width: Math.max(180, left - 16),
+            height: headerLayoutEntry.height,
             fill: "#eef2f7",
             rx: 5,
             ry: 5
           });
           target.appendChild(bg);
 
-          const hLabel = mk("text", { x: 16, y: cursorY + 1, "font-size": 14, "font-weight": 700, fill: "#334155" });
-          const extra = hMetaByH.get(norm(item.hName));
-          const extraText = extra
-            ? Object.entries(extra)
-                .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "")
-                .map(([k, v]) => `${k}: ${v}`)
-                .join(" | ")
-            : "";
-          hLabel.textContent = `${item.hRank}. ${item.hName}`;
+          const hLabel = mk("text", { x: 16, y: cursorY + 10, "font-size": 20, "font-weight": 700, fill: "#334155", "clip-path": `url(#${leftTextClipId})` });
+          headerLayoutEntry.hLines.forEach((line, idx) => {
+            const tspan = mk("tspan", { x: 16, dy: idx === 0 ? 0 : headerTitleLineH });
+            tspan.textContent = line;
+            hLabel.appendChild(tspan);
+          });
           target.appendChild(hLabel);
 
-          if (extraText) {
-            const hMetaLabel = mk("text", { x: 28, y: cursorY + 19, "font-size": 12, "font-weight": 500, fill: "#64748b" });
-            const entries = Object.entries(extra)
-              .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== "");
-
-            entries.forEach(([k, v], idx) => {
-              if (idx > 0) {
-                const sep = mk("tspan", { fill: "#64748b" });
-                sep.textContent = " | ";
-                hMetaLabel.appendChild(sep);
-              }
-
-              const kSpan = mk("tspan", { fill: "#64748b" });
-              kSpan.textContent = `${k}: `;
-              hMetaLabel.appendChild(kSpan);
-
-              const vStr = String(v);
-              const vColor = isCommuteTimeKey(k)
-                ? (() => {
-                    const mins = parseCommuteMinutes(vStr);
-                    if (mins == null) return "#64748b";
-                    return mins < 60 ? "#15803d" : "#b91c1c";
-                  })()
-                : "#64748b";
-
-              const vSpan = mk("tspan", { fill: vColor, "font-weight": isCommuteTimeKey(k) ? 700 : 500 });
-              vSpan.textContent = vStr;
-              hMetaLabel.appendChild(vSpan);
+          if (headerLayoutEntry.metaLines.length) {
+            const metaStartY = cursorY + 10 + (headerLayoutEntry.hLines.length * headerTitleLineH) + 6;
+            const hMetaLabel = mk("text", { x: 28, y: metaStartY, "font-size": 11, "font-weight": 500, fill: "#64748b", "clip-path": `url(#${leftTextClipId})` });
+            headerLayoutEntry.metaLines.forEach((line, idx) => {
+              const span = mk("tspan", {
+                x: 28,
+                dy: idx === 0 ? 0 : headerMetaLineH,
+                fill: line.color,
+                "font-weight": line.weight
+              });
+              span.textContent = line.text;
+              hMetaLabel.appendChild(span);
             });
-
             target.appendChild(hMetaLabel);
           }
 
-          cursorY += headerH;
+          cursorY += headerLayoutEntry.height;
           continue;
         }
 
@@ -1786,9 +1855,15 @@
         target.appendChild(yearTag);
 
         if (item.showSpecialtyLabel) {
-          const label = mk("text", { x: 74, y: y + 4, "font-size": 14, "font-weight": 600, fill: "#0f172a" });
-          const codeText = item.allCodes ? ` (${item.allCodes})` : (item.spCode ? ` (${item.spCode})` : "");
-          label.textContent = `${item.spName}${codeText} | ${item.spProfile} (${item.count})`;
+          const label = mk("text", { x: 74, y: y + 12, "font-size": String(specialtyFontSize), "font-weight": 600, fill: "#0f172a", "clip-path": `url(#${leftTextClipId})` });
+          const specialtyLines = (groupLayoutEntry && groupLayoutEntry.specialtyLines && groupLayoutEntry.specialtyLines.length)
+            ? groupLayoutEntry.specialtyLines
+            : wrapWords(`${item.spName} | ${item.spProfile} (${item.count})`, maxSpecialtyChars);
+          specialtyLines.forEach((line, idx) => {
+            const tspan = mk("tspan", { x: 74, dy: idx === 0 ? 0 : specialtyLineH });
+            tspan.textContent = line;
+            label.appendChild(tspan);
+          });
           target.appendChild(label);
         }
 
@@ -2045,8 +2120,8 @@
 
               const colTitle = mk("text", {
                 x: colLeft + 5,
-                y: boxTop + 10,
-                "font-size": 11,
+                y: boxTop + 16,
+                "font-size": 14,
                 fill: "#334155",
                 "font-weight": 700
               });
@@ -2056,8 +2131,8 @@
               const entries = provRows.length
                 ? provRows.map(v => `${v.school} (${v.count})`)
                 : ["-"];
-              const maxCharsPerLine = Math.max(20, Math.floor((provColW - 10) / 4.2));
-              const lineHeight = 11;
+              const maxCharsPerLine = Math.max(10, Math.floor((provColW - 10) / 8.4));
+              const lineHeight = 20;
               const maxLines = Math.max(1, Math.floor((boxHeight - 22) / lineHeight));
               const clippedEntries = entries.map(line => (
                 line.length > maxCharsPerLine
@@ -2073,8 +2148,8 @@
 
               const provText = mk("text", {
                 x: colLeft + 5,
-                y: boxTop + 20,
-                "font-size": 10,
+                y: boxTop + 30,
+                "font-size": 12,
                 fill: "#475569"
               });
               shownLines.forEach((line, idx) => {
