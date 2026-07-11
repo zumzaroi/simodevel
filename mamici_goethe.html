@@ -1011,7 +1011,7 @@
       target.appendChild(mk("rect", { x: 0, y: 0, width, height, fill: "#ffffff" }));
 
       const ttl = mk("text", { x: 16, y: 64, "font-size": 30, "font-weight": 700, fill: "#111827" });
-      ttl.textContent = `${titleText} | x axis: note, y axis: numar de elevi`;
+      ttl.textContent = titleText;
       target.appendChild(ttl);
 
       const yearColors = {
@@ -2399,7 +2399,7 @@
             const allCount2026 = gradeRows.filter(r => r.__year === "2026").length;
             const lookupSummary = formatLookupMarkerSummary(lookupMarker);
             meta.textContent = `No visible 2024/2025 data for Gantt. Visible grade rows: 2024=${allCount2024}, 2025=${allCount2025}, 2026=${allCount2026}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
-            const gradeTitle = "Note vs numar de elevi";
+            const gradeTitle = "Note (axa x) vs Numar elevi (axa y)";
             lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
             if (lastGradeView) gradeCenter = lastGradeView.center;
             renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
@@ -2419,7 +2419,7 @@
           if (!filtered.length) {
             const lookupSummary = formatLookupMarkerSummary(lookupMarker);
             meta.textContent = `No matches found for nume liceu=${h}${sp ? ` and specializare=${sp}` : ""}.${lookupSummary ? ` ${lookupSummary}` : ""}`;
-            const gradeTitle = "Note vs numar de elevi";
+            const gradeTitle = "Note (axa x) vs Numar elevi (axa y)";
             lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
             if (lastGradeView) gradeCenter = lastGradeView.center;
             renderChart(chart, [], "No data", hMetaByH, { showProvenance: showProvenanceInput.checked, lookupMarker });
@@ -2433,7 +2433,7 @@
           const count2025 = filtered.filter(r => r.__year === "2025").length;
           meta.textContent = "";
 
-          const gradeTitle = "Note vs numar de elevi";
+          const gradeTitle = "Note (axa x) vs Numar elevi (axa y)";
           lastGradeView = renderGradeChart(gradeChart, gradeRows, gradeTitle, { zoom: gradeZoom, center: gradeCenter, lookupMarker }) || null;
           if (lastGradeView) gradeCenter = lastGradeView.center;
 
