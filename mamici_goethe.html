@@ -125,6 +125,26 @@
       font-family: "Courier New", monospace;
     }
 
+    .update-badge {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid #86efac;
+      background: #ecfdf3;
+      color: #166534;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .update-badge .star {
+      font-size: 14px;
+      line-height: 1;
+    }
+
     .controls {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -302,6 +322,62 @@
       font-weight: 600;
     }
 
+    .disclaimer-wrap {
+      border-top: 1px solid var(--line);
+      background: #fcfcfc;
+      padding: 14px 16px 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .notice-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #ffffff;
+      padding: 12px;
+    }
+
+    .notice-card.warn {
+      border-color: #fde68a;
+      background: #fffbeb;
+    }
+
+    .notice-title {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #374151;
+    }
+
+    .notice-title.warn {
+      color: #92400e;
+    }
+
+    .notice-body {
+      margin: 0;
+      color: #4b5563;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .sources-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #4b5563;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .sources-list a {
+      color: #1f2937;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     @media (max-width: 860px) {
       .page-shell {
         padding: 10px;
@@ -346,6 +422,10 @@
       .chart-stack {
         min-width: 100%;
       }
+
+      .disclaimer-wrap {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 560px) {
@@ -364,7 +444,8 @@
       .controls,
       .controls-secondary,
       .meta,
-      .chart-wrap {
+      .chart-wrap,
+      .disclaimer-wrap {
         padding-left: 10px;
         padding-right: 10px;
       }
@@ -412,6 +493,10 @@
       <div class="header">
         <h1>Simulator Admitere Liceu Bucuresti 2026</h1>
         <div class="subtitle">Doar pentru Bucuresti. Axa X: pozitia dupa media admitere (stanga = pozitie mai buna), Axa Y: specializare.</div>
+        <div class="update-badge" aria-label="Actualizare date">
+          <span class="star">★</span>
+          <span>Actualizat 07.11.2026 ora 19.00, cu ultimele date publice disponibile</span>
+        </div>
       </div>
 
       <div class="controls">
@@ -426,7 +511,7 @@
         </div>
 
         <div class="field">
-          <label for="rankModeInput">ranking mode (2025 reference)</label>
+          <label for="rankModeInput">sortare dupa medie (referinta 2025)</label>
           <select id="rankModeInput">
             <option value="min" selected>media minima</option>
             <option value="max">media maxima</option>
@@ -434,16 +519,16 @@
         </div>
 
         <div class="field toggle-field">
-          <label for="showProvenanceInput">provenience schools</label>
+          <label for="showProvenanceInput">licee de provenienta</label>
           <label class="toggle-control">
             <input id="showProvenanceInput" type="checkbox">
-            <span>Show provenience schools</span>
+            <span>Afiseaza liceele de provenienta</span>
           </label>
         </div>
 
         <div class="field">
-          <label for="studentLookupInput">2026 student lookup sau media finala</label>
-          <input id="studentLookupInput" placeholder="example: B12573796 or 21">
+          <label for="studentLookupInput">cod elev 2026 sau media finala</label>
+          <input id="studentLookupInput" placeholder="exemplu: B12573796 sau 21">
         </div>
       </div>
 
@@ -470,6 +555,26 @@
           <svg id="chart"></svg>
         </div>
       </div>
+
+      <section class="disclaimer-wrap" aria-label="Disclaimere si surse">
+        <article class="notice-card warn">
+          <h2 class="notice-title warn">⚠ Disclaimer Important</h2>
+          <p class="notice-body">
+            Acest simulator are caracter orientativ si NU garanteaza exactitatea absoluta a datelor sau a rezultatelor.
+            Valorile afisate reprezinta o estimare bazata pe date publice disponibile si prelucrate manual/tehnic.
+            Deciziile finale privind admiterea trebuie luate doar pe baza informatiilor oficiale publicate de institutiile competente.
+          </p>
+        </article>
+
+        <article class="notice-card">
+          <h2 class="notice-title">Surse Publice Utilizate</h2>
+          <ul class="sources-list">
+            <li>Ministerul Educatiei si Cercetarii (informari oficiale): <a href="https://www.edu.ro/" target="_blank" rel="noopener noreferrer">edu.ro</a></li>
+            <li>Portal national admitere liceu (ierarhii, liste specializari, ultime medii): <a href="https://admitere.edu.ro/" target="_blank" rel="noopener noreferrer">admitere.edu.ro</a></li>
+            <li>Date locale utilizate in acest dashboard: <a href="madm_gantt_share/madm_gantt_share/madm_year_data.js" target="_blank" rel="noopener noreferrer">madm_year_data.js</a> si <a href="madm_gantt_share/madm_gantt_share/data/h_custom_fields.json" target="_blank" rel="noopener noreferrer">h_custom_fields.json</a></li>
+          </ul>
+        </article>
+      </section>
     </div>
   </main>
 
@@ -829,7 +934,7 @@
       const left = 80;
       const right = 190;
       const top = 128;
-      const bottom = 88;
+      const bottom = 110;
       const plotW = 1320;
       const plotH = 540;
       const width = left + plotW + right;
@@ -1029,23 +1134,23 @@
       }
 
       let legendX = left;
-      const legendY = plotBottom + 32;
+      const legendY = plotBottom + 78;
       for (const year of years) {
         const color = yearColors[year] || "#2563eb";
         target.appendChild(mk("rect", {
           x: legendX,
-          y: legendY - 9,
-          width: 12,
-          height: 12,
+          y: legendY - 14,
+          width: 20,
+          height: 20,
           fill: color,
           opacity: barOpacityForYear(year),
           rx: 1,
           ry: 1
         }));
-        const label = mk("text", { x: legendX + 16, y: legendY + 1, "font-size": 10, fill: "#374151", opacity: textOpacityForYear(year) });
+        const label = mk("text", { x: legendX + 26, y: legendY + 4, "font-size": 20, fill: "#374151", opacity: textOpacityForYear(year) });
         label.textContent = `${year} total: ${yearTotals.get(year) || 0}`;
         target.appendChild(label);
-        legendX += 130;
+        legendX += 260;
       }
 
       const lookupMarker = options.lookupMarker || null;
