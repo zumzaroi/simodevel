@@ -1606,9 +1606,6 @@
       let histW = 300;
       let noteGap = 10;
       let noteW = 120;
-      let provGap = 10;
-      let provColGap = 10;
-      let provColW = 230;
       const top = 142;
       const bottom = 86;
       const baseRowH = showProvenance ? 52 : 48;
@@ -1644,7 +1641,7 @@
       };
 
       const totalWidthFor = () => (
-        left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0) + right
+        left + axisW + histGap + histW + noteGap + noteW + right
       );
 
       let totalW = totalWidthFor();
@@ -1653,14 +1650,12 @@
         const minAxisW = 500;
         const minHistW = 180;
         const minNoteW = 84;
-        const minProvColW = 140;
 
         const reducible =
           (left - minLeft) +
           (axisW - minAxisW) +
           (histW - minHistW) +
-          (noteW - minNoteW) +
-          ((provColW - minProvColW) * selectedYears.length);
+          (noteW - minNoteW);
 
         if (reducible > 0) {
           const ratio = Math.min(1, (totalW - availableW) / reducible);
@@ -1668,15 +1663,12 @@
           axisW = Math.round(axisW - ((axisW - minAxisW) * ratio));
           histW = Math.round(histW - ((histW - minHistW) * ratio));
           noteW = Math.round(noteW - ((noteW - minNoteW) * ratio));
-          provColW = Math.round(provColW - ((provColW - minProvColW) * ratio));
         }
 
         if (availableW < 980) {
           right = 36;
           histGap = 12;
           noteGap = 8;
-          provGap = 8;
-          provColGap = 6;
         }
       }
 
@@ -1689,14 +1681,48 @@
       const specialtyFontSize = 18;
       const specialtyLineH = 22;
 
-      const provTotalW = selectedYears.length ? (selectedYears.length * provColW) + ((selectedYears.length - 1) * provColGap) : 0;
-      const width = left + axisW + histGap + histW + noteGap + noteW + (selectedYears.length ? provGap + provTotalW : 0) + right;
+      const width = left + axisW + histGap + histW + noteGap + noteW + right;
       const maxHeaderTitleChars = Math.max(30, Math.floor((width - 54) / 11.2));
       const maxHeaderMetaChars = Math.max(24, Math.floor((width - 72) / 10.4));
+      const provenanceTopGap = 12;
+      const provenancePanelGap = 8;
+      const provenanceFontScale = 1.3125;
+      const provenanceTitleFontSize = Math.round(13 * provenanceFontScale);
+      const provenanceTextFontSize = Math.round(12 * provenanceFontScale);
+      const provenanceLineH = Math.round(16 * provenanceFontScale);
+      const provenanceTitleBaseline = 28;
+      const provenanceTextStartBaseline = 62;
+      const provenancePanelBottomPadding = 14;
+      const provenancePanelLineChars = Math.max(22, Math.floor((width - 64) / 8.4));
       const groupLayout = new Map();
       const headerLayout = new Map();
 
       const groupKeyOf = item => `${item.hName}|||${item.spName}|||${item.spProfile}`;
+
+      const buildProvenancePanelData = (provenanceByYear = {}) => {
+        if (!showProvenance || !selectedYears.length) return [];
+
+        return selectedYears.map(year => {
+          const sourceRows = (provenanceByYear && provenanceByYear[year]) ? provenanceByYear[year] : [];
+          const rawLines = sourceRows.length
+            ? sourceRows.map((entry, idx) => `${idx + 1}. ${entry.school} (${entry.count})`)
+            : ["-"];
+
+          const clippedLines = rawLines.map(line => (
+            line.length > provenancePanelLineChars
+              ? `${line.slice(0, Math.max(0, provenancePanelLineChars - 3))}...`
+              : line
+          ));
+          const visibleLines = clippedLines;
+          const panelHeight = provenanceTextStartBaseline + (Math.max(0, visibleLines.length - 1) * provenanceLineH) + provenancePanelBottomPadding;
+
+          return {
+            year,
+            visibleLines,
+            panelHeight
+          };
+        });
+      };
 
       for (let i = 0; i < groupedRows.length; i++) {
         const item = groupedRows[i];
@@ -1760,18 +1786,14 @@
           ? Math.max(baseRowH, 10 + (specialtyLines.length * specialtyLineH))
           : baseRowH;
 
-        if (showProvenance) {
-          const maxProvEntries = selectedYears.reduce((maxCount, year) => {
-            const entries = (item.provenanceByYear && item.provenanceByYear[year]) ? item.provenanceByYear[year].length : 0;
-            return Math.max(maxCount, entries);
-          }, 0);
-          const requiredBoxHeight = Math.max(spanRows * baseRowH, 40 + (maxProvEntries * 20));
-          rowH = Math.max(baseRowH, Math.ceil(requiredBoxHeight / spanRows));
-        }
+        const provenancePanels = item.showSpecialtyLabel ? buildProvenancePanelData(item.provenanceByYear) : [];
+        const provenancePanelH = provenancePanels.length
+          ? provenanceTopGap + provenancePanels.reduce((sum, panel) => sum + panel.panelHeight, 0) + (Math.max(0, provenancePanels.length - 1) * provenancePanelGap)
+          : 0;
 
         rowH = Math.max(rowH, minRowForLabel);
 
-        groupLayout.set(groupKey, { rowH, spanRows, specialtyLines });
+        groupLayout.set(groupKey, { rowH, spanRows, specialtyLines, provenancePanelH, provenancePanels });
       }
 
       let rowsHeight = 0;
@@ -1788,7 +1810,10 @@
         rowsHeight += rowH;
         const next = groupedRows[i + 1];
         const groupEnds = !next || next.type !== "sp-row" || next.hName !== r.hName || next.spName !== r.spName || next.spProfile !== r.spProfile;
-        if (groupEnds) rowsHeight += spGap;
+        if (groupEnds) {
+          rowsHeight += (groupLayoutEntry ? groupLayoutEntry.provenancePanelH : 0);
+          rowsHeight += spGap;
+        }
       }
       const height = top + rowsHeight + bottom;
 
@@ -2115,7 +2140,6 @@
           const histLeft = left + axisW + histGap;
           const histRight = histLeft + histW;
           const noteLeft = histRight + noteGap;
-          const provStartLeft = noteLeft + noteW + provGap;
           const yearKeys = item.histByYear ? Object.keys(item.histByYear).sort() : [];
           const perYear = new Map();
           const allGradeSet = new Set();
@@ -2284,73 +2308,78 @@
               target.appendChild(noteCount);
             }
 
-            for (let yi = 0; yi < selectedYears.length; yi++) {
-              const yk = selectedYears[yi];
-              const colLeft = provStartLeft + yi * (provColW + provColGap);
-              const provRows = (item.provenanceByYear && item.provenanceByYear[yk]) ? item.provenanceByYear[yk] : [];
+            const provenancePanels = (groupLayoutEntry && groupLayoutEntry.provenancePanels)
+              ? groupLayoutEntry.provenancePanels
+              : [];
+            if (showProvenance && provenancePanels.length) {
+              let panelY = boxBottom + provenanceTopGap;
+              const panelX = 16;
+              const panelW = width - 32;
 
-              target.appendChild(mk("rect", {
-                x: colLeft,
-                y: boxTop,
-                width: provColW,
-                height: boxHeight,
-                fill: "#f8fafc",
-                stroke: "#e2e8f0",
-                "stroke-width": 1,
-                rx: 2,
-                ry: 2
-              }));
+              for (const panel of provenancePanels) {
+                target.appendChild(mk("rect", {
+                  x: panelX,
+                  y: panelY,
+                  width: panelW,
+                  height: panel.panelHeight,
+                  fill: "#f8fafc",
+                  stroke: "#cbd5e1",
+                  "stroke-width": 1,
+                  rx: 4,
+                  ry: 4
+                }));
 
-              const colTitle = mk("text", {
-                x: colLeft + 5,
-                y: boxTop + 16,
-                "font-size": 14,
-                fill: "#334155",
-                "font-weight": 700
-              });
-              colTitle.textContent = `Provenience ${yk}`;
-              target.appendChild(colTitle);
-
-              const entries = provRows.length
-                ? provRows.map(v => `${v.school} (${v.count})`)
-                : ["-"];
-              const maxCharsPerLine = Math.max(10, Math.floor((provColW - 10) / 8.4));
-              const lineHeight = 20;
-              const maxLines = Math.max(1, Math.floor((boxHeight - 22) / lineHeight));
-              const clippedEntries = entries.map(line => (
-                line.length > maxCharsPerLine
-                  ? `${line.slice(0, Math.max(0, maxCharsPerLine - 3))}...`
-                  : line
-              ));
-              const shownLines = clippedEntries.slice(0, maxLines);
-              const truncated = clippedEntries.length > maxLines;
-              if (truncated && shownLines.length) {
-                const last = shownLines[shownLines.length - 1];
-                shownLines[shownLines.length - 1] = `${last.slice(0, Math.max(0, maxCharsPerLine - 3))}...`;
-              }
-
-              const provText = mk("text", {
-                x: colLeft + 5,
-                y: boxTop + 30,
-                "font-size": 12,
-                fill: "#475569"
-              });
-              shownLines.forEach((line, idx) => {
-                const span = mk("tspan", {
-                  x: colLeft + 5,
-                  dy: idx === 0 ? 0 : lineHeight
+                const panelTitle = mk("text", {
+                  x: panelX + 10,
+                  y: panelY + provenanceTitleBaseline,
+                  "font-size": provenanceTitleFontSize,
+                  fill: "#334155",
+                  "font-weight": 800
                 });
-                span.textContent = line;
-                provText.appendChild(span);
-              });
-              target.appendChild(provText);
+                panelTitle.textContent = `Licee provenienta ${panel.year}`;
+                target.appendChild(panelTitle);
+
+                const panelText = mk("text", {
+                  x: panelX + 10,
+                  y: panelY + provenanceTextStartBaseline,
+                  "font-size": provenanceTextFontSize,
+                  fill: "#475569"
+                });
+                panel.visibleLines.forEach((line, idx) => {
+                  const span = mk("tspan", {
+                    x: panelX + 10,
+                    dy: idx === 0 ? 0 : provenanceLineH
+                  });
+                  span.textContent = line;
+                  panelText.appendChild(span);
+                });
+                target.appendChild(panelText);
+
+                panelY += panel.panelHeight + provenancePanelGap;
+              }
             }
           }
         }
 
         const next = groupedRows[i + 1];
         const groupEnds = !next || next.type !== "sp-row" || next.hName !== item.hName || next.spName !== item.spName || next.spProfile !== item.spProfile;
-        cursorY += rowH + (groupEnds ? spGap : 0);
+        let advanceY = rowH;
+        if (groupEnds) {
+          advanceY += groupLayoutEntry ? groupLayoutEntry.provenancePanelH : 0;
+          if (next) {
+            const dividerY = cursorY + advanceY + Math.max(2, Math.floor(spGap / 2));
+            target.appendChild(mk("line", {
+              x1: 16,
+              y1: dividerY,
+              x2: width - 16,
+              y2: dividerY,
+              stroke: "#64748b",
+              "stroke-width": 1.5
+            }));
+          }
+          advanceY += spGap;
+        }
+        cursorY += advanceY;
       }
     }
 
